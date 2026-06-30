@@ -1,0 +1,18 @@
+{
+  "name": "sana",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w apps/web\" \"npm run dev -w apps/api\"",
+    "build": "npm run build -w packages/shared && npm run build -w apps/web",
+    "typecheck": "tsc --noEmit -p apps/web/tsconfig.json && tsc --noEmit -p apps/api/tsconfig.json",
+    "lint": "eslint apps packages --ext .ts,.tsx"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

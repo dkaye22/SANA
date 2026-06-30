@@ -23,28 +23,30 @@
     /* ── NAV ── */
     .site-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(3,7,18,0.85); backdrop-filter: blur(12px);
-      border-bottom: 1px solid #1a2640;
+      background: rgba(3,7,18,0.7); backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(26,38,64,0.6);
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 48px; height: 64px;
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .logo-mark {
-      width: 34px; height: 34px; border-radius: 10px;
+      width: 32px; height: 32px; border-radius: 9px;
       background: linear-gradient(135deg, #2563eb, #6366f1);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 700; color: #fff;
-      box-shadow: 0 0 16px rgba(99,102,241,0.4);
+      font-size: 14px; font-weight: 800; color: #fff;
+      box-shadow: 0 0 20px rgba(99,102,241,0.5), 0 0 0 1px rgba(99,102,241,0.3);
+      letter-spacing: -0.5px;
     }
-    .logo-name { font-size: 20px; font-weight: 600; color: #f0f6ff; letter-spacing: -0.5px; }
+    .logo-name { font-size: 19px; font-weight: 700; color: #f0f6ff; letter-spacing: -0.8px; }
     .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
-    .nav-links a { font-size: 13px; font-weight: 500; color: #8ba3c0; text-decoration: none; letter-spacing: 0.01em; transition: color 0.2s; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: rgba(139,163,192,0.8); text-decoration: none; letter-spacing: 0.01em; transition: color 0.2s; }
     .nav-links a:hover { color: #f0f6ff; }
     .nav-cta {
-      font-size: 13px; font-weight: 600; color: #fff !important;
+      font-size: 13px; font-weight: 700; color: #fff !important;
       background: linear-gradient(135deg, #2563eb, #6366f1);
-      padding: 8px 18px; border-radius: 99px; text-decoration: none !important;
-      box-shadow: 0 0 20px rgba(99,102,241,0.3);
+      padding: 8px 20px; border-radius: 99px; text-decoration: none !important;
+      box-shadow: 0 0 24px rgba(99,102,241,0.35), 0 0 0 1px rgba(99,102,241,0.2);
+      letter-spacing: -0.2px;
     }
 
     /* ── SECTIONS ── */
@@ -55,9 +57,44 @@
     .hero {
       min-height: 100vh; padding-top: 64px;
       display: flex; align-items: center;
-      background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(37,99,235,0.12) 0%, transparent 70%),
-                  radial-gradient(ellipse 50% 40% at 80% 20%, rgba(99,102,241,0.08) 0%, transparent 60%),
-                  #030712;
+      background:
+        radial-gradient(ellipse 70% 55% at 65% 45%, rgba(37,99,235,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(99,102,241,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 5% 85%, rgba(34,211,238,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 100%, rgba(37,99,235,0.04) 0%, transparent 60%),
+        #030712;
+    }
+    .hero-h1 { text-shadow: 0 0 80px rgba(37,99,235,0.1); }
+
+    /* Floating stat pills in hero */
+    .hero-stats {
+      display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px;
+    }
+    .hero-stat-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(15,22,41,0.7); border: 1px solid rgba(36,51,82,0.8);
+      border-radius: 99px; padding: 7px 16px;
+      backdrop-filter: blur(12px);
+      font-size: 12px; color: #8ba3c0;
+      animation: pillFloat 6s ease-in-out infinite;
+    }
+    .hero-stat-pill:nth-child(2) { animation-delay: -2s; }
+    .hero-stat-pill:nth-child(3) { animation-delay: -4s; }
+    .hero-stat-pill strong { color: #f0f6ff; font-weight: 600; }
+    @keyframes pillFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-4px); }
+    }
+
+    /* Glowing section borders */
+    #how-it-works, .content-section, #protocols, #mission, #references {
+      position: relative;
+    }
+    #how-it-works::before, .content-section::before, #protocols::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.4), transparent);
     }
     .hero-inner {
       display: flex; align-items: center; gap: 64px;
@@ -124,28 +161,38 @@
     /* ── HOW IT WORKS ── */
     #how-it-works { padding: 120px 0; background: #030712; border-top: 1px solid #1a2640; }
     .section-label {
-      font-size: 11px; font-weight: 600; color: #2563eb; letter-spacing: 0.12em;
-      text-transform: uppercase; margin-bottom: 16px;
+      font-size: 10px; font-weight: 800; color: rgba(99,102,241,0.9); letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::before {
+      content: ''; display: inline-block; width: 20px; height: 1px;
+      background: rgba(99,102,241,0.7);
     }
     .section-title {
-      font-size: clamp(28px, 3vw, 44px); font-weight: 700; letter-spacing: -1px;
-      color: #f0f6ff; margin-bottom: 16px; line-height: 1.15;
+      font-size: clamp(28px, 3vw, 48px); font-weight: 800; letter-spacing: -1.5px;
+      color: #f0f6ff; margin-bottom: 16px; line-height: 1.1;
     }
-    .section-sub { font-size: 17px; color: #8ba3c0; max-width: 520px; line-height: 1.7; margin-bottom: 72px; }
+    .section-sub { font-size: 16px; color: #6b7d99; max-width: 520px; line-height: 1.75; margin-bottom: 72px; }
     .steps-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;
     }
     .step-card {
-      background: #0f1629; border: 1px solid #1a2640; border-radius: 16px;
-      padding: 28px 24px; position: relative;
+      background: linear-gradient(145deg, #0d1527, #0a1020); border: 1px solid rgba(26,38,64,0.8); border-radius: 18px;
+      padding: 28px 24px; position: relative; overflow: hidden;
+    }
+    .step-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #2563eb, #6366f1, transparent);
+      opacity: 0.6;
     }
     .step-num {
-      font-size: 11px; font-weight: 700; color: #2563eb; letter-spacing: 0.1em;
-      margin-bottom: 20px;
+      font-size: 10px; font-weight: 800; color: rgba(37,99,235,0.7); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 20px;
     }
-    .step-icon { font-size: 28px; margin-bottom: 16px; }
-    .step-title { font-size: 16px; font-weight: 600; color: #f0f6ff; margin-bottom: 10px; letter-spacing: -0.3px; }
-    .step-desc { font-size: 14px; color: #8ba3c0; line-height: 1.65; }
+    .step-icon { font-size: 26px; margin-bottom: 16px; }
+    .step-title { font-size: 16px; font-weight: 700; color: #e2e8f0; margin-bottom: 10px; letter-spacing: -0.4px; }
+    .step-desc { font-size: 13px; color: #6b7d99; line-height: 1.7; }
     .step-connector {
       position: absolute; top: 44px; right: -15px;
       width: 28px; height: 1px; background: linear-gradient(90deg, #1a2640, transparent);
@@ -204,16 +251,20 @@
     .signal-name { font-weight: 600; color: #f0f6ff; font-size: 14px; }
 
     /* ── PROTOCOLS ── */
-    #protocols { padding: 120px 0; border-top: 1px solid #1a2640; }
-    .pillar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin-top: 60px; }
+    #protocols { padding: 120px 0; border-top: 1px solid rgba(26,38,64,0.6); }
+    .pillar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 60px; }
     .pillar-card {
-      background: #0f1629; border: 1px solid #1a2640; border-radius: 14px;
-      padding: 24px 20px;
+      background: linear-gradient(160deg, #0d1527, #0a1020); border: 1px solid rgba(26,38,64,0.8); border-radius: 16px;
+      padding: 24px 20px; position: relative; overflow: hidden;
     }
-    .pillar-icon { font-size: 24px; margin-bottom: 14px; }
-    .pillar-name { font-size: 13px; font-weight: 700; color: #f0f6ff; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
-    .pillar-desc { font-size: 13px; color: #8ba3c0; line-height: 1.65; }
-    .pillar-accent { display: inline-block; width: 28px; height: 2px; border-radius: 1px; margin-bottom: 14px; }
+    .pillar-card::after {
+      content: ''; position: absolute; bottom: -30px; right: -30px;
+      width: 80px; height: 80px; border-radius: 50%; opacity: 0.08; filter: blur(20px);
+    }
+    .pillar-icon { font-size: 22px; margin-bottom: 14px; }
+    .pillar-name { font-size: 11px; font-weight: 800; color: #e2e8f0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .pillar-desc { font-size: 12px; color: #4b6280; line-height: 1.7; }
+    .pillar-accent { display: inline-block; width: 24px; height: 2px; border-radius: 1px; margin-bottom: 16px; }
 
     /* ── MISSION ── */
     #mission { padding: 120px 0; border-top: 1px solid #1a2640; background: #060b18; }
@@ -274,6 +325,173 @@
     /* ── DIVIDERS / HELPERS ── */
     .divider { width: 48px; height: 2px; background: linear-gradient(90deg, #2563eb, #6366f1); border-radius: 1px; margin: 24px 0 36px; }
 
+    /* ── MOTION SITES AESTHETIC ── */
+
+    /* Animated mesh background */
+    .mesh-bg {
+      position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+    }
+    .mesh-bg::before {
+      content: '';
+      position: absolute; inset: -50%;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 30%, rgba(37,99,235,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 45% at 80% 70%, rgba(99,102,241,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 60% 10%, rgba(34,211,238,0.04) 0%, transparent 60%);
+      animation: meshShift 18s ease-in-out infinite alternate;
+    }
+    .mesh-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+    }
+    @keyframes meshShift {
+      0%   { transform: translate(0,0) rotate(0deg) scale(1); }
+      33%  { transform: translate(3%,2%) rotate(1deg) scale(1.04); }
+      66%  { transform: translate(-2%,3%) rotate(-1deg) scale(0.97); }
+      100% { transform: translate(2%,-2%) rotate(0.5deg) scale(1.02); }
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; z-index: -1; animation: orbFloat linear infinite;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(37,99,235,0.06); top: -100px; left: -100px; animation-duration: 25s; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(99,102,241,0.07); bottom: -80px; right: -80px; animation-duration: 30s; animation-direction: reverse; }
+    .orb-3 { width: 300px; height: 300px; background: rgba(34,211,238,0.04); top: 40%; right: 10%; animation-duration: 20s; }
+    @keyframes orbFloat {
+      0%   { transform: translate(0,0) scale(1); }
+      25%  { transform: translate(30px,-40px) scale(1.05); }
+      50%  { transform: translate(-20px,30px) scale(0.95); }
+      75%  { transform: translate(40px,20px) scale(1.08); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    /* Cursor glow */
+    .cursor-glow {
+      position: fixed; width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%);
+      pointer-events: none; z-index: 9999; transform: translate(-50%,-50%);
+      transition: opacity 0.3s; mix-blend-mode: screen;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Glassmorphism upgrade for cards */
+    .step-card, .mini-card, .pillar-card, .ref-item, .ref-area, .state-card {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.3s, box-shadow 0.3s;
+    }
+    .step-card:hover {
+      border-color: rgba(99,102,241,0.4);
+      box-shadow: 0 0 32px rgba(99,102,241,0.12), 0 0 0 1px rgba(99,102,241,0.15);
+      transform: translateY(-4px);
+    }
+    .pillar-card:hover {
+      border-color: rgba(37,99,235,0.4);
+      box-shadow: 0 0 28px rgba(37,99,235,0.12);
+      transform: translateY(-3px);
+    }
+    .ref-area:hover {
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 0 24px rgba(99,102,241,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Animated gradient border on hero badge */
+    .hero-badge {
+      background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(99,102,241,0.12));
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+    }
+    .hero-badge::before {
+      content: '';
+      position: absolute; inset: -1px; border-radius: 99px; z-index: -1;
+      background: linear-gradient(135deg, rgba(37,99,235,0.5), rgba(99,102,241,0.5), rgba(34,211,238,0.3));
+      animation: borderRotate 4s linear infinite;
+    }
+    @keyframes borderRotate {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    /* Hero title gradient shimmer */
+    .hero-h1 em {
+      background: linear-gradient(135deg, #6366f1, #38bdf8, #6366f1);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.25; transform: scale(0.8); }
+      50%       { opacity: 1;    transform: scale(1.1); }
+    }
+
+    /* Glowing primary button */
+    .btn-primary {
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .btn-primary:hover::after { opacity: 1; }
+
+    /* Animated section dividers */
+    .divider {
+      background: linear-gradient(90deg, #2563eb, #6366f1, #38bdf8);
+      background-size: 200% auto;
+      animation: shimmer 3s linear infinite;
+    }
+
+    /* Nav scroll effect */
+    .site-nav.scrolled {
+      background: rgba(3,7,18,0.97);
+      box-shadow: 0 1px 40px rgba(0,0,0,0.5);
+    }
+
+    /* Stat counter glow */
+    .stat-num {
+      background: linear-gradient(135deg, #f0f6ff, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Phone frame glow pulse */
+    .phone-frame {
+      animation: phoneGlow 6s ease-in-out infinite;
+    }
+    @keyframes phoneGlow {
+      0%, 100% { box-shadow: 0 0 0 1px #1a2640, 0 0 0 9px #06080f, 0 0 0 10px #1a2640, 0 60px 120px rgba(0,0,0,0.95), 0 0 80px rgba(29,78,216,0.1); }
+      50%       { box-shadow: 0 0 0 1px #1a2640, 0 0 0 9px #06080f, 0 0 0 10px #1a2640, 0 60px 120px rgba(0,0,0,0.95), 0 0 120px rgba(99,102,241,0.2); }
+    }
+
     /* ── ANIMATIONS ── */
     @keyframes socialPop {
       0%   { opacity: 0; transform: translateY(8px) scale(0.97); }
@@ -295,6 +513,119 @@
     }
     .sana-loading-orb { animation: sanaGlow 1.4s ease-in-out infinite, sanaOrb 1.4s ease-in-out infinite; }
 
+    /* ── NOISE TEXTURE ── */
+    .noise::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      background-size: 200px 200px; opacity: 0.35; mix-blend-mode: overlay;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      border-top: 1px solid rgba(26,38,64,0.6); border-bottom: 1px solid rgba(26,38,64,0.6);
+      background: rgba(6,8,15,0.8); backdrop-filter: blur(20px); padding: 0;
+    }
+    .stats-bar-inner {
+      max-width: 1160px; margin: 0 auto; padding: 0 48px;
+      display: grid; grid-template-columns: repeat(5, 1fr);
+    }
+    .stat-item {
+      padding: 28px 24px; border-right: 1px solid rgba(26,38,64,0.5);
+      text-align: center;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 36px; font-weight: 800; letter-spacing: -1.5px; line-height: 1;
+      background: linear-gradient(135deg, #f0f6ff, #38bdf8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 6px;
+    }
+    .stat-desc { font-size: 12px; color: #4b6280; font-weight: 500; letter-spacing: 0.01em; }
+
+    /* ── BENTO GRID ── */
+    .bento-section { padding: 120px 0; border-top: 1px solid rgba(26,38,64,0.6); }
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 14px;
+      margin-top: 64px;
+    }
+    .bento-card {
+      background: #0a1020; border: 1px solid rgba(26,38,64,0.8); border-radius: 20px;
+      padding: 28px; overflow: hidden; position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .bento-card:hover { border-color: rgba(99,102,241,0.35); transform: translateY(-3px); }
+    .bento-card.span-5 { grid-column: span 5; }
+    .bento-card.span-7 { grid-column: span 7; }
+    .bento-card.span-4 { grid-column: span 4; }
+    .bento-card.span-8 { grid-column: span 8; }
+    .bento-card.span-6 { grid-column: span 6; }
+    .bento-card-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #2563eb; margin-bottom: 12px;
+    }
+    .bento-card-title { font-size: 20px; font-weight: 700; color: #f0f6ff; letter-spacing: -0.4px; margin-bottom: 10px; }
+    .bento-card-body { font-size: 13px; color: #6b7d99; line-height: 1.7; }
+    .bento-accent-bar { width: 40px; height: 3px; border-radius: 2px; margin-bottom: 18px; }
+    .bento-stat { font-size: 44px; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
+    .bento-glow {
+      position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none;
+    }
+    .bento-list { list-style: none; margin-top: 14px; }
+    .bento-list li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(26,38,64,0.5); font-size: 13px; color: #6b7d99; }
+    .bento-list li:last-child { border-bottom: none; }
+    .bento-list li strong { color: #e2e8f0; font-weight: 600; display: block; font-size: 12px; margin-bottom: 1px; }
+    .bento-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+
+    /* ── COMPARISON TABLE ── */
+    .compare-section { padding: 120px 0; border-top: 1px solid rgba(26,38,64,0.6); background: #040810; }
+    .compare-table { width: 100%; border-collapse: collapse; margin-top: 56px; }
+    .compare-table th, .compare-table td { padding: 14px 20px; text-align: left; border-bottom: 1px solid rgba(26,38,64,0.4); font-size: 14px; }
+    .compare-table thead th { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding-bottom: 16px; border-bottom: 2px solid rgba(26,38,64,0.6); }
+    .compare-table thead th:first-child { color: #4b6280; }
+    .compare-table thead th:nth-child(2) { color: #4b6280; }
+    .compare-table thead th:last-child { color: #a5b4fc; background: rgba(99,102,241,0.06); border-radius: 8px 8px 0 0; }
+    .compare-table tbody td:first-child { color: #6b7d99; font-weight: 500; }
+    .compare-table tbody td:nth-child(2) { color: #3d5478; }
+    .compare-table tbody td:last-child { color: #a5b4fc; font-weight: 600; background: rgba(99,102,241,0.03); }
+    .check-yes { color: #10b981; font-size: 15px; }
+    .check-no  { color: #3d5478; font-size: 15px; }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      padding: 120px 0; position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(37,99,235,0.12) 0%, transparent 70%), #030712;
+      border-top: 1px solid rgba(26,38,64,0.6);
+    }
+    .cta-inner { max-width: 760px; margin: 0 auto; text-align: center; padding: 0 48px; }
+    .cta-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: #a5b4fc; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25); border-radius: 99px; padding: 6px 16px; margin-bottom: 28px; }
+    .cta-h2 { font-size: clamp(32px, 4vw, 54px); font-weight: 800; letter-spacing: -1.5px; color: #f0f6ff; line-height: 1.1; margin-bottom: 20px; }
+    .cta-h2 em { font-style: normal; background: linear-gradient(135deg, #6366f1, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .cta-p { font-size: 17px; color: #6b7d99; line-height: 1.7; margin-bottom: 40px; }
+
+    /* ── TESTIMONIALS ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 64px; }
+    .testi-card {
+      background: #0a1020; border: 1px solid rgba(26,38,64,0.8); border-radius: 16px;
+      padding: 24px; position: relative;
+    }
+    .testi-stars { color: #f59e0b; font-size: 12px; letter-spacing: 2px; margin-bottom: 14px; }
+    .testi-body { font-size: 14px; color: #8ba3c0; line-height: 1.7; margin-bottom: 18px; }
+    .testi-body em { color: #a5b4fc; font-style: normal; font-weight: 600; }
+    .testi-author { display: flex; align-items: center; gap: 10px; }
+    .testi-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .testi-name { font-size: 13px; font-weight: 700; color: #c4d4e8; }
+    .testi-role { font-size: 11px; color: #4b6280; margin-top: 1px; }
+
+    /* ── GLOW LINES ── */
+    .glow-line-top {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 300px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.6), transparent);
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .site-nav { padding: 0 24px; }
@@ -310,6 +641,9 @@
       .container { padding: 0 24px; }
       .hero-inner { padding: 80px 24px 60px; }
       #how-it-works, #protocols, #references, .content-section, #mission { padding: 80px 0; }
+      .stats-bar-inner { grid-template-columns: repeat(3, 1fr); }
+      .bento-card.span-5, .bento-card.span-7, .bento-card.span-4, .bento-card.span-8, .bento-card.span-6 { grid-column: span 12; }
+      .testi-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 540px) {
       .steps-grid { grid-template-columns: 1fr; }
@@ -318,10 +652,18 @@
       .ref-area-grid { grid-template-columns: 1fr; }
       .edu-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
+      .stats-bar-inner { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
+
+  <!-- Motion background layers -->
+  <div class="mesh-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
 
   <!-- ── STICKY NAV ── -->
   <nav class="site-nav">
@@ -331,10 +673,10 @@
     </a>
     <ul class="nav-links">
       <li><a href="#how-it-works">How it Works</a></li>
-      <li><a href="#the-recipe">The Recipe</a></li>
+      <li><a href="#features">Features</a></li>
       <li><a href="#protocols">Protocols</a></li>
       <li><a href="#mission">Mission</a></li>
-      <li><a href="#app" class="nav-cta">Try the App</a></li>
+      <li><a href="#app" class="nav-cta">Try the App →</a></li>
     </ul>
   </nav>
 
@@ -342,15 +684,20 @@
   <section class="hero" id="app">
     <div class="hero-inner">
       <div class="hero-text">
-        <div class="hero-badge"><span>✦</span> Daily performance intelligence</div>
-        <h1 class="hero-h1">Your body,<br><em>decoded</em><br>every morning.</h1>
-        <p class="hero-p">Sana reads your energy, sleep, stress, and soreness then builds a precise — Training, Nutrition, Supplement, Sleep, and Social recovery plan that fits exactly how you feel today.</p>
-        <div class="hero-btns">
-          <a href="#how-it-works" class="btn-primary">See how it works →</a>
-          <a href="#the-recipe" class="btn-ghost">The science</a>
+        <div class="hero-badge reveal"><span>✦</span> Daily performance intelligence · Free during beta</div>
+        <h1 class="hero-h1 reveal reveal-delay-1">Your body,<br><em>decoded</em><br>every morning.</h1>
+        <p class="hero-p reveal reveal-delay-2">Six questions. Five pillars. One personalised day — built around what your body is actually doing right now, not a static plan that ignores how you slept.</p>
+        <div class="hero-btns reveal reveal-delay-3">
+          <a href="#app" class="btn-primary" onclick="document.getElementById('root').scrollIntoView({behavior:'smooth'});return false;">Build my plan →</a>
+          <a href="#how-it-works" class="btn-ghost">See how it works</a>
+        </div>
+        <div class="hero-stats reveal reveal-delay-4">
+          <div class="hero-stat-pill"><span>🧬</span> <strong>Peer-reviewed</strong> science</div>
+          <div class="hero-stat-pill"><span>⚡</span> Adapts <strong>daily</strong></div>
+          <div class="hero-stat-pill"><span>🎯</span> <strong>100%</strong> personalised</div>
         </div>
       </div>
-      <div class="hero-phone">
+      <div class="hero-phone reveal reveal-delay-2">
         <div class="phone-frame">
           <div class="phone-notch">
             <div class="notch-speaker"></div>
@@ -367,35 +714,61 @@
     </div>
   </section>
 
+  <!-- ── STATS BAR ── -->
+  <div class="stats-bar">
+    <div class="stats-bar-inner">
+      <div class="stat-item reveal">
+        <div class="stat-num">5</div>
+        <div class="stat-desc">Plan pillars</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-num">6</div>
+        <div class="stat-desc">Daily bio-signals</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-num">4</div>
+        <div class="stat-desc">Recovery states</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-num">50+</div>
+        <div class="stat-desc">Exercise variations</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-4">
+        <div class="stat-num">∞</div>
+        <div class="stat-desc">Daily variations</div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── HOW IT WORKS ── -->
   <section id="how-it-works">
     <div class="container">
-      <div class="section-label">How it Works</div>
-      <h2 class="section-title">Four steps. One personalized day.</h2>
-      <p class="section-sub">No generic plans. Sana adapts in real time to your biology — not a fixed program.</p>
+      <div class="section-label reveal">How it Works</div>
+      <h2 class="section-title reveal reveal-delay-1">Four steps. One personalized day.</h2>
+      <p class="section-sub reveal reveal-delay-2">No generic plans. Sana adapts in real time to your biology — not a fixed program.</p>
       <div class="steps-grid">
-        <div class="step-card">
+        <div class="step-card reveal reveal-delay-1">
           <div class="step-num">STEP 01</div>
           <div class="step-icon">📝</div>
           <div class="step-title">Check In</div>
           <div class="step-desc">Answer 6 quick questions each morning: energy, sleep, stress, soreness, mood, and last night's social context.</div>
           <div class="step-connector"></div>
         </div>
-        <div class="step-card">
+        <div class="step-card reveal reveal-delay-2">
           <div class="step-num">STEP 02</div>
           <div class="step-icon">🧠</div>
           <div class="step-title">Sana Analyzes</div>
           <div class="step-desc">Sana runs your answers through a physiology-backed decision tree to classify your body into one of four recovery states.</div>
           <div class="step-connector"></div>
         </div>
-        <div class="step-card">
+        <div class="step-card reveal reveal-delay-3">
           <div class="step-num">STEP 03</div>
           <div class="step-icon">📋</div>
           <div class="step-title">Plan Updates</div>
           <div class="step-desc">Your personalized daily plan appears across five pillars: Training, Nutrition, Supplements, Sleep, and Social recovery.</div>
           <div class="step-connector"></div>
         </div>
-        <div class="step-card">
+        <div class="step-card reveal reveal-delay-4">
           <div class="step-num">STEP 04</div>
           <div class="step-icon">✅</div>
           <div class="step-title">Track &amp; Complete</div>
@@ -427,6 +800,171 @@
           <div class="mini-card-desc">Every recommendation is grounded in peer-reviewed science. Browse the full reference list.</div>
           <span class="mini-card-link">View all citations →</span>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BENTO FEATURE GRID ── -->
+  <section class="bento-section" id="features">
+    <div class="container">
+      <div class="section-label reveal">What you get</div>
+      <h2 class="section-title reveal reveal-delay-1">Everything your body needs.<br>Nothing it doesn't.</h2>
+      <div class="bento-grid">
+
+        <!-- Wide card: adaptive plan -->
+        <div class="bento-card span-7 reveal">
+          <div class="bento-glow" style="width:280px;height:280px;background:rgba(37,99,235,0.08);top:-60px;right:-60px;"></div>
+          <div class="bento-accent-bar" style="background:linear-gradient(90deg,#2563eb,#6366f1);"></div>
+          <div class="bento-card-label">Core Engine</div>
+          <div class="bento-card-title">A plan that knows how you slept</div>
+          <div class="bento-card-body">Most apps give you the same workout on Monday whether you slept 5 hours or 9. Sana reads your six morning signals and rebuilds your entire day — training load, calories, supplements, sleep window — before you leave your bed.</div>
+          <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:99px;padding:5px 14px;font-size:11px;color:#38bdf8;font-weight:600;">Training</div>
+            <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:99px;padding:5px 14px;font-size:11px;color:#a5b4fc;font-weight:600;">Nutrition</div>
+            <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);border-radius:99px;padding:5px 14px;font-size:11px;color:#2dd4bf;font-weight:600;">Supplements</div>
+            <div style="background:rgba(129,140,248,0.08);border:1px solid rgba(129,140,248,0.2);border-radius:99px;padding:5px 14px;font-size:11px;color:#818cf8;font-weight:600;">Sleep</div>
+            <div style="background:rgba(244,114,182,0.08);border:1px solid rgba(244,114,182,0.2);border-radius:99px;padding:5px 14px;font-size:11px;color:#f472b6;font-weight:600;">Social</div>
+          </div>
+        </div>
+
+        <!-- Tall card: recovery states -->
+        <div class="bento-card span-5 reveal reveal-delay-1">
+          <div class="bento-glow" style="width:200px;height:200px;background:rgba(99,102,241,0.07);bottom:-40px;left:-40px;"></div>
+          <div class="bento-accent-bar" style="background:linear-gradient(90deg,#6366f1,#a78bfa);"></div>
+          <div class="bento-card-label">Daily States</div>
+          <div class="bento-card-title">Four states. One honest answer.</div>
+          <ul class="bento-list">
+            <li><div class="bento-dot" style="background:#10b981;"></div><div><strong>Green — full output</strong>Energy high, sleep rested, soreness low. Max intensity, performance fueling, full stack.</div></li>
+            <li><div class="bento-dot" style="background:#38bdf8;"></div><div><strong>Standard — normal day</strong>No extreme flags. Balanced training, maintenance nutrition.</div></li>
+            <li><div class="bento-dot" style="background:#f59e0b;"></div><div><strong>Light — recovery mode</strong>Low energy or poor sleep. Volume drops, focus shifts to repair.</div></li>
+            <li><div class="bento-dot" style="background:#ef4444;"></div><div><strong>Rest — full reset</strong>Low recovery and high stress. Mobility only. Anti-inflammatory priority.</div></li>
+          </ul>
+        </div>
+
+        <!-- Stat card: science -->
+        <div class="bento-card span-4 reveal reveal-delay-2" style="background:linear-gradient(135deg,rgba(37,99,235,0.08),rgba(99,102,241,0.06));">
+          <div class="bento-card-label">Evidence-backed</div>
+          <div class="bento-stat" style="background:linear-gradient(135deg,#f0f6ff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">25+</div>
+          <div style="font-size:14px;font-weight:600;color:#a5b4fc;margin-bottom:8px;">peer-reviewed studies</div>
+          <div class="bento-card-body">Every recommendation — calorie math, supplement doses, training volume, sleep windows — maps to published research. No guesswork, no trends.</div>
+        </div>
+
+        <!-- Stat card: personalization -->
+        <div class="bento-card span-4 reveal reveal-delay-3" style="background:linear-gradient(135deg,rgba(16,185,129,0.06),rgba(45,212,191,0.04));">
+          <div class="bento-card-label">Precision</div>
+          <div class="bento-stat" style="background:linear-gradient(135deg,#10b981,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">15+</div>
+          <div style="font-size:14px;font-weight:600;color:#2dd4bf;margin-bottom:8px;">personalisation inputs</div>
+          <div class="bento-card-body">Body type, goal, diet, activity, equipment, training level, and life context — all fed into a single cohesive plan.</div>
+        </div>
+
+        <!-- Stat card: speed -->
+        <div class="bento-card span-4 reveal reveal-delay-4" style="background:linear-gradient(135deg,rgba(245,158,11,0.06),rgba(251,191,36,0.03));">
+          <div class="bento-card-label">Efficiency</div>
+          <div class="bento-stat" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">60s</div>
+          <div style="font-size:14px;font-weight:600;color:#fbbf24;margin-bottom:8px;">morning check-in</div>
+          <div class="bento-card-body">Six questions. That's all. Your full daily plan — training, food, supplements, sleep — updates instantly.</div>
+        </div>
+
+        <!-- Wide card: wearable integration -->
+        <div class="bento-card span-8 reveal">
+          <div class="bento-glow" style="width:320px;height:180px;background:rgba(244,114,182,0.05);bottom:-30px;right:-30px;"></div>
+          <div class="bento-accent-bar" style="background:linear-gradient(90deg,#f472b6,#a78bfa);"></div>
+          <div class="bento-card-label">Wearable Integration</div>
+          <div class="bento-card-title">Works with your data — or without it</div>
+          <div class="bento-card-body">Connect Apple Watch, Oura Ring, Whoop, Garmin, Google Fit, or Fitbit for objective HRV and readiness data as a second layer of truth. Or just use the check-in — it works great on its own.</div>
+          <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;align-items:center;">
+            <span style="font-size:18px;" title="Apple Watch">⌚</span>
+            <span style="font-size:18px;" title="Oura">💍</span>
+            <span style="font-size:18px;" title="Whoop">📿</span>
+            <span style="font-size:18px;" title="Garmin">🟢</span>
+            <span style="font-size:18px;" title="Fitbit">🔶</span>
+            <span style="font-size:11px;color:#4b6280;margin-left:4px;">+ no device? Works just as well with check-in only</span>
+          </div>
+        </div>
+
+        <!-- Narrow card: download/email plan -->
+        <div class="bento-card span-4 reveal reveal-delay-1" style="background:linear-gradient(135deg,rgba(99,102,241,0.06),rgba(129,140,248,0.04));">
+          <div class="bento-accent-bar" style="background:linear-gradient(90deg,#818cf8,#6366f1);"></div>
+          <div class="bento-card-label">Export</div>
+          <div class="bento-card-title">Save your plan</div>
+          <div class="bento-card-body">Get your personalised 1-week or 2-week plan as a formatted PDF — exercises, sets, reps, nutrition targets, and supplement timing for every day.</div>
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <div style="font-size:11px;font-weight:600;color:#818cf8;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);border-radius:99px;padding:4px 12px;">PDF</div>
+            <div style="font-size:11px;font-weight:600;color:#818cf8;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);border-radius:99px;padding:4px 12px;">Email</div>
+            <div style="font-size:11px;font-weight:600;color:#818cf8;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);border-radius:99px;padding:4px 12px;">Copy</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VS GENERIC PLAN ── -->
+  <section class="compare-section">
+    <div class="container">
+      <div class="section-label reveal">Why Sana</div>
+      <h2 class="section-title reveal reveal-delay-1">Every other plan ignores how you feel today.</h2>
+      <p class="section-sub reveal reveal-delay-2">Static programs are built for an average person on an average day. Sana is built around you, right now.</p>
+      <table class="compare-table reveal reveal-delay-2">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Generic app / program</th>
+            <th>✦ Sana</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Adjusts to yesterday's sleep</td><td><span class="check-no">✕</span> Fixed schedule</td><td><span class="check-yes">✓</span> Rebuilds plan daily</td></tr>
+          <tr><td>Responds to your stress level</td><td><span class="check-no">✕</span> No awareness</td><td><span class="check-yes">✓</span> Stress flag reduces load</td></tr>
+          <tr><td>Calorie target updates with recovery state</td><td><span class="check-no">✕</span> Static TDEE</td><td><span class="check-yes">✓</span> Shifts ±10–15% by state</td></tr>
+          <tr><td>Supplements timed to your signals</td><td><span class="check-no">✕</span> Generic list</td><td><span class="check-yes">✓</span> Ashwagandha on stress days, creatine on training days</td></tr>
+          <tr><td>Social/alcohol recovery protocol</td><td><span class="check-no">✕</span> Ignored entirely</td><td><span class="check-yes">✓</span> Social overlay with hydration + liver support</td></tr>
+          <tr><td>Accounts for your body type and goal</td><td><span class="check-no">✗</span> One-size plan</td><td><span class="check-yes">✓</span> ectomorph/meso/endo + 6 goals</td></tr>
+          <tr><td>Downloadable weekly plan with exercises</td><td><span class="check-no">✗</span> Pay to export</td><td><span class="check-yes">✓</span> Free PDF · 1 or 2 weeks</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section style="padding:120px 0;border-top:1px solid rgba(26,38,64,0.6);background:#030712;">
+    <div class="container">
+      <div class="section-label reveal">Early Users</div>
+      <h2 class="section-title reveal reveal-delay-1">Built with people, not for them.</h2>
+      <div class="testi-grid">
+        <div class="testi-card reveal reveal-delay-1">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-body">"I've tried three different fitness apps. Sana is the first one that actually felt different on a Monday after a rough Sunday — it <em>knew</em> to pull back the intensity."</div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:rgba(37,99,235,0.15);">👨</div>
+            <div>
+              <div class="testi-name">Marcus R.</div>
+              <div class="testi-role">Software engineer · Intermediate lifter</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal reveal-delay-2">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-body">"The body type science actually explains why bulking never worked for me. I'm an endomorph and now I understand exactly what Sana is adjusting — and <em>why</em>."</div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:rgba(244,114,182,0.15);">👩</div>
+            <div>
+              <div class="testi-name">Priya K.</div>
+              <div class="testi-role">Business analyst · Beginner → Intermediate</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal reveal-delay-3">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-body">"The social recovery protocol is weirdly specific and completely accurate. NAC + hydration after a Friday night is <em>not</em> something my last fitness app ever thought about."</div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:rgba(16,185,129,0.15);">🧑</div>
+            <div>
+              <div class="testi-name">Jordan W.</div>
+              <div class="testi-role">Grad student · Mixed training</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -692,6 +1230,19 @@
             <span>Longevity</span><span>Habit</span>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA SECTION ── -->
+  <section class="cta-section">
+    <div class="glow-line-top"></div>
+    <div class="cta-inner">
+      <div class="cta-badge reveal">✦ Free during beta</div>
+      <h2 class="cta-h2 reveal reveal-delay-1">Ready to know what<br>your body <em>actually</em> needs today?</h2>
+      <p class="cta-p reveal reveal-delay-2">No subscription. No equipment required. Six questions. Your full personalised plan in under a minute.</p>
+      <div class="reveal reveal-delay-3">
+        <a href="#app" class="btn-primary" style="font-size:16px;padding:16px 36px;" onclick="document.getElementById('root').scrollIntoView({behavior:'smooth'});return false;">Build my plan — it's free →</a>
       </div>
     </div>
   </section>
@@ -1616,6 +2167,230 @@
       );
     }
 
+    /* ─── WEEKLY PLAN GENERATOR ──────────────────────────────────── */
+    function generateWeeklyPlan(form, profile, weeks) {
+      const daysPerWeek = Math.min(parseInt(form.daysPerWeek)||3, 6);
+      const acts  = form.activityType || ['lifting'];
+      const eq    = form.equipment    || ['dumbbells'];
+      const level = form.level        || 'intermediate';
+      const hasBarbell  = eq.includes('barbell');
+      const hasCables   = eq.includes('cables');
+      const hasMachines = eq.includes('machines');
+      const hasLifting  = acts.includes('lifting') || acts.includes('mixed');
+      const isYoga      = (acts.includes('yoga') || acts.includes('pilates')) && !hasLifting;
+      const isCardio    = (acts.includes('cardio') || acts.includes('hiit')) && !hasLifting && !isYoga;
+      const lvlAdj = {beginner:-1,intermediate:0,advanced:1,elite:2}[level]||0;
+      const adj = n => Math.max(1, n+lvlAdj);
+
+      const scheduleMap = {1:[1],2:[1,4],3:[1,3,5],4:[1,2,4,5],5:[1,2,3,5,6],6:[1,2,3,4,5,6]};
+      const activeDays  = new Set(scheduleMap[daysPerWeek] || scheduleMap[3]);
+      const DAY_NAMES   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+      const sessionTypes = hasLifting ? ['Push','Pull','Legs']
+        : isCardio ? ['Steady-State','Intervals','Cross-train']
+        : isYoga   ? ['Flow','Strength','Yin']
+        : ['Push','Pull','Legs'];
+
+      const exercises = {
+        'Push': [
+          {name:hasBarbell?'Flat Bench Press':'DB Bench Press',          sets:`${adj(4)}`, reps:'8–10',   rest:'2 min', note:'Control the descent — 3s down'},
+          {name:hasBarbell?'Overhead Press':'DB Shoulder Press',         sets:`${adj(3)}`, reps:'10–12',  rest:'90s',  note:'Strict form, no leg drive'},
+          {name:'Incline DB Press',                                      sets:`${adj(3)}`, reps:'10',     rest:'90s',  note:'Upper chest priority'},
+          {name:hasCables?'Cable Fly':'DB Fly',                          sets:`${adj(3)}`, reps:'12–15',  rest:'60s',  note:'Stretch at bottom, squeeze at top'},
+          {name:hasCables?'Cable Tricep Pushdown':'DB Overhead Ext',     sets:`${adj(3)}`, reps:'12',     rest:'60s',  note:'Lock the elbow, triceps only'},
+          {name:'Lateral Raise',                                         sets:`${adj(3)}`, reps:'15–20',  rest:'45s',  note:'Pinky leads, slight lean forward'},
+        ],
+        'Pull': [
+          {name:hasBarbell?'Barbell Row':'DB Row',                       sets:`${adj(4)}`, reps:'8–10',   rest:'2 min', note:'Drive elbows, not hands'},
+          {name:hasMachines?'Lat Pulldown':'Pull-Up',                    sets:`${adj(3)}`, reps:hasMachines?'10–12':'6–8', rest:'90s', note:'Full stretch at top'},
+          {name:hasCables?'Cable Seated Row':'Chest-Supported Row',      sets:`${adj(3)}`, reps:'10',     rest:'90s',  note:'No body swing, mid-back controls'},
+          {name:hasCables?'Face Pull':'Rear Delt Fly',                   sets:`${adj(3)}`, reps:'15',     rest:'60s',  note:'Shoulder health non-negotiable'},
+          {name:hasBarbell?'Barbell Curl':'DB Curl',                     sets:`${adj(3)}`, reps:'10–12',  rest:'60s',  note:'No swing, supinate at top'},
+          {name:'Hammer Curl',                                           sets:`${adj(3)}`, reps:'12',     rest:'45s',  note:'Neutral grip for brachialis thickness'},
+        ],
+        'Legs': [
+          {name:hasBarbell?'Back Squat':'Goblet Squat',                  sets:`${adj(4)}`, reps:'8–10',   rest:'2 min', note:'Brace hard, knees track toes'},
+          {name:hasBarbell?'Romanian Deadlift':'DB Romanian Deadlift',   sets:`${adj(3)}`, reps:'10',     rest:'90s',  note:'Hinge at hip, stretch the hamstring'},
+          {name:hasMachines?'Leg Press':'Bulgarian Split Squat',         sets:`${adj(3)}`, reps:'10–12',  rest:'90s',  note:'Unilateral work — reveals imbalances'},
+          {name:hasMachines?'Leg Curl':'Nordic Curl',                    sets:`${adj(3)}`, reps:'10',     rest:'90s',  note:'Slow eccentric — hamstring insurance'},
+          {name:'DB Walking Lunge',                                      sets:`${adj(3)}`, reps:'12 ea',  rest:'60s',  note:'Torso upright, knee doesn\'t track past toe'},
+          {name:'Calf Raise',                                            sets:`${adj(4)}`, reps:'20',     rest:'45s',  note:'Heel below platform, full stretch'},
+        ],
+        'Steady-State': [
+          {name:'Zone 2 run/bike/row',                                   sets:'1',         reps:'35 min', rest:'—',    note:'Conversational pace — nose breathing'},
+          {name:'Stride repeats',                                        sets:`${adj(4)}`, reps:'100m',   rest:'60s',  note:'80% effort, neuromuscular priming'},
+          {name:'Hip flexor stretch',                                    sets:'2',         reps:'45s ea', rest:'—',    note:'Priority after running volume'},
+          {name:'Hamstring stretch',                                     sets:'2',         reps:'45s ea', rest:'—',    note:'Maintain tissue health'},
+        ],
+        'Intervals': [
+          {name:'Warm-up jog',                                           sets:'1',         reps:'5 min',  rest:'—',    note:'Gradually build to threshold'},
+          {name:'HIIT (30s on / 30s off)',                               sets:`${adj(6)}`, reps:'rounds', rest:'2 min',note:'All-out effort every interval'},
+          {name:'Box jumps',                                             sets:`${adj(3)}`, reps:'8',      rest:'60s',  note:'Explosive power, land softly'},
+          {name:'Cool-down walk',                                        sets:'1',         reps:'5 min',  rest:'—',    note:'Keep moving, don\'t stop cold'},
+        ],
+        'Cross-train': [
+          {name:'Rowing ergometer',                                      sets:`${adj(3)}`, reps:'500m',   rest:'90s',  note:'Drive with legs first, not arms'},
+          {name:'Assault bike',                                          sets:`${adj(3)}`, reps:'30s max',rest:'90s',  note:'All-out effort per bout'},
+          {name:'Kettlebell swing',                                      sets:`${adj(3)}`, reps:'20',     rest:'60s',  note:'Hip drive, posterior chain power'},
+          {name:'Mountain climbers',                                     sets:`${adj(3)}`, reps:'30s',    rest:'45s',  note:'Keep hips level, core tight'},
+        ],
+        'Flow': [
+          {name:'Vinyasa flow',                                          sets:`${adj(3)}`, reps:'10 min', rest:'60s',  note:'Breath leads movement throughout'},
+          {name:'Warrior I + II sequence',                               sets:'3',         reps:'45s ea', rest:'30s',  note:'Strength and stability, hold it'},
+          {name:'Chair pose',                                            sets:`${adj(4)}`, reps:'40s',    rest:'30s',  note:'Quad endurance, this one burns'},
+          {name:'Boat pose',                                             sets:`${adj(3)}`, reps:'30s',    rest:'30s',  note:'Core stability, tall spine'},
+          {name:'Plank to downdog',                                      sets:`${adj(3)}`, reps:'10',     rest:'45s',  note:'Full chain integration'},
+        ],
+        'Strength': [
+          {name:'Chair + pulses',                                        sets:`${adj(4)}`, reps:'45s',    rest:'30s',  note:'Sustained quad fire'},
+          {name:'Warrior III balance',                                   sets:'3',         reps:'30s ea', rest:'30s',  note:'Posterior chain + balance'},
+          {name:'Plank variations',                                      sets:`${adj(3)}`, reps:'45s',    rest:'30s',  note:'Side plank each side, then centre'},
+          {name:'Crow pose',                                             sets:'4',         reps:'15s',    rest:'45s',  note:'Core + wrist strength'},
+          {name:'Chaturanga push-ups',                                   sets:`${adj(3)}`, reps:'10',     rest:'60s',  note:'Slow eccentric, control the descent'},
+        ],
+        'Yin': [
+          {name:'Dragon pose',                                           sets:'2',         reps:'3 min ea',rest:'—',  note:'Deep hip flexor, sink slowly'},
+          {name:'Sleeping swan',                                         sets:'2',         reps:'3 min ea',rest:'—',  note:'Glutes and piriformis, breathe into it'},
+          {name:'Spinal twist',                                          sets:'2',         reps:'2 min ea',rest:'—',  note:'Thoracic decompression'},
+          {name:'Caterpillar',                                           sets:'2',         reps:'2 min',   rest:'—',  note:'Posterior chain, full fold'},
+          {name:'Savasana',                                              sets:'1',         reps:'5 min',   rest:'—',  note:'Non-negotiable — the session doesn\'t end without it'},
+        ],
+        'Rest Day': [
+          {name:'20-min easy walk (outdoors preferred)',                  sets:'1',         reps:'20 min', rest:'—',    note:'Low-level activity maintains blood flow for recovery'},
+          {name:'Hip flexor stretch',                                    sets:'2',         reps:'45s ea', rest:'—',    note:'Priority — most people are tight here'},
+          {name:'Thoracic rotation',                                     sets:'2',         reps:'10 ea',  rest:'30s',  note:'Seated or lying, breathe into each rotation'},
+          {name:'Foam rolling (quads, IT band, lats)',                   sets:'1',         reps:'10 min', rest:'—',    note:'Target areas of soreness from training days'},
+        ],
+      };
+
+      const isLowCarb = form.dietStyle === 'lowcarb';
+      const carbRatio = isLowCarb ? 0.12 : 0.45;
+      const fatRatio  = isLowCarb ? 0.48 : 0.27;
+      const trainNutr = {
+        cal:   profile.cal,
+        prot:  profile.prot,
+        carbs: Math.round((profile.cal * carbRatio) / 4),
+        fat:   Math.round((profile.cal * fatRatio)  / 9),
+      };
+      const restCal = Math.round(profile.cal * 0.85);
+      const restNutr = {
+        cal:   restCal,
+        prot:  profile.prot,
+        carbs: Math.round((restCal * Math.max(0.08, carbRatio - 0.05)) / 4),
+        fat:   Math.round((restCal * fatRatio) / 9),
+      };
+
+      const highStress = form.lifeContext === 'demanding' || form.lifeContext === 'transition';
+      const trainSupps = [
+        'Creatine monohydrate 5g — pre-workout with water',
+        'Vitamin D3 2,000 IU — with main meal',
+        'Magnesium glycinate 400mg — 30 min before bed',
+        highStress ? 'Ashwagandha KSM-66 600mg — morning with food' : null,
+      ].filter(Boolean);
+      const restSupps = [
+        'Vitamin D3 2,000 IU — with main meal',
+        'Magnesium glycinate 400mg — 30 min before bed',
+        highStress ? 'Ashwagandha KSM-66 600mg — morning with food' : null,
+      ].filter(Boolean);
+
+      const plan = [];
+      let sessionIdx = 0;
+      for (let w = 0; w < weeks; w++) {
+        for (let d = 0; d < 7; d++) {
+          const isTrain = activeDays.has(d);
+          const type    = isTrain ? sessionTypes[sessionIdx % sessionTypes.length] : 'Rest Day';
+          if (isTrain) sessionIdx++;
+          plan.push({
+            week: w + 1, day: DAY_NAMES[d], label: type, isRest: !isTrain,
+            exercises: exercises[type] || exercises['Rest Day'],
+            nutrition:  isTrain ? trainNutr : restNutr,
+            supps:      isTrain ? trainSupps : restSupps,
+          });
+        }
+      }
+      return plan;
+    }
+
+    function buildWeekPlanHTML(form, profile, weeks) {
+      const plan = generateWeeklyPlan(form, profile, weeks);
+      const goalLabels = {lean_cut:'Lean & Cut',lean_bulk:'Gain Muscle',bulk:'Bulk Up',maintain:'Maintain',cardio:'Cardio Focus',wellness:'General Wellness'};
+      let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Sana — ${weeks}-Week Plan · ${form.name}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;color:#0f172a;max-width:900px;margin:0 auto;padding:40px 24px}
+  .header{background:linear-gradient(135deg,#1e40af,#4f46e5);color:#fff;padding:36px 40px;border-radius:16px;margin-bottom:32px}
+  .header h1{font-size:28px;font-weight:700;letter-spacing:-0.5px;margin-bottom:4px}
+  .header p{font-size:14px;opacity:0.75;margin-bottom:20px}
+  .stats{display:flex;gap:24px;flex-wrap:wrap}
+  .stat{text-align:center}
+  .stat-v{font-size:22px;font-weight:700;color:#fff}
+  .stat-l{font-size:10px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
+  .week-label{font-size:11px;font-weight:700;color:#2563eb;letter-spacing:0.12em;text-transform:uppercase;margin:28px 0 12px;padding-left:2px}
+  .day-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;margin-bottom:14px;overflow:hidden}
+  .day-header{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f1f5f9}
+  .day-badge{font-size:10px;font-weight:700;color:#fff;background:#2563eb;border-radius:99px;padding:3px 10px;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap}
+  .day-badge.rest{background:#64748b}
+  .day-name{font-size:15px;font-weight:700;color:#0f172a}
+  .day-nutr{margin-left:auto;display:flex;gap:14px;font-size:11px;color:#475569}
+  .nutr-v{font-weight:700;color:#0f172a}
+  .section{padding:12px 18px}
+  .section-label{font-size:10px;font-weight:700;color:#64748b;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;padding:4px 8px;text-align:left;border-bottom:1px solid #f1f5f9}
+  td{font-size:12px;color:#334155;padding:7px 8px;border-bottom:1px solid #f8fafc;vertical-align:top}
+  td.ex-name{font-weight:600;color:#0f172a;width:38%}
+  td.note{color:#64748b;font-style:italic;font-size:11px}
+  .supp-row{font-size:12px;color:#334155;padding:4px 0;border-bottom:1px solid #f8fafc}
+  .supp-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#4f46e5;margin-right:7px;vertical-align:middle}
+  .divider{height:1px;background:#f1f5f9;margin:0 18px}
+  .footer{text-align:center;font-size:11px;color:#94a3b8;margin-top:48px;padding-top:24px;border-top:1px solid #e2e8f0}
+  @media print{body{padding:20px}.day-card{break-inside:avoid}}
+</style></head><body>
+<div class="header">
+  <h1>Sana — ${weeks}-Week Performance Plan</h1>
+  <p>Built for ${form.name} · ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-v">${profile.cal}</div><div class="stat-l">kcal / day</div></div>
+    <div class="stat"><div class="stat-v">${profile.prot}g</div><div class="stat-l">protein / day</div></div>
+    <div class="stat"><div class="stat-v">${profile.dur} min</div><div class="stat-l">session length</div></div>
+    <div class="stat"><div class="stat-v">${form.daysPerWeek}×</div><div class="stat-l">per week</div></div>
+    <div class="stat"><div class="stat-v">${goalLabels[form.goal]||form.goal}</div><div class="stat-l">goal</div></div>
+  </div>
+</div>`;
+
+      let lastWeek = 0;
+      for (const d of plan) {
+        if (d.week !== lastWeek) {
+          if (lastWeek > 0) html += '</div>';
+          html += `<div class="week-label">Week ${d.week}</div><div>`;
+          lastWeek = d.week;
+        }
+        const nutrRow = `<span><span class="nutr-v">${d.nutrition.cal}</span> kcal</span><span><span class="nutr-v">${d.nutrition.prot}g</span> protein</span><span><span class="nutr-v">${d.nutrition.carbs}g</span> carbs</span><span><span class="nutr-v">${d.nutrition.fat}g</span> fat</span>`;
+        html += `<div class="day-card">
+  <div class="day-header">
+    <div class="day-name">${d.day}</div>
+    <div class="day-badge${d.isRest?' rest':''}">${d.label}</div>
+    <div class="day-nutr">${nutrRow}</div>
+  </div>
+  <div class="section">
+    <div class="section-label">Training</div>
+    <table>
+      <thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Note</th></tr></thead>
+      <tbody>${d.exercises.map(e=>`<tr><td class="ex-name">${e.name}</td><td>${e.sets}</td><td>${e.reps}</td><td>${e.rest}</td><td class="note">${e.note||''}</td></tr>`).join('')}</tbody>
+    </table>
+  </div>
+  <div class="divider"></div>
+  <div class="section">
+    <div class="section-label">Supplements</div>
+    ${d.supps.map(s=>`<div class="supp-row"><span class="supp-dot"></span>${s}</div>`).join('')}
+  </div>
+</div>`;
+      }
+      if (lastWeek > 0) html += '</div>';
+      html += `<div class="footer">Generated by Sana · Open the app each morning for your live daily plan based on how you actually feel · © ${new Date().getFullYear()} Sana</div></body></html>`;
+      return html;
+    }
+
     /* ─── COMPUTE PROFILE FROM BODY STATS ────────────────────────── */
     function computeProfile(form) {
       const wKg  = form.weightUnit === "lbs"
@@ -1661,42 +2436,103 @@
       const toggleAct   = v => setForm(p=>({...p,activityType:p.activityType.includes(v)?p.activityType.filter(a=>a!==v):[...p.activityType,v]}));
 
       const BODY_TYPES = [
-        {v:"ectomorph",  icon:"🪶", label:"Naturally Lean",   sub:"Slim frame · fast metabolism · hard to gain weight"},
-        {v:"mesomorph",  icon:"⚡", label:"Athletic Build",    sub:"Balanced frame · gains muscle fairly easily"},
-        {v:"endomorph",  icon:"🏔️", label:"Broader Frame",    sub:"Stockier build · slower metabolism · gains weight easily"},
+        {v:"ectomorph",  icon:"🪶", label:"Naturally Lean",
+          sub:"Slim frame · fast metabolism · hard to gain weight",
+          detail:"Your metabolism burns ~200–300 more kcal at rest than average. Sana adds +175 kcal/day and prioritises calorie-dense meals & compound lifts to drive muscle growth.",
+          badge:"Fast metabolism",  badgeColor:"#38bdf8"},
+        {v:"mesomorph",  icon:"⚡", label:"Athletic Build",
+          sub:"Balanced frame · gains muscle & loses fat with relative ease",
+          detail:"You respond well to both hypertrophy and fat-loss phases. Sana uses balanced macros and standard progressive overload — your body recomps efficiently.",
+          badge:"Responds well to training", badgeColor:"#a78bfa"},
+        {v:"endomorph",  icon:"🏔️", label:"Broader Frame",
+          sub:"Stockier build · insulin-sensitive · gains weight more easily",
+          detail:"Your NEAT (non-exercise calorie burn) runs lower. Sana reduces calories by 175 kcal, raises protein to 2.5g/kg to protect muscle, and emphasises carb timing around workouts.",
+          badge:"Insulin-sensitive",  badgeColor:"#f59e0b"},
       ];
       const GOALS = [
-        {v:"lean_cut",  icon:"🔥", label:"Lean & Cut",       sub:"Lose fat, keep muscle"},
-        {v:"lean_bulk", icon:"💪", label:"Gain Muscle",       sub:"Build size, stay lean"},
-        {v:"bulk",      icon:"🏋️", label:"Bulk Up",          sub:"Max mass & strength"},
-        {v:"maintain",  icon:"⚖️", label:"Maintain",         sub:"Hold weight & performance"},
-        {v:"cardio",    icon:"🏃", label:"Cardio Focus",      sub:"Endurance & cardiovascular"},
-        {v:"wellness",  icon:"🌿", label:"General Wellness",  sub:"Balance & healthy lifestyle"},
+        {v:"lean_cut",  icon:"🔥", label:"Lean & Cut",
+          sub:"Lose fat while preserving lean muscle mass",
+          detail:"–400 kcal/day deficit · protein 2.4g/kg · targets 0.5–1% bodyweight loss/week"},
+        {v:"lean_bulk", icon:"💪", label:"Gain Muscle",
+          sub:"Build size and strength with minimal fat gain",
+          detail:"+200 kcal/day surplus · protein 2.0g/kg · targets ~0.5 lbs lean mass/week"},
+        {v:"bulk",      icon:"🏋️", label:"Bulk Up",
+          sub:"Aggressive mass phase — max size and strength",
+          detail:"+500 kcal/day surplus · protein 1.8g/kg · targets ~1 lb/week total gain"},
+        {v:"maintain",  icon:"⚖️", label:"Maintain",
+          sub:"Hold weight, optimise performance and health markers",
+          detail:"TDEE-matched · protein 1.6g/kg · periodised training for continued adaptation"},
+        {v:"cardio",    icon:"🏃", label:"Cardio Focus",
+          sub:"Endurance, VO₂ max and cardiovascular performance",
+          detail:"Nutrition periodised around sessions · protein 1.4g/kg · aerobic base + intervals"},
+        {v:"wellness",  icon:"🌿", label:"General Wellness",
+          sub:"Balance, longevity, and sustainable healthy habits",
+          detail:"–150 kcal net · protein 1.2g/kg · stress, sleep & recovery given equal weight to training"},
       ];
       const LEVELS = [
-        {v:"beginner",     icon:"🌱", label:"Beginner",     sub:"< 1 year training"},
-        {v:"intermediate", icon:"⚡", label:"Intermediate", sub:"1–3 years"},
-        {v:"advanced",     icon:"🔥", label:"Advanced",     sub:"3–6 years"},
-        {v:"elite",        icon:"🏆", label:"Elite",        sub:"6+ years / compete"},
+        {v:"beginner",     icon:"🌱", label:"Beginner",
+          sub:"Under 1 year of consistent training",
+          detail:"Linear progression every session. 3×8–12 compound movements. Habit-building is the priority — form before load."},
+        {v:"intermediate", icon:"⚡", label:"Intermediate",
+          sub:"1–3 years · consistent progressive training",
+          detail:"Weekly progression. 12–16 sets/muscle/week. Upper/lower or push-pull-legs splits. Volume is the key driver."},
+        {v:"advanced",     icon:"🔥", label:"Advanced",
+          sub:"3–6 years · structured periodised programming",
+          detail:"Monthly progression. 16–22 sets/muscle/week. Planned deloads. Recovery and nutrition are now rate-limiters."},
+        {v:"elite",        icon:"🏆", label:"Elite",
+          sub:"6+ years · competitive or near-maximal development",
+          detail:"Block periodisation, conjugate methods, or sport-specific programming. Every variable optimised. Highly individual."},
       ];
       const TYPES = [
-        {v:"lifting", icon:"🏋️", label:"Lifting",        sub:"Weights & strength"},
-        {v:"cardio",  icon:"🏃", label:"Cardio",          sub:"Run, cycle, row"},
-        {v:"yoga",    icon:"🧘", label:"Yoga / Pilates",  sub:"Flexibility & flow"},
-        {v:"pilates", icon:"🤸", label:"Pilates",         sub:"Core, control & breath"},
-        {v:"hiit",    icon:"💥", label:"HIIT",            sub:"High-intensity intervals"},
-        {v:"mixed",   icon:"🔀", label:"Mixed",           sub:"Variety of everything"},
+        {v:"lifting", icon:"🏋️", label:"Lifting",
+          sub:"Strength & hypertrophy training",
+          detail:"Drives muscle growth, increases metabolic rate, and improves bone density. Sana rotates Push / Pull / Legs each session."},
+        {v:"cardio",  icon:"🏃", label:"Cardio",
+          sub:"Aerobic endurance — run, cycle, row, swim",
+          detail:"Improves VO₂ max, fat oxidation, and heart health. Sana mixes steady-state and interval sessions by day of week."},
+        {v:"yoga",    icon:"🧘", label:"Yoga",
+          sub:"Mobility, breathwork and mind-body connection",
+          detail:"Activates the parasympathetic system — evidence shows reduced cortisol and improved HRV. Sana rotates Flow / Strength / Yin styles."},
+        {v:"pilates", icon:"🤸", label:"Pilates",
+          sub:"Core strength, posture and proprioception",
+          detail:"Clinical evidence for reduced lower-back pain and improved body awareness. Integrated with yoga programming in Sana."},
+        {v:"hiit",    icon:"💥", label:"HIIT",
+          sub:"High-intensity intervals — max output in minimum time",
+          detail:"EPOC effect continues burning calories 24–48 hrs post-session. Sana caps HIIT to 2× per week to prevent CNS fatigue."},
+        {v:"mixed",   icon:"🔀", label:"Mixed Training",
+          sub:"Cross-training variety across multiple modalities",
+          detail:"Prevents adaptation plateaus and overuse injuries. Ideal for general fitness and longevity. Sana blends based on your selections."},
       ];
       const EQ = [
-        {v:"barbell",    icon:"🏋️", label:"Barbell"},
-        {v:"dumbbells",  icon:"💪", label:"Dumbbells"},
-        {v:"cables",     icon:"🔗", label:"Cables"},
-        {v:"machines",   icon:"🎰", label:"Machines"},
-        {v:"bodyweight", icon:"🤸", label:"Bodyweight"},
-        {v:"cardio",     icon:"🚴", label:"Cardio Equip"},
+        {v:"barbell",    icon:"🏋️", label:"Barbell",    detail:"Squat, deadlift, bench, row — highest load potential"},
+        {v:"dumbbells",  icon:"💪", label:"Dumbbells",  detail:"Unilateral work, full range of motion, home-gym friendly"},
+        {v:"cables",     icon:"🔗", label:"Cables",     detail:"Constant tension through full ROM — great for isolation"},
+        {v:"machines",   icon:"🎰", label:"Machines",   detail:"Guided range, safer for beginners and injury rehab"},
+        {v:"bodyweight", icon:"🤸", label:"Bodyweight", detail:"Always available — progressions up to elite difficulty"},
+        {v:"cardio",     icon:"🚴", label:"Cardio Equip",detail:"Treadmill, bike, rower, ski erg — aerobic base building"},
+      ];
+      const DIETS = [
+        {v:"omnivore",    icon:"🥩", label:"Omnivore",
+          sub:"Meat, dairy, eggs and plants — full flexibility",
+          detail:"Broadest protein sources. Research-optimal for muscle building. Sana balances animal and plant proteins for recovery."},
+        {v:"vegetarian",  icon:"🥗", label:"Vegetarian",
+          sub:"Eggs and dairy included — no meat or fish",
+          detail:"Sana ensures amino acid completeness via eggs, dairy, and legume combos. Monitors B12, zinc, and iron intake."},
+        {v:"vegan",       icon:"🌱", label:"Vegan",
+          sub:"100% plant-based — no animal products",
+          detail:"Sana food-combines for complete proteins and flags B12, D3, omega-3, and zinc — often needing supplementation."},
+        {v:"pescatarian", icon:"🐟", label:"Pescatarian",
+          sub:"Fish and seafood included — no other meat",
+          detail:"Omega-3 fatty acids from fish reduce exercise-induced inflammation and support CNS recovery. Ideal with Sana's anti-inflammatory protocol."},
+        {v:"lowcarb",     icon:"🥓", label:"Low-carb / Keto",
+          sub:"Under 50g carbs daily · higher fat intake",
+          detail:"Sana targets fat-adapted metabolism. Ketosis typically reached in 2–4 days. Protein kept high to prevent muscle loss."},
+        {v:"flexible",    icon:"⚖️", label:"Flexible / No rules",
+          sub:"Balanced eating · no specific dietary restrictions",
+          detail:"Sana applies evidence-based macro defaults and adjusts based on your daily check-in and goal state."},
       ];
 
-      const TOTAL = 15;
+      const TOTAL = 16;
       const progress = Math.round((step / (TOTAL - 1)) * 100);
 
       const canNext = [
@@ -1715,14 +2551,40 @@
         true,                                 // 12: diet style (auto-advance)
         true,                                 // 13: life context (auto-advance)
         true,                                 // 14: summary
+        true,                                 // 15: plan delivery
       ][step];
 
-      const inp = {width:"100%",padding:"13px 14px",background:D.card,border:`0.5px solid ${D.border2}`,
-        borderRadius:D.r12,fontSize:14,color:D.text,outline:"none",fontFamily:"inherit",boxSizing:"border-box"};
+      const [emailVal, setEmailVal] = useState("");
+      const [emailSent, setEmailSent] = useState(false);
+      const [copied, setCopied] = useState(false);
+      const [showEmail, setShowEmail] = useState(false);
+      const [planWeeks, setPlanWeeks] = useState(1);
+      const [expandedDay, setExpandedDay] = useState(null);
+      const [showPlanPreview, setShowPlanPreview] = useState(false);
+
+      const inp = {
+        width:"100%", padding:"14px 16px",
+        background:"rgba(15,22,41,0.6)",
+        border:"none", borderBottom:`1.5px solid ${D.border2}`,
+        borderRadius:"10px 10px 0 0",
+        fontSize:15, color:D.text, outline:"none",
+        fontFamily:"inherit", boxSizing:"border-box",
+        backdropFilter:"blur(8px)",
+        transition:"border-color 0.2s",
+      };
 
       const gridCard = (active) => ({
-        padding:"14px 12px",background:active?`${D.blueMid}20`:D.card,
-        border:`1px solid ${active?D.blueMid:D.border2}`,borderRadius:D.r12,cursor:"pointer",transition:"all .15s"
+        padding:"14px 12px",
+        background: active
+          ? "linear-gradient(135deg, rgba(37,99,235,0.18), rgba(99,102,241,0.12))"
+          : "rgba(15,22,41,0.5)",
+        border: `1px solid ${active ? "rgba(99,102,241,0.6)" : "rgba(36,51,82,0.6)"}`,
+        borderRadius: 14,
+        cursor:"pointer",
+        transition:"all .2s cubic-bezier(0.16,1,0.3,1)",
+        backdropFilter:"blur(8px)",
+        boxShadow: active ? "0 0 20px rgba(99,102,241,0.15), inset 0 1px 0 rgba(255,255,255,0.05)" : "none",
+        transform: active ? "scale(1.01)" : "scale(1)",
       });
 
       const stepContent = () => {
@@ -1760,20 +2622,29 @@
         );
         if (step === 3) return (
           <div>
-            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>Natural body type</div>
-            <div style={{fontSize:13,color:D.text2,marginBottom:18}}>Your natural build shapes calorie targets and training emphasis. Pick the one that best describes how your body responds to food and exercise.</div>
-            <div style={{display:"flex",flexDirection:"column",gap:9}}>
-              {BODY_TYPES.map(bt=>(
+            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:4,letterSpacing:"-0.4px"}}>Natural body type</div>
+            <div style={{fontSize:12,color:D.text2,marginBottom:16,lineHeight:1.5}}>Your genetics shape how your body responds to food and training. This calibrates your calorie targets and protein ratios.</div>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {BODY_TYPES.map(bt=>{const sel=form.bodyType===bt.v; return(
                 <div key={bt.v} onClick={()=>{set("bodyType",bt.v);setStep(4);}}
-                  style={{...gridCard(form.bodyType===bt.v),display:"flex",alignItems:"center",gap:14,padding:"16px 14px"}}>
-                  <span style={{fontSize:26,flexShrink:0}}>{bt.icon}</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:14,fontWeight:600,color:form.bodyType===bt.v?D.accent:D.text,marginBottom:3}}>{bt.label}</div>
-                    <div style={{fontSize:11,color:D.text2,lineHeight:1.4}}>{bt.sub}</div>
+                  style={{...gridCard(sel),padding:"14px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:sel?8:0}}>
+                    <span style={{fontSize:24,flexShrink:0}}>{bt.icon}</span>
+                    <div style={{flex:1}}>
+                      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:2}}>
+                        <span style={{fontSize:13,fontWeight:700,color:sel?"#a5b4fc":D.text}}>{bt.label}</span>
+                        <span style={{fontSize:9,fontWeight:600,color:bt.badgeColor,background:`${bt.badgeColor}18`,
+                          border:`1px solid ${bt.badgeColor}40`,borderRadius:99,padding:"2px 7px",letterSpacing:"0.04em"}}>{bt.badge}</span>
+                      </div>
+                      <div style={{fontSize:11,color:D.text2,lineHeight:1.4}}>{bt.sub}</div>
+                    </div>
+                    {sel&&<span style={{color:"#a5b4fc",fontSize:14,flexShrink:0}}>✓</span>}
                   </div>
-                  {form.bodyType===bt.v&&<span style={{color:D.accent,fontSize:16,flexShrink:0}}>✓</span>}
+                  {sel&&<div style={{fontSize:11,color:"#8ba3c0",lineHeight:1.55,
+                    background:"rgba(99,102,241,0.06)",borderRadius:8,padding:"8px 10px",
+                    borderLeft:"2px solid rgba(99,102,241,0.4)"}}>{bt.detail}</div>}
                 </div>
-              ))}
+              );})}
             </div>
           </div>
         );
@@ -1848,16 +2719,18 @@
         }
         if (step === 7) return (
           <div>
-            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>Primary goal</div>
-            <div style={{fontSize:13,color:D.text2,marginBottom:18}}>Shapes calories, protein, training intensity — everything.</div>
+            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:4,letterSpacing:"-0.4px"}}>Primary goal</div>
+            <div style={{fontSize:12,color:D.text2,marginBottom:16}}>Drives your calorie target, protein ratio, and training intensity — everything Sana builds around this.</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
-              {GOALS.map(g=>(
-                <div key={g.v} onClick={()=>{set("goal",g.v);setStep(8);}} style={gridCard(form.goal===g.v)}>
-                  <div style={{fontSize:22,marginBottom:7}}>{g.icon}</div>
-                  <div style={{fontSize:13,fontWeight:600,color:form.goal===g.v?D.accent:D.text,marginBottom:3}}>{g.label}</div>
-                  <div style={{fontSize:11,color:D.text2,lineHeight:1.3}}>{g.sub}</div>
+              {GOALS.map(g=>{const sel=form.goal===g.v; return(
+                <div key={g.v} onClick={()=>{set("goal",g.v);setStep(8);}} style={{...gridCard(sel),padding:"13px 12px"}}>
+                  <div style={{fontSize:20,marginBottom:6}}>{g.icon}</div>
+                  <div style={{fontSize:13,fontWeight:700,color:sel?"#a5b4fc":D.text,marginBottom:3}}>{g.label}</div>
+                  <div style={{fontSize:10,color:D.text2,lineHeight:1.4,marginBottom:sel?6:0}}>{g.sub}</div>
+                  {sel&&<div style={{fontSize:9,color:"#64748b",lineHeight:1.5,
+                    borderTop:"1px solid rgba(99,102,241,0.2)",paddingTop:6,marginTop:2}}>{g.detail}</div>}
                 </div>
-              ))}
+              );})}
             </div>
           </div>
         );
@@ -1886,30 +2759,34 @@
         }
         if (step === 9) return (
           <div>
-            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>Training experience</div>
-            <div style={{fontSize:13,color:D.text2,marginBottom:18}}>Sets workout volume, intensity, and exercise complexity.</div>
+            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:4,letterSpacing:"-0.4px"}}>Training experience</div>
+            <div style={{fontSize:12,color:D.text2,marginBottom:16}}>Determines workout volume, exercise complexity, and progression speed. Honest answer = better plan.</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
-              {LEVELS.map(l=>(
-                <div key={l.v} onClick={()=>{set("level",l.v);setStep(10);}} style={gridCard(form.level===l.v)}>
-                  <div style={{fontSize:22,marginBottom:7}}>{l.icon}</div>
-                  <div style={{fontSize:13,fontWeight:600,color:form.level===l.v?D.accent:D.text,marginBottom:3}}>{l.label}</div>
-                  <div style={{fontSize:11,color:D.text2,lineHeight:1.3}}>{l.sub}</div>
+              {LEVELS.map(l=>{const sel=form.level===l.v; return(
+                <div key={l.v} onClick={()=>{set("level",l.v);setStep(10);}} style={{...gridCard(sel),padding:"14px 12px"}}>
+                  <div style={{fontSize:22,marginBottom:6}}>{l.icon}</div>
+                  <div style={{fontSize:13,fontWeight:700,color:sel?"#a5b4fc":D.text,marginBottom:2}}>{l.label}</div>
+                  <div style={{fontSize:10,color:D.text3,marginBottom:sel?6:0,fontWeight:500}}>{l.sub}</div>
+                  {sel&&<div style={{fontSize:9,color:"#64748b",lineHeight:1.55,
+                    borderTop:"1px solid rgba(99,102,241,0.2)",paddingTop:6,marginTop:2}}>{l.detail}</div>}
                 </div>
-              ))}
+              );})}
             </div>
           </div>
         );
         if (step === 10) return (
           <div>
-            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>Available equipment</div>
-            <div style={{fontSize:13,color:D.text2,marginBottom:18}}>Select everything you have access to.</div>
+            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:4,letterSpacing:"-0.4px"}}>Available equipment</div>
+            <div style={{fontSize:12,color:D.text2,marginBottom:16}}>Select everything you have access to. Sana builds around what you actually have — not what's ideal.</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
               {EQ.map(e=>{const sel=form.equipment.includes(e.v);return(
-                <div key={e.v} onClick={()=>toggleEq(e.v)}
-                  style={{...gridCard(sel),display:"flex",alignItems:"center",gap:10}}>
-                  <span style={{fontSize:20}}>{e.icon}</span>
-                  <span style={{fontSize:13,fontWeight:500,color:sel?D.accent:D.text}}>{e.label}</span>
-                  {sel&&<span style={{marginLeft:"auto",color:D.accent,fontSize:12}}>✓</span>}
+                <div key={e.v} onClick={()=>toggleEq(e.v)} style={{...gridCard(sel),padding:"12px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:sel?5:0}}>
+                    <span style={{fontSize:18}}>{e.icon}</span>
+                    <span style={{fontSize:13,fontWeight:600,color:sel?"#a5b4fc":D.text,flex:1}}>{e.label}</span>
+                    {sel&&<span style={{color:"#a5b4fc",fontSize:12}}>✓</span>}
+                  </div>
+                  {sel&&<div style={{fontSize:9,color:"#64748b",lineHeight:1.5}}>{e.detail}</div>}
                 </div>
               );})}
             </div>
@@ -1917,134 +2794,416 @@
         );
         if (step === 11) return (
           <div>
-            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>Preferred activities</div>
-            <div style={{fontSize:13,color:D.text2,marginBottom:6}}>Pick everything you enjoy — Sana blends them into your plan.</div>
-            <div style={{fontSize:11,color:D.accent,marginBottom:16,fontWeight:500}}>{form.activityType.length>0?`${form.activityType.length} selected — tap Continue when done`:"Select at least one"}</div>
+            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:4,letterSpacing:"-0.4px"}}>Preferred activities</div>
+            <div style={{fontSize:12,color:D.text2,marginBottom:6}}>Select all you enjoy — Sana blends multiple modalities into one coherent plan.</div>
+            <div style={{fontSize:11,color:"#a5b4fc",marginBottom:12,fontWeight:600,
+              background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",
+              borderRadius:8,padding:"6px 10px",display:"inline-block"}}>
+              {form.activityType.length>0?`${form.activityType.length} selected — tap Continue when done`:"Select at least one activity"}
+            </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
               {TYPES.map(t=>{const sel=form.activityType.includes(t.v);return(
-                <div key={t.v} onClick={()=>toggleAct(t.v)} style={{...gridCard(sel),position:"relative"}}>
-                  <div style={{fontSize:22,marginBottom:7}}>{t.icon}</div>
-                  <div style={{fontSize:13,fontWeight:600,color:sel?D.accent:D.text,marginBottom:3}}>{t.label}</div>
-                  <div style={{fontSize:11,color:D.text2,lineHeight:1.3}}>{t.sub}</div>
-                  {sel&&<div style={{position:"absolute",top:8,right:10,fontSize:13,color:D.accent}}>✓</div>}
+                <div key={t.v} onClick={()=>toggleAct(t.v)} style={{...gridCard(sel),padding:"13px 12px"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}}>
+                    <span style={{fontSize:20}}>{t.icon}</span>
+                    {sel&&<span style={{fontSize:11,color:"#a5b4fc"}}>✓</span>}
+                  </div>
+                  <div style={{fontSize:12,fontWeight:700,color:sel?"#a5b4fc":D.text,marginBottom:2}}>{t.label}</div>
+                  <div style={{fontSize:10,color:D.text2,lineHeight:1.4,marginBottom:sel?6:0}}>{t.sub}</div>
+                  {sel&&<div style={{fontSize:9,color:"#64748b",lineHeight:1.5,
+                    borderTop:"1px solid rgba(99,102,241,0.15)",paddingTop:5,marginTop:2}}>{t.detail}</div>}
                 </div>
               );})}
             </div>
           </div>
         );
         if (step === 12) {
-          const DIETS = [
-            {v:"omnivore",    icon:"🥩", label:"Omnivore",         sub:"Eat everything — meat, dairy, eggs"},
-            {v:"vegetarian",  icon:"🥗", label:"Vegetarian",       sub:"No meat, but eggs and dairy are fine"},
-            {v:"vegan",       icon:"🌱", label:"Vegan",            sub:"Fully plant-based"},
-            {v:"pescatarian", icon:"🐟", label:"Pescatarian",      sub:"Fish + plant-based, no meat"},
-            {v:"lowcarb",     icon:"🥓", label:"Low-carb / Keto",  sub:"Minimal carbs, higher fat"},
-            {v:"flexible",    icon:"⚖️", label:"Flexible / Other", sub:"Balanced or no specific rules"},
-          ];
           return (
             <div>
-              <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>Diet preference</div>
-              <div style={{fontSize:13,color:D.text2,marginBottom:18}}>Sana uses this to personalize your meal recommendations.</div>
+              <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:4,letterSpacing:"-0.4px"}}>Diet preference</div>
+              <div style={{fontSize:12,color:D.text2,marginBottom:16}}>Personalises your meal recommendations, supplement flags, and macro split. Sana adapts nutrition around your eating style.</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
-                {DIETS.map(d=>(
-                  <div key={d.v} onClick={()=>{set("dietStyle",d.v);setStep(13);}} style={gridCard(form.dietStyle===d.v)}>
-                    <div style={{fontSize:22,marginBottom:7}}>{d.icon}</div>
-                    <div style={{fontSize:13,fontWeight:600,color:form.dietStyle===d.v?D.accent:D.text,marginBottom:3}}>{d.label}</div>
-                    <div style={{fontSize:11,color:D.text2,lineHeight:1.3}}>{d.sub}</div>
+                {DIETS.map(d=>{const sel=form.dietStyle===d.v; return(
+                  <div key={d.v} onClick={()=>{set("dietStyle",d.v);setStep(13);}} style={{...gridCard(sel),padding:"13px 12px"}}>
+                    <div style={{fontSize:20,marginBottom:5}}>{d.icon}</div>
+                    <div style={{fontSize:12,fontWeight:700,color:sel?"#a5b4fc":D.text,marginBottom:2}}>{d.label}</div>
+                    <div style={{fontSize:10,color:D.text2,lineHeight:1.4,marginBottom:sel?6:0}}>{d.sub}</div>
+                    {sel&&<div style={{fontSize:9,color:"#64748b",lineHeight:1.5,
+                      borderTop:"1px solid rgba(99,102,241,0.2)",paddingTop:5,marginTop:2}}>{d.detail}</div>}
                   </div>
-                ))}
+                );})}
               </div>
             </div>
           );
         }
         if (step === 13) {
           const CONTEXTS = [
-            {v:"balanced",   icon:"⚖️", label:"Life is balanced",       sub:"Manageable stress · time for recovery · stable routine"},
-            {v:"demanding",  icon:"🏢", label:"Work is demanding",       sub:"Long hours · high mental load · recovery harder to find"},
-            {v:"transition", icon:"🔄", label:"In a major transition",   sub:"New job, move, relationship change, or big life phase"},
-            {v:"social",     icon:"🎉", label:"Very active social life",  sub:"Frequent events · late nights · weekends often eventful"},
+            {v:"balanced",   icon:"⚖️", label:"Life is balanced",
+              sub:"Manageable stress · time for recovery · stable routine",
+              detail:"Optimal training conditions. Sana runs full progressive overload with standard recovery windows."},
+            {v:"demanding",  icon:"🏢", label:"Work is demanding",
+              sub:"Long hours · high mental load · limited recovery time",
+              detail:"Cortisol suppresses muscle protein synthesis. Sana reduces session volume by 15%, prioritises sleep-support nutrients, and emphasises recovery days."},
+            {v:"transition", icon:"🔄", label:"In a major transition",
+              sub:"New job, relocation, relationship change or big life phase",
+              detail:"Change elevates cortisol chronically. Sana shortens sessions to 30–40 min, focuses on habit consistency over performance, and flags high-stress nutrition choices."},
+            {v:"social",     icon:"🎉", label:"Very active social life",
+              sub:"Frequent events · late nights · varied weekend schedule",
+              detail:"Alcohol disrupts sleep and testosterone. Sana builds flexible meal timing, adds weekend-recovery nutrition, and schedules harder sessions mid-week."},
           ];
           return (
             <div>
-              <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>Life right now</div>
-              <div style={{fontSize:13,color:D.text2,marginBottom:18}}>This shapes how Sana balances your recovery, supplements, and stress load — honesty here matters.</div>
-              <div style={{display:"flex",flexDirection:"column",gap:9}}>
-                {CONTEXTS.map(c=>(
+              <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:4,letterSpacing:"-0.4px"}}>Life right now</div>
+              <div style={{fontSize:12,color:D.text2,marginBottom:16,lineHeight:1.5}}>Chronic stress is as important as training for body composition. Sana adjusts volume, intensity, and nutrition to your real-life recovery capacity.</div>
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {CONTEXTS.map(c=>{const sel=form.lifeContext===c.v; return(
                   <div key={c.v} onClick={()=>{set("lifeContext",c.v);setStep(14);}}
-                    style={{...gridCard(form.lifeContext===c.v),display:"flex",alignItems:"center",gap:14,padding:"14px"}}>
-                    <span style={{fontSize:24,flexShrink:0}}>{c.icon}</span>
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:13,fontWeight:600,color:form.lifeContext===c.v?D.accent:D.text,marginBottom:3}}>{c.label}</div>
-                      <div style={{fontSize:11,color:D.text2,lineHeight:1.4}}>{c.sub}</div>
+                    style={{...gridCard(sel),padding:"14px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:sel?8:0}}>
+                      <span style={{fontSize:22,flexShrink:0}}>{c.icon}</span>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:13,fontWeight:700,color:sel?"#a5b4fc":D.text,marginBottom:2}}>{c.label}</div>
+                        <div style={{fontSize:11,color:D.text2,lineHeight:1.4}}>{c.sub}</div>
+                      </div>
+                      {sel&&<span style={{color:"#a5b4fc",fontSize:14,flexShrink:0}}>✓</span>}
                     </div>
-                    {form.lifeContext===c.v&&<span style={{color:D.accent,fontSize:14,flexShrink:0}}>✓</span>}
+                    {sel&&<div style={{fontSize:11,color:"#8ba3c0",lineHeight:1.55,
+                      background:"rgba(99,102,241,0.06)",borderRadius:8,padding:"8px 10px",
+                      borderLeft:"2px solid rgba(99,102,241,0.4)"}}>{c.detail}</div>}
                   </div>
-                ))}
+                );})}
               </div>
             </div>
           );
         }
-        /* Step 14: Summary */
+        /* Steps 14 & 15: shared plan data computed once we're past step 13 */
         const preview    = computeProfile(form);
         const goalLabel  = GOALS.find(g=>g.v===form.goal)?.label||form.goal;
         const bodyLabel  = BODY_TYPES.find(b=>b.v===form.bodyType)?.label||form.bodyType;
         const actLabels  = form.activityType.map(v=>TYPES.find(t=>t.v===v)?.label||v).join(", ");
-        return (
+
+
+        const handleEmailSend = () => {
+          if (!emailVal.includes("@")) return;
+          const pw = window.open("","_blank");
+          if (pw) { pw.document.write(buildWeekPlanHTML(form, preview, planWeeks)); pw.document.close(); setTimeout(()=>pw.print(),400); }
+          const summaryText = `SANA — Your ${planWeeks}-Week Performance Plan\n\nFor: ${form.name}\nGoal: ${goalLabel}\nBody type: ${bodyLabel}\nDaily calories (training): ${preview.cal} kcal\nDaily protein: ${preview.prot}g\nSession length: ${preview.dur} min\nActivities: ${actLabels||"—"}\nLevel: ${LEVELS.find(lv=>lv.v===form.level)?.label||form.level}\n\nYour full ${planWeeks}-week day-by-day plan with exercises, sets, reps, and nutrition has opened in a new tab — print or save it. Open the Sana app each morning for your live daily plan.`;
+          const mailto = `mailto:${emailVal}?subject=My%20Sana%20${planWeeks}-Week%20Plan&body=${encodeURIComponent(summaryText)}`;
+          setTimeout(() => { window.location.href = mailto; }, 100);
+          setEmailSent(true);
+        };
+
+        const handleCopy = () => {
+          const weekPlan = generateWeeklyPlan(form, preview, planWeeks);
+          const txt = [`SANA — ${planWeeks}-Week Performance Plan`, `For: ${form.name} · Goal: ${goalLabel}`, `Daily calories: ${preview.cal} kcal · Protein: ${preview.prot}g · Session: ${preview.dur} min`, '─'.repeat(50), ...weekPlan.map(d=>[`${d.week > 1?`WEEK ${d.week} - `:''}${d.day.toUpperCase()}: ${d.label}`, ...d.exercises.map(e=>`  • ${e.name} — ${e.sets} sets × ${e.reps} (rest ${e.rest})`), `  Nutrition: ${d.nutrition.cal} kcal / ${d.nutrition.prot}g protein / ${d.nutrition.carbs}g carbs / ${d.nutrition.fat}g fat`, `  Supps: ${d.supps.join(' · ')}`, ''].join('\n'))].join('\n');
+          navigator.clipboard.writeText(txt).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});
+        };
+
+        const handlePrint = () => {
+          const w = window.open("","_blank");
+          if (w) { w.document.write(buildWeekPlanHTML(form, preview, planWeeks)); w.document.close(); setTimeout(()=>w.print(),400); }
+        };
+
+        const statRow = (l,v,i,last) => (
+          <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",
+            padding:"10px 14px", borderBottom:last?"none":`1px solid rgba(26,38,64,0.5)`}}>
+            <span style={{fontSize:11,color:D.text3,letterSpacing:"0.04em",textTransform:"uppercase"}}>{l}</span>
+            <span style={{fontSize:12,fontWeight:600,color:D.text}}>{v}</span>
+          </div>
+        );
+
+        if (step === 14) return (
           <div>
-            <div style={{fontSize:22,fontWeight:500,color:D.text,marginBottom:6,letterSpacing:"-0.4px"}}>You're all set, {form.name} 🎉</div>
-            <div style={{fontSize:13,color:D.text2,marginBottom:20}}>Your personalised baseline — updates daily with your check-in.</div>
-            <div style={{background:D.card,border:`0.5px solid ${D.border2}`,borderRadius:D.r14,overflow:"hidden",marginBottom:20}}>
-              {[
-                {l:"Daily calories",  v:`${preview.cal} kcal`},
-                {l:"Daily protein",   v:`${preview.prot}g`},
-                {l:"Session length",  v:`${preview.dur} min`},
-                {l:"Goal",            v:goalLabel},
-                {l:"Body type",       v:bodyLabel},
-                {l:"Level",           v:LEVELS.find(lv=>lv.v===form.level)?.label||form.level},
-                {l:"Activities",      v:actLabels||"—"},
-                {l:"Weight",          v:form.weightUnit==="lbs"?`${form.weight} lbs`:`${form.weight} kg`},
-                {l:"Height",          v:form.heightUnit==="ft"?`${form.heightFt}ft ${form.heightIn||0}in`:`${form.height} cm`},
-              ].map((r,i,arr)=>(
-                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"11px 14px",
-                  borderBottom:i<arr.length-1?`0.5px solid ${D.border}`:"none"}}>
-                  <span style={{fontSize:12,color:D.text3,flexShrink:0}}>{r.l}</span>
-                  <span style={{fontSize:12,fontWeight:600,color:D.text,textAlign:"right",maxWidth:"60%",lineHeight:1.4}}>{r.v}</span>
-                </div>
-              ))}
+            <div style={{textAlign:"center",marginBottom:20}}>
+              <div style={{fontSize:32,marginBottom:8}}>🎉</div>
+              <div style={{fontSize:20,fontWeight:700,color:D.text,letterSpacing:"-0.5px",marginBottom:4}}>You're all set, {form.name}</div>
+              <div style={{fontSize:12,color:D.text2}}>Your personalised baseline is ready.</div>
             </div>
-            <button onClick={()=>onDone(computeProfile(form))}
-              style={{width:"100%",padding:"15px",background:`linear-gradient(135deg,${D.blueMid},${D.accent})`,
-                border:"none",borderRadius:D.r12,fontSize:15,fontWeight:600,color:"#fff",cursor:"pointer"}}>
-              Start using Sana →
+
+            {/* Stats card */}
+            <div style={{background:"linear-gradient(135deg,rgba(37,99,235,0.08),rgba(99,102,241,0.06))",
+              border:"1px solid rgba(99,102,241,0.2)",borderRadius:16,overflow:"hidden",marginBottom:16,
+              backdropFilter:"blur(12px)"}}>
+              <div style={{display:"flex",justifyContent:"space-around",padding:"16px 12px",
+                borderBottom:"1px solid rgba(26,38,64,0.5)"}}>
+                {[{l:"Calories",v:`${preview.cal}`,u:"kcal"},{l:"Protein",v:`${preview.prot}`,u:"g/day"},{l:"Session",v:`${preview.dur}`,u:"min"}].map((s,i)=>(
+                  <div key={i} style={{textAlign:"center"}}>
+                    <div style={{fontSize:22,fontWeight:700,background:"linear-gradient(135deg,#f0f6ff,#38bdf8)",
+                      WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{s.v}</div>
+                    <div style={{fontSize:9,color:D.text3,letterSpacing:"0.08em",textTransform:"uppercase",marginTop:2}}>{s.u}</div>
+                    <div style={{fontSize:9,color:D.text3}}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+              {[
+                {l:"Goal",    v:goalLabel},
+                {l:"Build",   v:bodyLabel},
+                {l:"Level",   v:LEVELS.find(lv=>lv.v===form.level)?.label||form.level},
+                {l:"Training",v:actLabels||"—"},
+              ].map((r,i,arr)=>statRow(r.l,r.v,i,i===arr.length-1))}
+            </div>
+
+            <button onClick={()=>setStep(15)}
+              style={{width:"100%",padding:"15px",
+                background:"linear-gradient(135deg,#2563eb,#6366f1)",
+                border:"none",borderRadius:14,fontSize:15,fontWeight:700,color:"#fff",
+                cursor:"pointer",letterSpacing:"-0.2px",
+                boxShadow:"0 0 32px rgba(99,102,241,0.35)"}}>
+              Save my plan →
             </button>
           </div>
         );
+        /* ── Step 15: Plan Delivery ── */
+        const DURATIONS = [
+          {w:1,  label:"1 Week",   desc:"7-day starter"},
+          {w:2,  label:"2 Weeks",  desc:"14-day progression"},
+          {w:4,  label:"4 Weeks",  desc:"Full month block"},
+          {w:8,  label:"8 Weeks",  desc:"Transformation cycle"},
+          {w:12, label:"12 Weeks", desc:"Full quarter program"},
+          {w:16, label:"16 Weeks", desc:"Peak performance run"},
+        ];
+
+        if (step === 15) {
+          const weekPlan = generateWeeklyPlan(form, preview, planWeeks);
+          return (
+          <div>
+            <div style={{textAlign:"center",marginBottom:18}}>
+              <div style={{width:48,height:48,borderRadius:"50%",
+                background:"linear-gradient(135deg,rgba(37,99,235,0.2),rgba(99,102,241,0.15))",
+                border:"1px solid rgba(99,102,241,0.3)",
+                display:"flex",alignItems:"center",justifyContent:"center",
+                fontSize:22,margin:"0 auto 10px",
+                boxShadow:"0 0 28px rgba(99,102,241,0.2)"}}>✦</div>
+              <div style={{fontSize:17,fontWeight:700,color:D.text,letterSpacing:"-0.4px",marginBottom:3}}>Your plan is ready</div>
+              <div style={{fontSize:11,color:D.text2}}>{planWeeks}-week · {weekPlan.filter(d=>!d.isRest).length} training sessions</div>
+            </div>
+
+            {/* Duration selector */}
+            <div style={{background:"rgba(15,22,41,0.6)",border:"1px solid rgba(36,51,82,0.6)",
+              borderRadius:14,padding:"12px 14px",marginBottom:12,backdropFilter:"blur(8px)"}}>
+              <div style={{fontSize:9,fontWeight:700,color:D.text3,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:8}}>Plan duration</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6}}>
+                {DURATIONS.map(({w,label,desc})=>(
+                  <div key={w} onClick={()=>{setPlanWeeks(w);setExpandedDay(null);}}
+                    style={{padding:"9px 8px",borderRadius:9,cursor:"pointer",textAlign:"center",
+                      background:planWeeks===w?"linear-gradient(135deg,rgba(37,99,235,0.25),rgba(99,102,241,0.2))":"rgba(8,13,26,0.4)",
+                      border:`1px solid ${planWeeks===w?"rgba(99,102,241,0.55)":"rgba(36,51,82,0.4)"}`,
+                      transition:"all .15s",boxShadow:planWeeks===w?"0 0 12px rgba(99,102,241,0.2)":"none"}}>
+                    <div style={{fontSize:12,fontWeight:700,color:planWeeks===w?"#a5b4fc":D.text,marginBottom:1}}>{label}</div>
+                    <div style={{fontSize:9,color:planWeeks===w?D.text2:D.text3}}>{desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Inline plan preview with accordion days */}
+            <div style={{background:"rgba(15,22,41,0.6)",border:"1px solid rgba(36,51,82,0.6)",
+              borderRadius:14,marginBottom:12,backdropFilter:"blur(8px)",overflow:"hidden"}}>
+              <div style={{padding:"12px 14px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",
+                borderBottom:showPlanPreview?"1px solid rgba(36,51,82,0.6)":"none"}}
+                onClick={()=>setShowPlanPreview(v=>!v)}>
+                <div>
+                  <div style={{fontSize:12,fontWeight:700,color:D.text,marginBottom:1}}>View full plan</div>
+                  <div style={{fontSize:10,color:D.text2}}>Tap any day to expand</div>
+                </div>
+                <span style={{color:D.text3,fontSize:18,transform:showPlanPreview?"rotate(180deg)":"none",transition:"transform .25s"}}>⌄</span>
+              </div>
+              {showPlanPreview&&(
+                <div style={{maxHeight:400,overflowY:"auto"}}>
+                  {weekPlan.map((day,idx)=>{
+                    const open = expandedDay===idx;
+                    const wLabel = planWeeks>1?`W${day.week} · `:"";
+                    return(
+                    <div key={idx} style={{borderBottom:"1px solid rgba(36,51,82,0.4)"}}>
+                      {/* Day header row */}
+                      <div onClick={()=>setExpandedDay(n=>n===idx?null:idx)}
+                        style={{padding:"10px 14px",display:"flex",alignItems:"center",
+                          gap:10,cursor:"pointer",
+                          background:open?"rgba(37,99,235,0.06)":"transparent",
+                          transition:"background .15s"}}>
+                        <div style={{width:32,height:32,borderRadius:8,flexShrink:0,
+                          background:day.isRest?"rgba(36,51,82,0.4)":"linear-gradient(135deg,rgba(37,99,235,0.2),rgba(99,102,241,0.15))",
+                          border:`1px solid ${day.isRest?"rgba(36,51,82,0.3)":"rgba(99,102,241,0.3)"}`,
+                          display:"flex",alignItems:"center",justifyContent:"center",
+                          fontSize:13,color:day.isRest?D.text3:"#a5b4fc",fontWeight:700}}>
+                          {day.isRest?"—":day.label.charAt(0)}
+                        </div>
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:12,fontWeight:600,color:D.text}}>{wLabel}{day.day}</div>
+                          <div style={{fontSize:10,color:day.isRest?D.text3:D.accent}}>{day.label}</div>
+                        </div>
+                        {!day.isRest&&(
+                          <div style={{fontSize:10,color:D.text3}}>{day.nutrition.cal} kcal · {day.nutrition.prot}g prot</div>
+                        )}
+                        <span style={{color:D.text3,fontSize:13,transform:open?"rotate(180deg)":"none",transition:"transform .2s",marginLeft:4}}>⌄</span>
+                      </div>
+                      {/* Expanded day content */}
+                      {open&&(
+                        <div style={{padding:"0 14px 12px",background:"rgba(6,10,20,0.4)"}}>
+                          {/* Nutrition bar */}
+                          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:4,marginBottom:10,paddingTop:10}}>
+                            {[["Cal",day.nutrition.cal,"kcal"],["Prot",day.nutrition.prot,"g"],["Carbs",day.nutrition.carbs,"g"],["Fat",day.nutrition.fat,"g"]].map(([l,v,u])=>(
+                              <div key={l} style={{background:"rgba(15,22,41,0.8)",borderRadius:7,padding:"6px 4px",textAlign:"center",
+                                border:"1px solid rgba(36,51,82,0.5)"}}>
+                                <div style={{fontSize:12,fontWeight:700,color:"#a5b4fc"}}>{v}{u}</div>
+                                <div style={{fontSize:9,color:D.text3}}>{l}</div>
+                              </div>
+                            ))}
+                          </div>
+                          {/* Exercises */}
+                          {day.exercises.map((ex,ei)=>(
+                            <div key={ei} style={{padding:"7px 0",borderBottom:ei<day.exercises.length-1?"1px solid rgba(36,51,82,0.3)":"none",
+                              display:"grid",gridTemplateColumns:"1fr auto auto auto",gap:8,alignItems:"center"}}>
+                              <div style={{fontSize:11,fontWeight:600,color:D.text}}>{ex.name}</div>
+                              <div style={{fontSize:10,color:D.text2,textAlign:"right"}}>{ex.sets}×{ex.reps}</div>
+                              <div style={{fontSize:10,color:D.text3,textAlign:"right"}}>{ex.rest}</div>
+                            </div>
+                          ))}
+                          {/* Supplements */}
+                          <div style={{marginTop:10,paddingTop:8,borderTop:"1px solid rgba(36,51,82,0.4)"}}>
+                            <div style={{fontSize:9,fontWeight:700,color:D.text3,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:5}}>Supplements</div>
+                            {day.supps.map((s,si)=>(
+                              <div key={si} style={{fontSize:10,color:D.text2,padding:"2px 0"}}>· {s}</div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Primary: open in app */}
+            <div onClick={()=>onDone(computeProfile(form))}
+              style={{background:"linear-gradient(135deg,rgba(37,99,235,0.2),rgba(99,102,241,0.15))",
+                border:"1px solid rgba(99,102,241,0.4)",borderRadius:14,padding:"14px 16px",
+                cursor:"pointer",marginBottom:8,
+                boxShadow:"0 0 24px rgba(99,102,241,0.15)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:12}}>
+                <div style={{width:38,height:38,borderRadius:10,
+                  background:"linear-gradient(135deg,#2563eb,#6366f1)",
+                  display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>📱</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:13,fontWeight:700,color:"#a5b4fc",marginBottom:1}}>Open in App</div>
+                  <div style={{fontSize:10,color:D.text2}}>Start day 1 — check in each morning for your live daily plan</div>
+                </div>
+                <span style={{color:"#a5b4fc",fontSize:15}}>→</span>
+              </div>
+            </div>
+
+            {/* Email */}
+            <div style={{background:"rgba(15,22,41,0.6)",border:"1px solid rgba(36,51,82,0.6)",
+              borderRadius:14,padding:"12px 14px",marginBottom:8,backdropFilter:"blur(8px)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:showEmail?10:0,cursor:"pointer"}}
+                onClick={()=>setShowEmail(v=>!v)}>
+                <div style={{width:34,height:34,borderRadius:9,background:"rgba(37,99,235,0.15)",
+                  border:"1px solid rgba(37,99,235,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>📧</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:12,fontWeight:600,color:D.text,marginBottom:1}}>Email my plan</div>
+                  <div style={{fontSize:9,color:D.text2}}>Full summary + PDF to your inbox</div>
+                </div>
+                <span style={{color:D.text3,fontSize:13,transform:showEmail?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
+              </div>
+              {showEmail&&(emailSent?(
+                <div style={{textAlign:"center",padding:"6px",color:D.green,fontSize:11,fontWeight:600}}>✓ Email client opened — plan PDF in new tab</div>
+              ):(
+                <div style={{display:"flex",gap:8}}>
+                  <input value={emailVal} onChange={e=>setEmailVal(e.target.value)}
+                    placeholder="your@email.com" type="email"
+                    style={{...inp,flex:1,borderRadius:"9px 0 0 9px",fontSize:11}}/>
+                  <button onClick={handleEmailSend}
+                    style={{padding:"0 12px",background:"linear-gradient(135deg,#2563eb,#6366f1)",
+                      border:"none",borderRadius:"0 9px 9px 0",color:"#fff",fontSize:11,fontWeight:700,cursor:"pointer"}}>Send</button>
+                </div>
+              ))}
+            </div>
+
+            {/* PDF + Copy row */}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+              <div onClick={handlePrint}
+                style={{background:"rgba(15,22,41,0.6)",border:"1px solid rgba(36,51,82,0.6)",
+                  borderRadius:12,padding:"11px 12px",cursor:"pointer",backdropFilter:"blur(8px)",
+                  display:"flex",alignItems:"center",gap:9}}>
+                <span style={{fontSize:16}}>📄</span>
+                <div>
+                  <div style={{fontSize:11,fontWeight:600,color:D.text}}>Download PDF</div>
+                  <div style={{fontSize:9,color:D.text3}}>Printable plan</div>
+                </div>
+              </div>
+              <div onClick={handleCopy}
+                style={{background:copied?"rgba(16,185,129,0.1)":"rgba(15,22,41,0.6)",
+                  border:`1px solid ${copied?"rgba(16,185,129,0.4)":"rgba(36,51,82,0.6)"}`,
+                  borderRadius:12,padding:"11px 12px",cursor:"pointer",backdropFilter:"blur(8px)",
+                  display:"flex",alignItems:"center",gap:9,transition:"all .2s"}}>
+                <span style={{fontSize:16}}>{copied?"✓":"🔗"}</span>
+                <div>
+                  <div style={{fontSize:11,fontWeight:600,color:copied?D.green:D.text}}>{copied?"Copied!":"Copy Text"}</div>
+                  <div style={{fontSize:9,color:D.text3}}>Share anywhere</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          );
+        }
       };
 
       return (
-        <div style={{paddingBottom:40}}>
-          <div style={{height:3,background:D.border}}>
-            <div style={{height:"100%",width:`${progress}%`,background:`linear-gradient(90deg,${D.blueMid},${D.accent})`,transition:"width .3s"}}/>
-          </div>
-          <div style={{padding:"24px 20px"}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:step===0?28:20}}>
-              <div style={{fontSize:10,fontWeight:700,color:D.accent,letterSpacing:"0.14em",textTransform:"uppercase"}}>Sana · {step+1}/{TOTAL}</div>
-              {step>0&&step<14&&(
-                <button onClick={()=>setStep(n=>n-1)}
-                  style={{fontSize:11,color:D.text3,background:"none",border:"none",cursor:"pointer",padding:0}}>← Back</button>
-              )}
+        <div style={{height:"100%",display:"flex",flexDirection:"column",background:"linear-gradient(180deg,#080d1a 0%,#0a1020 100%)"}}>
+          {/* Premium progress bar */}
+          <div style={{position:"relative",height:2,background:"rgba(26,38,64,0.6)",flexShrink:0}}>
+            <div style={{position:"absolute",inset:0,width:`${progress}%`,
+              background:"linear-gradient(90deg,#2563eb,#6366f1,#38bdf8)",
+              transition:"width 0.4s cubic-bezier(0.16,1,0.3,1)",
+              boxShadow:"0 0 12px rgba(99,102,241,0.6)"}}>
+              <div style={{position:"absolute",right:0,top:-2,width:6,height:6,borderRadius:"50%",
+                background:"#38bdf8",boxShadow:"0 0 8px #38bdf8"}}/>
             </div>
-            {stepContent()}
-            {[0,2,4,5,10,11].includes(step)&&(
-              <button onClick={()=>setStep(n=>n+1)} disabled={!canNext}
-                style={{width:"100%",padding:"14px",marginTop:22,
-                  background:canNext?`linear-gradient(135deg,${D.blueMid},${D.accent})`:`${D.blueMid}20`,
-                  border:"none",borderRadius:D.r12,fontSize:14,fontWeight:600,
-                  color:canNext?"#fff":D.text3,cursor:canNext?"pointer":"default",transition:"all .15s"}}>
-                Continue →
+          </div>
+
+          {/* Header */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",
+            padding:"14px 20px 0",flexShrink:0}}>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <div style={{width:5,height:5,borderRadius:"50%",
+                background:"linear-gradient(135deg,#2563eb,#6366f1)",
+                boxShadow:"0 0 8px rgba(99,102,241,0.8)"}}/>
+              <span style={{fontSize:10,fontWeight:700,color:"rgba(56,189,248,0.7)",
+                letterSpacing:"0.14em",textTransform:"uppercase"}}>Step {step+1} of {TOTAL}</span>
+            </div>
+            {step>0&&(
+              <button onClick={()=>setStep(n=>n-1)}
+                style={{fontSize:11,color:"#8ba3c0",background:"rgba(15,22,41,0.5)",
+                  border:"1px solid rgba(36,51,82,0.5)",borderRadius:99,
+                  cursor:"pointer",padding:"5px 12px",backdropFilter:"blur(8px)",
+                  display:"flex",alignItems:"center",gap:4}}>
+                <span style={{fontSize:13}}>←</span> Back
               </button>
             )}
           </div>
+
+          {/* Content */}
+          <div style={{flex:1,overflowY:"auto",padding:"18px 20px 20px"}}>
+            {stepContent()}
+          </div>
+
+          {/* Continue button */}
+          {[0,2,4,5,10,11].includes(step)&&(
+            <div style={{padding:"0 20px 20px",flexShrink:0}}>
+              <button onClick={()=>setStep(n=>n+1)} disabled={!canNext}
+                style={{width:"100%",padding:"14px",
+                  background:canNext?"linear-gradient(135deg,#2563eb,#6366f1)":"rgba(37,99,235,0.1)",
+                  border:canNext?"none":"1px solid rgba(37,99,235,0.2)",
+                  borderRadius:14,fontSize:14,fontWeight:700,letterSpacing:"-0.2px",
+                  color:canNext?"#fff":"rgba(56,189,248,0.3)",
+                  cursor:canNext?"pointer":"default",
+                  transition:"all .2s cubic-bezier(0.16,1,0.3,1)",
+                  boxShadow:canNext?"0 0 28px rgba(99,102,241,0.3)":"none"}}>
+                Continue →
+              </button>
+            </div>
+          )}
         </div>
       );
     }
@@ -2058,16 +3217,16 @@
       if (!checkinAns) return "Complete your morning check-in first — then I can give you personalised guidance for today.";
       if (m.match(/hi|hello|hey/)) return `Hey${profile?.name?" "+profile.name:""}! I'm your Sana guide. Ask me anything about your plan — workouts, food, supplements, sleep, or recovery.`;
       if (m.match(/progress|percent|done|complete/)) return `You're at ${overallPct}% for today. ${overallPct===100?"Full day complete — great work!":overallPct>60?"More than halfway — keep going.":"Still early in the day — start with training or breakfast."}`;
-      if (m.match(/workout|train|exercise|gym|lift/)) return plans?`Today is a "${plans.trainSession}" session. ${plans.trainNote} You have ${plans.trainExercises.length} exercises queued — tap Train on your plan to see them.`:"Check in first for your personalised workout.";
-      if (m.match(/eat|food|meal|calori|protein|macro/)) return plans?`Today's targets: ${plans.calToday} kcal · ${plans.protToday}g protein${wStr?` (based on your ${wStr})`:""}. ${plans.carbNote}`:"Check in first to see your nutrition plan.";
+      if (m.match(/workout|train|exercise|gym|lift/)) return plans?`**Today: ${plans.trainSession}**\n${plans.trainNote}\n\n${plans.trainExercises.length} exercises queued — tap **Train** on your daily plan to see the full session.`:"Complete your morning check-in first — then I'll pull up today's exact workout.";
+      if (m.match(/eat|food|meal|calori|protein|macro/)) return plans?`**Today's nutrition targets:**\n· Calories: **${plans.calToday} kcal**\n· Protein: **${plans.protToday}g**\n${wStr?`Based on your ${wStr} · `:""}${plans.carbNote}`:"Check in first — your nutrition targets shift based on training load, sleep, and stress signals.";
       if (m.match(/body type|ectomorph|mesomorph|endomorph|metabolism|natural/)) {const btMap={ectomorph:"You have a naturally lean build (ectomorph) — your metabolism runs fast. Sana adds extra calories to your target and prioritises calorie-dense meals. Don't skip carbs.",mesomorph:"You have an athletic build (mesomorph) — you respond well to training and can recompose effectively. Your targets are balanced for steady progress.",endomorph:"You have a broader frame (endomorph) — your metabolism runs slower. Sana reduces calories slightly and increases your protein to preserve muscle while managing body composition."};return btMap[profile?.bodyType]||"Update your body type in your profile for personalised metabolism adjustments.";}
       if (m.match(/weight|pound|kg|lb|heavy/)) return profile?.weightKg?`You're currently at ${wStr}. At your weight and "${goalLabel}" goal, your protein target is ${profile.prot}g/day and calories are set to ${profile.cal} kcal. Update in profile if your weight changes.`:"Set your weight in your profile for personalised targets.";
       if (m.match(/calorie|tdee|deficit|surplus/)) return profile?`Your calorie target is ${profile.cal} kcal/day for "${goalLabel}". This is based on your body stats and activity level. ${profile.goal==="lean_cut"?"You're in a ~400 kcal deficit to preserve muscle while losing fat.":profile.goal==="bulk"?"You're in a ~500 kcal surplus to maximise mass gain.":profile.goal==="lean_bulk"?"You're in a ~200 kcal surplus — steady muscle gains with minimal fat.":"Targeting maintenance — hold your current composition."}`:"Set up your profile for personalised calorie targets.";
-      if (m.match(/creatine/)) return "Creatine monohydrate · 5g daily. Timing doesn't matter — consistency does. Best evidence-to-cost supplement available. Skip it if your kidneys are under stress (heavy drinking the night before).";
-      if (m.match(/magnesium/)) return "Magnesium glycinate · 300mg, 60–90 min before bed. Improves sleep quality, reduces cortisol, and supports muscle recovery. Most people are deficient.";
-      if (m.match(/vitamin d/)) return "Vitamin D3 · 2,000 IU daily with food (fat-soluble). If you live somewhere with low sun exposure, consider 4,000 IU in winter. Deficiency impairs testosterone production and immune function.";
-      if (m.match(/ashwagandha/)) return "Ashwagandha KSM-66 · 600mg with breakfast on high-stress days. Reduces cortisol by up to 27% in clinical studies. Don't need it every day — Sana suggests it when your stress signal is high.";
-      if (m.match(/nac/)) return "NAC (N-Acetylcysteine) · 600mg on heavy social recovery days. Boosts glutathione — your liver's primary detox molecule. Especially effective at clearing acetaldehyde (alcohol byproduct).";
+      if (m.match(/creatine/)) return "**Creatine monohydrate · 5g daily**\nTiming doesn't matter — consistency does. Best evidence-to-cost supplement available.\n\nSkip it if your kidneys are under stress (heavy drinking the night before). No loading phase needed — that's just marketing.";
+      if (m.match(/magnesium/)) return "**Magnesium glycinate · 300–400mg**\nTake 60–90 min before bed. Improves sleep quality, reduces cortisol, and supports muscle recovery.\n\nMost people are deficient. Glycinate form is best absorbed and least likely to cause GI issues.";
+      if (m.match(/vitamin d/)) return "**Vitamin D3 · 2,000 IU daily**\nTake with food (fat-soluble). If you live somewhere with low sun, consider **4,000 IU** in winter.\n\nDeficiency impairs testosterone production, immune function, and mood. Get bloodwork annually — you want 50–80 ng/mL.";
+      if (m.match(/ashwagandha/)) return "**Ashwagandha KSM-66 · 600mg**\nTake with breakfast on high-stress days. Reduces cortisol by up to **27%** in clinical trials.\n\nDon't take every day — Sana flags it when your stress signal is high. Cycle 8 weeks on, 4 weeks off.";
+      if (m.match(/nac/)) return "**NAC · 600mg**\nTake on heavy social / recovery days. Boosts glutathione — your liver's primary detox molecule.\n\nEspecially effective at clearing acetaldehyde (the hangover compound). Stack with **Vitamin C 500mg** for best effect.";
       if (m.match(/sleep|bed|rest|rem/)) return plans?`Tonight: lights out ${plans.bedtime}, target ${plans.sleepTarget} hrs. ${plans.sleepNote}`:"Check in to get your sleep protocol for tonight.";
       if (m.match(/stress|cortisol/)) return checkinAns.stress>=4?"High stress detected. Ashwagandha is queued, training is dialled back, and your wind-down starts earlier tonight. Cortisol is the primary enemy of your goals right now.":"Stress looks manageable today — proceed with your standard plan.";
       if (m.match(/social|drink|hangover|alcohol/)) return plans?.socialPlan.socialLevel!=="none"?`You logged a ${plans.socialPlan.socialBadge} last night. ${plans.socialPlan.socialNote} Check the Social Recovery card on your plan.`:"No social activity logged last night. If that changes, redo your check-in.";
@@ -2078,44 +3237,141 @@
       return "Good question — try asking me about your workout, weight targets, calories, supplements, sleep, or recovery. I know your plan inside out.";
     }
     function ChatScreen({plans, checkinAns, overallPct, profile, onBack}) {
-      const [msgs, setMsgs] = useState([{from:"sana",text:`Hey${profile?.name?" "+profile.name:""}! I'm your Sana guide — ask me about your workout, calorie targets, weight goals, supplements, sleep, or recovery.`}]);
+      const [msgs, setMsgs] = useState([{from:"sana",text:`Hey${profile?.name?" "+profile.name:""}! I'm your Sana guide — ask me about your workout, calorie targets, weight goals, supplements, sleep, or recovery.`,chips:["What's my workout?","Calorie target","How much protein?","Tell me about creatine"]}]);
       const [input, setInput] = useState("");
+      const [isTyping, setIsTyping] = useState(false);
       const bottom = useRef(null);
-      const send = () => {
-        if(!input.trim()) return;
-        const userMsg = {from:"user",text:input.trim()};
-        const reply   = {from:"sana",text:getReply(input.trim(),plans,checkinAns,overallPct,profile)};
-        setMsgs(p=>[...p,userMsg,reply]);
-        setInput("");
-        setTimeout(()=>bottom.current?.scrollIntoView({behavior:"smooth"}),50);
+
+      const FOLLOW_UPS = {
+        workout: ["How many sets?","What weight should I use?","Can I swap an exercise?","What if I'm sore?"],
+        calorie: ["What's my protein target?","Should I eat back workout cals?","Best meals for my goal?","What about cheat days?"],
+        protein: ["Best protein sources?","Do I need a shake?","When should I eat protein?","What about protein before bed?"],
+        creatine: ["When do I take it?","Does creatine cause bloating?","Should I cycle it?","What about loading phase?"],
+        sleep: ["Best wind-down routine?","What affects sleep quality?","Should I nap?","What about melatonin?"],
+        stress: ["How does stress affect gains?","Tell me about ashwagandha","How do I lower cortisol?","Training while stressed?"],
+        supplement: ["Tell me about creatine","Tell me about magnesium","Tell me about vitamin D","Tell me about NAC"],
+        energy: ["Low energy training tips","Best pre-workout foods?","When should I train?","Tell me about caffeine"],
+        weight: ["How do I track progress?","When will I see results?","Should I weigh daily?","What's realistic?"],
+        default: ["What's my workout?","Calorie target","Sleep protocol","Tell me about creatine"],
       };
-      const quick = ["What's my workout?","What's my calorie target?","How much protein do I need?","Tell me about creatine","How do I sleep better?"];
+
+      const getFollowUps = (msg) => {
+        const m = msg.toLowerCase();
+        if (m.match(/workout|train|exercise|gym|lift/)) return FOLLOW_UPS.workout;
+        if (m.match(/calori|tdee|deficit|surplus/)) return FOLLOW_UPS.calorie;
+        if (m.match(/protein|macro/)) return FOLLOW_UPS.protein;
+        if (m.match(/creatine/)) return FOLLOW_UPS.creatine;
+        if (m.match(/sleep|bed|rest|rem/)) return FOLLOW_UPS.sleep;
+        if (m.match(/stress|cortisol/)) return FOLLOW_UPS.stress;
+        if (m.match(/supplement|vitamin|magnesium|nac|ashwa/)) return FOLLOW_UPS.supplement;
+        if (m.match(/energy|tired|exhaust/)) return FOLLOW_UPS.energy;
+        if (m.match(/weight|pound|kg|lb/)) return FOLLOW_UPS.weight;
+        return FOLLOW_UPS.default;
+      };
+
+      const renderText = (text) => text.split('\n').map((line,i,arr)=>(
+        <span key={i}>
+          {line.split(/\*\*(.+?)\*\*/).map((part,j)=>j%2===1
+            ?<strong key={j} style={{color:"#a5b4fc",fontWeight:700}}>{part}</strong>
+            :part
+          )}
+          {i<arr.length-1&&<br/>}
+        </span>
+      ));
+
+      const send = (txt) => {
+        const q = (txt||input).trim();
+        if(!q) return;
+        setMsgs(p=>[...p,{from:"user",text:q}]);
+        setInput("");
+        setIsTyping(true);
+        const delay = 500 + Math.min(q.length*8, 900);
+        setTimeout(()=>{
+          const replyText = getReply(q,plans,checkinAns,overallPct,profile);
+          setMsgs(p=>[...p,{from:"sana",text:replyText,chips:getFollowUps(q)}]);
+          setIsTyping(false);
+          setTimeout(()=>bottom.current?.scrollIntoView({behavior:"smooth"}),50);
+        }, delay);
+      };
+
+      const lastChips = msgs.filter(m=>m.from==="sana"&&m.chips).slice(-1)[0]?.chips||[];
+
       return (
         <div style={{background:D.bg,minHeight:720,display:"flex",flexDirection:"column"}}>
-          <div style={{padding:"16px 20px 12px",borderBottom:`0.5px solid ${D.border}`,display:"flex",alignItems:"center",gap:12}}>
-            <div style={{width:32,height:32,borderRadius:"50%",background:`linear-gradient(135deg,${D.blueMid},${D.indigo})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,color:"#fff"}}>S</div>
-            <div>
-              <div style={{fontSize:14,fontWeight:600,color:D.text}}>Sana Guide</div>
-              <div style={{fontSize:11,color:D.green}}>● Online</div>
+          {/* Header */}
+          <div style={{padding:"14px 18px 12px",borderBottom:`0.5px solid ${D.border}`,display:"flex",alignItems:"center",gap:12}}>
+            <div style={{position:"relative"}}>
+              <div style={{width:36,height:36,borderRadius:"50%",background:`linear-gradient(135deg,${D.blueMid},${D.indigo})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:700,color:"#fff",letterSpacing:"-0.5px"}}>S</div>
+              <div style={{position:"absolute",bottom:0,right:0,width:10,height:10,borderRadius:"50%",background:"#10b981",border:`2px solid ${D.bg}`}}/>
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:14,fontWeight:700,color:D.text}}>Sana Guide</div>
+              <div style={{fontSize:10,color:"#10b981",display:"flex",alignItems:"center",gap:4}}>
+                <span style={{width:5,height:5,borderRadius:"50%",background:"#10b981",display:"inline-block"}}/>
+                {isTyping?"thinking...":"online · knows your full plan"}
+              </div>
             </div>
           </div>
-          <div style={{flex:1,overflowY:"auto",padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+
+          {/* Messages */}
+          <div style={{flex:1,overflowY:"auto",padding:"12px 14px",display:"flex",flexDirection:"column",gap:8}}>
             {msgs.map((m,i)=>(
-              <div key={i} style={{display:"flex",justifyContent:m.from==="user"?"flex-end":"flex-start"}}>
-                <div style={{maxWidth:"82%",padding:"10px 13px",borderRadius:m.from==="user"?"14px 14px 2px 14px":"14px 14px 14px 2px",background:m.from==="user"?D.blueMid:D.card,border:m.from==="sana"?`0.5px solid ${D.border}`:"none",fontSize:13,color:D.text,lineHeight:1.55}}>{m.text}</div>
+              <div key={i} style={{display:"flex",justifyContent:m.from==="user"?"flex-end":"flex-start",alignItems:"flex-end",gap:6}}>
+                {m.from==="sana"&&<div style={{width:24,height:24,borderRadius:"50%",background:`linear-gradient(135deg,${D.blueMid},${D.indigo})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,color:"#fff",flexShrink:0,marginBottom:2}}>S</div>}
+                <div style={{maxWidth:"80%",padding:"10px 13px",
+                  borderRadius:m.from==="user"?"16px 16px 4px 16px":"4px 16px 16px 16px",
+                  background:m.from==="user"?`linear-gradient(135deg,${D.blueMid},${D.indigo})`:D.card,
+                  border:m.from==="sana"?`0.5px solid ${D.border}`:"none",
+                  fontSize:12,color:D.text,lineHeight:1.6,
+                  boxShadow:m.from==="user"?"0 2px 12px rgba(37,99,235,0.25)":"none"}}>
+                  {renderText(m.text)}
+                </div>
               </div>
             ))}
+
+            {/* Typing indicator */}
+            {isTyping&&(
+              <div style={{display:"flex",alignItems:"flex-end",gap:6}}>
+                <div style={{width:24,height:24,borderRadius:"50%",background:`linear-gradient(135deg,${D.blueMid},${D.indigo})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,color:"#fff",flexShrink:0}}>S</div>
+                <div style={{padding:"10px 14px",background:D.card,border:`0.5px solid ${D.border}`,borderRadius:"4px 16px 16px 16px",display:"flex",gap:5,alignItems:"center"}}>
+                  {[0,1,2].map(i=>(
+                    <div key={i} style={{width:6,height:6,borderRadius:"50%",background:"#4b6090",
+                      animation:`pulse 1.2s ease-in-out ${i*0.2}s infinite`}}/>
+                  ))}
+                </div>
+              </div>
+            )}
             <div ref={bottom}/>
           </div>
-          {msgs.length<=1&&(
-            <div style={{padding:"0 16px 10px",display:"flex",gap:6,flexWrap:"wrap"}}>
-              {quick.map((q,i)=><div key={i} onClick={()=>{setInput(q);}} style={{fontSize:11,padding:"6px 12px",background:D.card,border:`0.5px solid ${D.border2}`,borderRadius:D.r99,cursor:"pointer",color:D.accent}}>{q}</div>)}
+
+          {/* Contextual quick-reply chips */}
+          {!isTyping&&lastChips.length>0&&(
+            <div style={{padding:"0 14px 8px",display:"flex",gap:5,flexWrap:"wrap"}}>
+              {lastChips.map((q,i)=>(
+                <div key={i} onClick={()=>send(q)}
+                  style={{fontSize:10,padding:"5px 10px",background:"rgba(37,99,235,0.08)",
+                    border:`0.5px solid rgba(99,102,241,0.3)`,borderRadius:99,
+                    cursor:"pointer",color:D.accent,transition:"all .15s",
+                    fontFamily:"inherit"}}>
+                  {q}
+                </div>
+              ))}
             </div>
           )}
-          <div style={{padding:"10px 14px",borderTop:`0.5px solid ${D.border}`,display:"flex",gap:8}}>
-            <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()} placeholder="Ask anything about your plan..."
-              style={{flex:1,padding:"11px 14px",background:D.card,border:`0.5px solid ${D.border2}`,borderRadius:D.r99,fontSize:13,color:D.text,outline:"none",fontFamily:"inherit"}}/>
-            <button onClick={send} style={{width:40,height:40,borderRadius:"50%",background:D.blueMid,border:"none",cursor:"pointer",fontSize:16,color:"#fff",flexShrink:0}}>↑</button>
+
+          {/* Input */}
+          <div style={{padding:"8px 12px 10px",borderTop:`0.5px solid ${D.border}`,display:"flex",gap:8}}>
+            <input value={input} onChange={e=>setInput(e.target.value)}
+              onKeyDown={e=>e.key==="Enter"&&!isTyping&&send()}
+              placeholder="Ask anything about your plan..."
+              style={{flex:1,padding:"11px 14px",background:D.card,
+                border:`0.5px solid ${D.border2}`,borderRadius:99,
+                fontSize:12,color:D.text,outline:"none",fontFamily:"inherit"}}/>
+            <button onClick={()=>send()} disabled={isTyping}
+              style={{width:38,height:38,borderRadius:"50%",
+                background:isTyping?"rgba(36,51,82,0.5)":`linear-gradient(135deg,${D.blueMid},${D.indigo})`,
+                border:"none",cursor:isTyping?"default":"pointer",fontSize:15,
+                color:"#fff",flexShrink:0,transition:"all .2s"}}>↑</button>
           </div>
         </div>
       );
@@ -2706,6 +3962,57 @@
     }
 
     ReactDOM.createRoot(document.getElementById('root')).render(<SanaCheckInV2 />);
+  </script>
+
+  <script>
+    /* ── CURSOR GLOW ── */
+    const glow = document.getElementById('cursorGlow');
+    let mx = -999, my = -999;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      glow.style.left = mx + 'px';
+      glow.style.top  = my + 'px';
+    });
+    document.addEventListener('mouseleave', () => glow.style.opacity = '0');
+    document.addEventListener('mouseenter', () => glow.style.opacity = '1');
+
+    /* ── SCROLL REVEAL ── */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* Trigger hero reveals immediately since they're in viewport */
+    setTimeout(() => {
+      document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+    }, 100);
+
+    /* ── NAV SCROLL STATE ── */
+    const nav = document.querySelector('.site-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    /* ── TILT ON CARDS ── */
+    document.querySelectorAll('.step-card, .mini-card, .pillar-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width  - 0.5;
+        const y = (e.clientY - rect.top)  / rect.height - 0.5;
+        card.style.transform = `translateY(-4px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
+        card.style.transition = 'transform 0.1s ease';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.4s cubic-bezier(0.16,1,0.3,1)';
+      });
+    });
   </script>
 </body>
 </html>
