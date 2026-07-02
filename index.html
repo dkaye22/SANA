@@ -2849,9 +2849,10 @@
       );
     }
 
-    function PostCheckinPlan({checkinAns, userProfile, wearable, plans, checkedItems, onCheck, swaps, onSwap, onDone, onStartWorkout}) {
+    function PostCheckinPlan({checkinAns, userProfile, wearable, plans, checkedItems, onCheck, swaps, onSwap, onDone, onStartWorkout, todayWorkout}) {
       const T = React.useContext(ThemeCtx);
       const [activePillar, setActivePillar] = useState(null);
+      const [reviewOpen,   setReviewOpen]   = useState(false);
       const {trainSession,trainNote,trainExercises,calToday,protToday,carbNote,meals,nutritionNote,suppSchedule,suppNote,suppRecommendations,sleepTarget,bedtime,winddown,sleepNote,sleepGoalNote,sleepSexNote,lowR,hiS,great,socialPlan} = plans;
       const f    = userProfile.sex === "Female";
       const name = userProfile.name || "there";
@@ -2970,6 +2971,39 @@
                   </svg>
                   Start Workout — sets, reps &amp; rest timer
                 </button>
+                {/* Review today's workout */}
+                {todayWorkout&&(
+                  <div style={{marginBottom:10,borderRadius:T.r8,border:`0.5px solid ${T.trainAc}40`,overflow:"hidden"}}>
+                    <div onClick={()=>setReviewOpen(o=>!o)}
+                      style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 12px",background:`${T.trainAc}10`,cursor:"pointer"}}>
+                      <div style={{display:"flex",alignItems:"center",gap:7}}>
+                        <SvgIcon name="trophy" size={13} color={T.trainAc}/>
+                        <span style={{fontSize:12,fontWeight:600,color:T.trainAc}}>Review today's workout</span>
+                      </div>
+                      <span style={{color:T.trainAc,fontSize:14,transform:reviewOpen?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
+                    </div>
+                    {reviewOpen&&todayWorkout.exercises?.map((exData,ei)=>(
+                      <div key={ei} style={{borderTop:`0.5px solid ${T.border}`,padding:"10px 12px",background:T.card}}>
+                        <div style={{fontSize:11,fontWeight:600,color:T.text,marginBottom:exData.sets?.some(s=>s.weight||s.reps)?6:0}}>{exData.name}</div>
+                        {exData.sets?.some(s=>s.weight||s.reps)&&(
+                          <div style={{display:"grid",gridTemplateColumns:"28px 1fr 1fr",gap:"3px 8px",marginBottom:exData.notes?6:0}}>
+                            <div style={{fontSize:9,color:T.text3}}>Set</div>
+                            <div style={{fontSize:9,color:T.text3}}>Weight</div>
+                            <div style={{fontSize:9,color:T.text3}}>Reps</div>
+                            {exData.sets.map((s,si)=>(
+                              <React.Fragment key={si}>
+                                <div style={{fontSize:11,color:T.text2,lineHeight:"18px"}}>{si+1}</div>
+                                <div style={{fontSize:11,color:s.weight?T.trainAc:T.text3,fontWeight:s.weight?500:400,lineHeight:"18px"}}>{s.weight||"—"}</div>
+                                <div style={{fontSize:11,color:s.reps?T.text:T.text3,lineHeight:"18px"}}>{s.reps||"—"}</div>
+                              </React.Fragment>
+                            ))}
+                          </div>
+                        )}
+                        {exData.notes&&<div style={{fontSize:11,color:T.text2,fontStyle:"italic",lineHeight:1.5,borderTop:exData.sets?.some(s=>s.weight||s.reps)?`0.5px solid ${T.border}`:"none",paddingTop:exData.sets?.some(s=>s.weight||s.reps)?5:0,marginTop:exData.sets?.some(s=>s.weight||s.reps)?4:0}}>{exData.notes}</div>}
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div style={{padding:"9px 11px",background:T.blueSoft,border:`0.5px solid ${T.border2}`,borderRadius:T.r8}}>
                   <div style={{fontSize:10,fontWeight:500,color:T.accent,marginBottom:3}}>The science</div>
                   <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{lowR&&hiS?"Cortisol rises sharply when you train hard under accumulated stress — lighter work protects the adaptation from your last session.":great?"High energy + low soreness + good sleep = maximum anabolic environment. Don't waste it.":"Consistent work at moderate intensity compounds over weeks. Today's session matters."}</div>
@@ -5225,7 +5259,7 @@ BEHAVIOUR:
       return 60;
     }
 
-    function WorkoutTimer({ exercises, onClose }) {
+    function WorkoutTimer({ exercises, onClose, onComplete }) {
       const T = React.useContext(ThemeCtx);
       const [exIdx,          setExIdx]          = useState(0);
       const [activeSet,      setActiveSet]      = useState(1);
@@ -5357,7 +5391,7 @@ BEHAVIOUR:
             <div style={{flex:1,overflowY:"auto",padding:"16px 20px 28px"}}>
               <div style={{textAlign:"center",paddingBottom:16,marginBottom:16,borderBottom:`0.5px solid ${T.border}`}}>
                 <div style={{fontSize:13,color:T.text2,marginBottom:16}}>All {exercises.length} exercises done. Great work.</div>
-                <button onClick={onClose} style={{padding:"13px 36px",background:T.green,border:"none",borderRadius:T.r12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer"}}>Done ✓</button>
+                <button onClick={onComplete||onClose} style={{padding:"13px 36px",background:T.green,border:"none",borderRadius:T.r12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer"}}>Done ✓</button>
               </div>
               {hasLog&&(
                 <>
@@ -5668,6 +5702,7 @@ BEHAVIOUR:
       const [lightMode,    setLightMode]    = useState(()=>localStorage.getItem("sana_theme")==="light");
       const [floatChat,    setFloatChat]    = useState(false);
       const [workoutOpen,  setWorkoutOpen]  = useState(false);
+      const [todayWorkout, setTodayWorkout] = useState(null);
       const T = lightMode ? D_LIGHT : D;
       const toggleTheme = () => {
         const n = !lightMode;
@@ -6014,6 +6049,7 @@ BEHAVIOUR:
                   onSwap={handleSwap}
                   onDone={()=>navigate("home")}
                   onStartWorkout={()=>setWorkoutOpen(true)}
+                  todayWorkout={todayWorkout}
                 />
               ) : (
                 <div style={{padding:"40px 20px",textAlign:"center"}}>
@@ -6061,7 +6097,20 @@ BEHAVIOUR:
 
           {/* ── Workout Timer overlay ── */}
           {workoutOpen&&plans&&(
-            <WorkoutTimer exercises={plans.trainExercises} onClose={()=>setWorkoutOpen(false)}/>
+            <WorkoutTimer
+              exercises={plans.trainExercises}
+              onClose={()=>setWorkoutOpen(false)}
+              onComplete={()=>{
+                // Mark every exercise as checked
+                plans.trainExercises.forEach((_,i) => handleCheck(`train_${i}`, true));
+                // Grab the just-saved session from localStorage
+                try {
+                  const h = JSON.parse(localStorage.getItem("sana_workout_history")||"[]");
+                  if (h[0]) setTodayWorkout(h[0]);
+                } catch {}
+                setWorkoutOpen(false);
+              }}
+            />
           )}
         </div>
         </SetThemeCtx.Provider>
