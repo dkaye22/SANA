@@ -2465,46 +2465,103 @@
             ? `Good sleep last night. Keep the same bedtime — consistency compounds. ${sleepGoalNote}`
             : `Close to target. One more consistent night moves you into the range where recovery compounds. ${sleepGoalNote}`;
 
-      // ── SOCIAL ──
-      const socialLevel = ans.social || "none";
+      // ── SOCIAL (personalised) ──
+      const socialLevel  = ans.social || "none";
       const socialLabels = {none:"Quiet night",light:"Light social",moderate:"Night out",heavy:"Big night"};
       const socialBadge  = socialLabels[socialLevel];
+
+      const noEgg     = ["vegan","vegetarian"].includes(dietKey);
+      const noBroth   = ["vegan","vegetarian","pescatarian"].includes(dietKey);
+      const eggItem   = noEgg
+        ? "Tofu scramble or tempeh — plant-based protein + amino acids for liver support"
+        : "Eggs first — cysteine in eggs directly neutralises acetaldehyde, the main toxic byproduct";
+      const brothItem = noBroth
+        ? (dietKey==="vegan"||dietKey==="vegetarian" ? "Miso soup — plant-based electrolytes, easy on the gut" : null)
+        : "Bone broth if available — collagen, electrolytes, gentle on the stomach";
+      const lunchItem = dietKey==="vegan"      ? "Lunch: lentils or chickpeas with rice — restores glycogen and amino acids"
+        : dietKey==="vegetarian" ? "Lunch: eggs or tofu with sweet potato — restores glycogen and protein"
+        : dietKey==="pescatarian"? "Lunch: salmon with rice — omega-3 anti-inflammatory + full amino acid profile"
+        : "Lunch: chicken or salmon with rice — restores glycogen and amino acids efficiently";
+
+      const hasMgSupp   = userSupps.includes("magnesium");
+      const hasB12Supp  = userSupps.includes("b12") || userSupps.includes("multi");
+      const hasVitCSupp = userSupps.includes("multi");
+      const hasOmega3   = userSupps.includes("omega3");
+      const hasCreatine = userSupps.includes("creatine");
+
       const socialHydration = {
-        none:    ["Drink 500ml water first thing — keeps everything running well today"],
+        none:    ["Drink 500 ml water first thing — keeps everything running smoothly"],
         light:   ["Add one extra glass of water or coconut water this morning","Even 1–2 drinks nudge dehydration — a small top-up helps"],
-        moderate:["500ml water + electrolytes within 30 min of waking — this is step one","Coconut water or an electrolyte tablet works better than plain water right now","Keep sipping through the morning — aim for 2L by noon"],
+        moderate:["500 ml water + electrolytes within 30 min of waking — this is step one","Coconut water or an electrolyte tablet works better than plain water right now","Keep sipping through the morning — aim for 2L by noon"],
         heavy:   ["1 litre of water + electrolytes as soon as you wake — before coffee, before anything","Sip steadily — don't chug, your stomach lining needs gentleness right now","Target 3L total today. Your kidneys worked overtime last night."],
       }[socialLevel];
+
       const socialFood = {
         none:    [],
-        light:   ["Eggs this morning — cysteine in eggs helps clear residual acetaldehyde","Banana for potassium — even light alcohol depletes electrolytes"],
-        moderate:["Eggs first — cysteine is the most effective natural recovery food","Banana + avocado for potassium and healthy fats to stabilise blood sugar","Ginger tea if your stomach is unsettled — genuinely reduces nausea","Lunch: salmon or chicken with rice restores glycogen and amino acids efficiently"],
-        heavy:   ["Start with bland carbs — toast or plain oats, let your stomach settle for 20 min","Then eggs within an hour — cysteine directly neutralises acetaldehyde, the main toxic byproduct","Banana + avocado — potassium and magnesium were heavily depleted","Avoid greasy food (it's a myth). Protein + complex carbs are what actually help.","Bone broth if available — collagen, electrolytes, and easy on the gut"],
+        light:   [
+          noEgg ? "High-protein breakfast — tofu, tempeh or chickpeas give you the amino acid support" : "Eggs this morning — cysteine in eggs helps clear residual acetaldehyde",
+          "Banana for potassium — even light alcohol depletes electrolytes",
+        ],
+        moderate:[
+          eggItem,
+          "Banana + avocado for potassium and healthy fats to stabilise blood sugar",
+          "Ginger tea if your stomach is unsettled — genuinely reduces nausea",
+          lunchItem,
+        ],
+        heavy:   [
+          "Start with bland carbs — toast or plain oats, let your stomach settle for 20 min",
+          eggItem,
+          "Banana + avocado — potassium and magnesium were heavily depleted last night",
+          "Avoid greasy food (it's a myth). Protein + complex carbs are what actually help.",
+          ...(brothItem ? [brothItem] : []),
+        ],
       }[socialLevel];
+
       const socialSupps = {
         none:    [],
-        light:   ["Vitamin C · 500mg — light antioxidant support, minor but helpful"],
-        moderate:["B-complex · 1 tablet — alcohol depletes B1, B6, B12 directly","Vitamin C · 1g — supports liver detox pathways","Magnesium glycinate · 200mg this morning — alcohol suppresses magnesium absorption"],
-        heavy:   ["B-complex · 1 tablet — take immediately, B vitamins are the first thing depleted","NAC (N-Acetylcysteine) · 600mg — boosts glutathione, the liver's primary detox molecule","Vitamin C · 1g — antioxidant support while your body is still processing","Electrolyte tablet or powder — sodium, potassium, magnesium all need replenishing","Skip creatine today — your kidneys are already working hard"],
+        light:   [
+          hasVitCSupp ? "Multivitamin · your usual dose — the Vitamin C in it is helpful today" : "Vitamin C · 500mg — light antioxidant support",
+          ...(hasMgSupp ? ["Your magnesium glycinate tonight — even light alcohol suppresses magnesium absorption"] : []),
+        ],
+        moderate:[
+          hasB12Supp ? "B-complex or B12 · your usual dose — alcohol depletes B1, B6, B12 directly" : "B-complex · 1 tablet — alcohol depletes B1, B6, B12 directly",
+          hasVitCSupp ? "Vitamin C from your multivitamin — take it with breakfast today" : "Vitamin C · 1g — supports liver detox pathways",
+          hasMgSupp ? "Magnesium glycinate · take it at 8 PM tonight, earlier than usual — alcohol suppresses absorption" : "Magnesium glycinate · 200mg — alcohol depletes magnesium; this is a high-value addition today",
+          ...(hasOmega3 ? ["Omega-3 · your usual dose — anti-inflammatory, especially relevant after alcohol"] : []),
+        ],
+        heavy:   [
+          hasB12Supp ? "B-complex or B12 · take it first thing — this is its most important day" : "B-complex · 1 tablet — take immediately, B vitamins are the first thing alcohol depletes",
+          "NAC (N-Acetylcysteine) · 600mg — boosts glutathione, the liver's primary detox molecule. Most impactful supplement today.",
+          hasVitCSupp ? "Vitamin C from your multivitamin — take now alongside NAC" : "Vitamin C · 1g — antioxidant support while your body is still clearing alcohol",
+          "Electrolyte tablet or powder — sodium, potassium, magnesium all need replenishing",
+          ...(hasCreatine ? ["Skip creatine today — your kidneys are already working hard"] : []),
+        ],
       }[socialLevel];
-      const socialTrain = {
-        none:    "Proceed as planned — you're in great shape for today's session.",
-        light:   "Proceed as planned. One or two drinks don't meaningfully affect performance.",
-        moderate:"Reduce session intensity by ~20%. Skip max-effort sets. A solid moderate session today is smarter than a hard one.",
-        heavy:   "Rest day or a gentle 20-min walk only. Training hard when acutely hungover spikes cortisol and increases muscle damage — counterproductive. Rest today, attack tomorrow.",
-      }[socialLevel];
-      const socialSleep = {
-        none:    "Normal sleep routine tonight. You're set up well.",
-        light:   "Stick to your usual bedtime. Even light alcohol can fragment REM — keep the wind-down protocol.",
-        moderate:"Prioritise an earlier bedtime tonight — aim for 9:30 PM. Alcohol suppresses REM significantly.",
-        heavy:   "Early bed is non-negotiable tonight — 9:00 PM, aim for 9+ hours. Tonight is where real recovery happens.",
-      }[socialLevel];
-      const socialNote = {
-        none:    "You gave your body space to rest. Stack that with a good day today and you're in a great position.",
-        light:   "You kept it social and balanced — that's exactly right. Minor optimization only today.",
-        moderate:"You had a good night. The goal today isn't damage control — it's systematic recovery so you're back at full capacity tomorrow.",
-        heavy:   "Big night — it happens. Hydration and B vitamins first, food within the hour, rest today, early bed tonight. You'll feel meaningfully better by 3 PM.",
-      }[socialLevel];
+
+      const socialTrain = socialLevel==="none"
+        ? `Proceed as planned — you're in great shape for today${wantMass?" strength session":goal==="cardio"?" cardio session":" session"}.`
+        : socialLevel==="light"
+          ? `Proceed as planned. ${wantMass?"One or two drinks don't meaningfully affect protein synthesis or strength performance.":goal==="lean_cut"?"One or two drinks add ~150 kcal to yesterday but don't affect today's training output.":"One or two drinks don't meaningfully affect performance."}`
+          : socialLevel==="moderate"
+            ? `Reduce intensity by ~20% and skip max-effort sets. ${wantMass?"Cortisol is elevated and protein synthesis is suppressed by alcohol — volume beats intensity today.":goal==="cardio"?"Zone 2 only if you train at all — lactic threshold is compromised for 24 hrs after moderate drinking.":"A solid moderate session today is smarter than a hard one."}`
+            : `Rest day or 20-min easy walk only. ${wantMass?`Alcohol suppresses testosterone and protein synthesis for up to 24 hours — training hard now directly opposes your ${goal==="bulk"?"bulk":"lean bulk"} goal.`:goal==="lean_cut"?"Training hard today breaks down more muscle than fat — rest today and hit tomorrow hard.":"Training hard while acutely hungover spikes cortisol significantly. Rest today, attack tomorrow."}`;
+
+      const socialSleep = socialLevel==="none"
+        ? `Normal sleep routine tonight. ${wantMass?"Consistent sleep is where the muscle is built.":"You're set up well."}`
+        : socialLevel==="light"
+          ? `Stick to your usual bedtime. ${f?"Alcohol can disturb oestrogen metabolism overnight — the wind-down protocol matters more than usual tonight.":"Even light alcohol fragments REM by up to 25%. Keep the wind-down protocol."}`
+          : socialLevel==="moderate"
+            ? `Earlier bedtime tonight — aim for 9:30 PM. ${f?"Oestrogen and progesterone recovery is sleep-dependent. Your hormones tonight need the extra hours.":"Alcohol suppresses REM significantly and lowers testosterone for up to 24 hrs — earlier bed is your highest-leverage move."}`
+            : `9:00 PM bedtime, aim for 9+ hours — non-negotiable tonight. ${f?"Your hormonal recovery is entirely sleep-gated.":wantMass?"Testosterone suppression from alcohol lasts up to 24 hrs. Tonight's sleep is where you take that back.":"Sleep is where the real recovery happens. Everything else today is preparation for tonight."}`;
+
+      const socialNote = socialLevel==="none"
+        ? `Clean night — you gave your body space to rest. ${wantMass?"Stack that with a strong training day and you're building momentum.":goal==="lean_cut"?"Caloric discipline holds — you're in a great position today.":"You're set up well for a solid day."}`
+        : socialLevel==="light"
+          ? `One or two drinks — totally manageable. ${f?"Sleep quality is the main variable for your hormones tonight. Keep the wind-down.":"Your cortisol and testosterone will be back to baseline well before you need them."}  Minor optimisation only.`
+          : socialLevel==="moderate"
+            ? `A real night out. The goal today isn't guilt — it's systematic recovery so you're at full capacity tomorrow. ${wantMass?"Protein and hydration are the two levers that move the needle most today.":goal==="lean_cut"?"Alcohol calories are done — today is about clean nutrition and recovery, not restriction.":"Hydration, protein, and rest are the three things that actually matter today."}`
+            : `Big night — everyone has them. ${wantMass?"Protein intake and hydration are especially critical right now — MPS is suppressed and muscle breakdown is elevated.":goal==="lean_cut"?"Keep food clean today — alcohol already created a surplus.":"Hydrate, eat protein, rest."} You'll feel significantly better by 3 PM.`;
+
       const socialPlan = {socialLevel,socialBadge,socialHydration,socialFood,socialSupps,socialTrain,socialSleep,socialNote};
 
       return {trainSession,trainNote,trainExercises,calToday,protToday,carbNote,meals,nutritionNote,suppSchedule,suppNote,suppRecommendations,sleepTarget,bedtime,winddown,sleepNote,sleepGoalNote,sleepSexNote,lowR,hiS,great,socialPlan};
@@ -2890,7 +2947,7 @@
                 {trainExercises.map((ex,i)=>(
                   <ExerciseRow key={i} ex={ex} idx={i} isChecked={!!checkedItems[`train_${i}`]} onToggle={onCheck} onSwap={onSwap}/>
                 ))}
-                <button onClick={onStartWorkout}
+                <button onClick={()=>{setActivePillar(null);onStartWorkout();}}
                   style={{width:"100%",marginTop:4,marginBottom:12,padding:"13px",
                     background:`linear-gradient(135deg,${T.trainAc},${T.blueMid})`,
                     border:"none",borderRadius:T.r12,color:"#fff",fontSize:13,fontWeight:700,
@@ -5099,10 +5156,13 @@ BEHAVIOUR:
 
     function WorkoutTimer({ exercises, onClose }) {
       const T = React.useContext(ThemeCtx);
-      const [exIdx,  setExIdx]  = useState(0);
-      const [setNum, setSetNum] = useState(1);
-      const [phase,  setPhase]  = useState("ready");
-      const [secs,   setSecs]   = useState(0);
+      const [exIdx,    setExIdx]    = useState(0);
+      const [setNum,   setSetNum]   = useState(1);
+      const [phase,    setPhase]    = useState("ready");
+      const [secs,     setSecs]     = useState(0);
+      const [setLogs,  setSetLogs]  = useState({}); // key: "exIdx_setNum" → {weight, rpe}
+      const [exNotes,  setExNotes]  = useState({}); // key: exIdx → note string
+      const [showLog,  setShowLog]  = useState(false);
       const timerRef = useRef(null);
       const stateRef = useRef({ exIdx:0, setNum:1 });
 
@@ -5112,7 +5172,8 @@ BEHAVIOUR:
 
       const ex        = exercises?.[exIdx];
       const totalSets = Math.max(1, parseInt(ex?.sets) || 3);
-      const restSecs  = parseRestSecs(ex?.rest);
+      const logKey    = `${exIdx}_${setNum}`;
+      const currLog   = setLogs[logKey] || {};
 
       const stop = () => clearInterval(timerRef.current);
 
@@ -5120,44 +5181,74 @@ BEHAVIOUR:
         const lastSet = sn >= Math.max(1, parseInt(exercises?.[ei]?.sets) || 3);
         const lastEx  = ei >= (exercises?.length || 1) - 1;
         if (lastSet && lastEx) { setPhase("done"); return; }
-        if (lastSet) { setExIdx(ei + 1); setSetNum(1); stateRef.current = {exIdx:ei+1, setNum:1}; }
-        else         { setSetNum(sn + 1); stateRef.current.setNum = sn + 1; }
+        if (lastSet) { setExIdx(ei+1); setSetNum(1); stateRef.current = {exIdx:ei+1,setNum:1}; setShowLog(false); }
+        else         { setSetNum(sn+1); stateRef.current.setNum = sn+1; }
         setPhase("ready");
       };
 
-      const startSet = () => {
-        stop(); setSecs(0); setPhase("working");
-        let s = 0;
-        timerRef.current = setInterval(() => { s++; setSecs(s); }, 1000);
-      };
+      const startSet = () => { stop(); setSecs(0); setPhase("working"); let s=0; timerRef.current=setInterval(()=>{s++;setSecs(s);},1000); };
 
       const completeSet = () => {
         stop();
         const rest = parseRestSecs(exercises?.[stateRef.current.exIdx]?.rest);
         setSecs(rest); setPhase("resting");
         let r = rest;
-        timerRef.current = setInterval(() => {
-          r--; setSecs(r);
-          if (r <= 0) { stop(); doAdvance(stateRef.current.exIdx, stateRef.current.setNum); }
-        }, 1000);
+        timerRef.current = setInterval(()=>{ r--; setSecs(r); if(r<=0){stop();doAdvance(stateRef.current.exIdx,stateRef.current.setNum);} },1000);
       };
 
       const skipRest = () => { stop(); doAdvance(stateRef.current.exIdx, stateRef.current.setNum); };
-
       const fmt = s => `${String(Math.floor(Math.abs(s)/60)).padStart(2,"0")}:${String(Math.abs(s)%60).padStart(2,"0")}`;
 
+      const updateLog = (field, val) => setSetLogs(p=>({...p,[logKey]:{...p[logKey],[field]:val}}));
+      const updateNote = val => setExNotes(p=>({...p,[exIdx]:val}));
+
+      const hasAnyLog = Object.keys(setLogs).some(k=>setLogs[k].weight||setLogs[k].rpe) || Object.values(exNotes).some(Boolean);
+
+      const inputStyle = {
+        padding:"8px 10px",background:T.card2,border:`0.5px solid ${T.border2}`,
+        borderRadius:T.r8,color:T.text,fontSize:12,outline:"none",fontFamily:"inherit",
+      };
+
       return (
-        <div style={{position:"absolute",inset:0,zIndex:60,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
+        <div style={{position:"absolute",inset:0,zIndex:90,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
           <div onClick={onClose} style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.65)",backdropFilter:"blur(4px)"}}/>
-          <div style={{position:"relative",background:T.card,borderRadius:"22px 22px 0 0",padding:"8px 20px 36px",zIndex:1,maxHeight:"85%",overflowY:"auto"}}>
+          <div style={{position:"relative",background:T.card,borderRadius:"22px 22px 0 0",padding:"8px 20px 36px",zIndex:1,maxHeight:"90%",overflowY:"auto"}}>
             <div style={{width:36,height:4,background:T.border2,borderRadius:2,margin:"8px auto 18px"}}/>
 
             {phase==="done" ? (
-              <div style={{textAlign:"center",padding:"24px 0 8px"}}>
-                <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><SvgIcon name="trophy" size={44} color={T.green}/></div>
-                <div style={{fontSize:20,fontWeight:700,color:T.green,marginBottom:6}}>Workout complete!</div>
-                <div style={{fontSize:12,color:T.text2,marginBottom:24}}>All {exercises.length} exercises done. Great work.</div>
-                <button onClick={onClose} style={{padding:"14px 40px",background:T.green,border:"none",borderRadius:T.r12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer"}}>Done ✓</button>
+              <div style={{paddingBottom:8}}>
+                <div style={{textAlign:"center",marginBottom:hasAnyLog?20:0,paddingBottom:hasAnyLog?20:0,borderBottom:hasAnyLog?`0.5px solid ${T.border}`:"none"}}>
+                  <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><SvgIcon name="trophy" size={44} color={T.green}/></div>
+                  <div style={{fontSize:20,fontWeight:700,color:T.green,marginBottom:6}}>Workout complete!</div>
+                  <div style={{fontSize:12,color:T.text2,marginBottom:20}}>All {exercises.length} exercises done. Great work.</div>
+                  <button onClick={onClose} style={{padding:"14px 40px",background:T.green,border:"none",borderRadius:T.r12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer"}}>Done ✓</button>
+                </div>
+                {hasAnyLog&&(
+                  <div style={{marginTop:20}}>
+                    <div style={{fontSize:10,fontWeight:600,color:T.text3,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:12}}>Session log</div>
+                    {exercises.map((ex,i)=>{
+                      const exSetKeys = Object.keys(setLogs).filter(k=>k.startsWith(`${i}_`)&&(setLogs[k].weight||setLogs[k].rpe));
+                      if(!exSetKeys.length && !exNotes[i]) return null;
+                      return (
+                        <div key={i} style={{marginBottom:12,padding:"10px 12px",background:T.card2,border:`0.5px solid ${T.border}`,borderRadius:T.r8}}>
+                          <div style={{fontSize:12,fontWeight:600,color:T.text,marginBottom:6}}>{ex.name}</div>
+                          {exSetKeys.map(k=>{
+                            const sn = k.split("_")[1];
+                            const lg = setLogs[k];
+                            return (
+                              <div key={k} style={{display:"flex",gap:12,marginBottom:3}}>
+                                <div style={{fontSize:10,color:T.text3,flexShrink:0}}>Set {sn}</div>
+                                {lg.weight&&<div style={{fontSize:11,color:T.trainAc,fontWeight:500}}>{lg.weight}</div>}
+                                {lg.rpe&&<div style={{fontSize:11,color:T.text2}}>RPE {lg.rpe}</div>}
+                              </div>
+                            );
+                          })}
+                          {exNotes[i]&&<div style={{fontSize:11,color:T.text2,marginTop:4,lineHeight:1.5,fontStyle:"italic"}}>{exNotes[i]}</div>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             ) : (
               <>
@@ -5179,7 +5270,7 @@ BEHAVIOUR:
                 </div>
 
                 {/* Timer */}
-                <div style={{textAlign:"center",marginBottom:22}}>
+                <div style={{textAlign:"center",marginBottom:18}}>
                   <div style={{fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:6,
                     color:phase==="working"?T.trainAc:phase==="resting"?T.amber:T.text3}}>
                     {phase==="ready"?`Set ${setNum} of ${totalSets} — ready`:phase==="working"?`Set ${setNum} of ${totalSets} — working`:"Rest — next set soon"}
@@ -5188,7 +5279,7 @@ BEHAVIOUR:
                     color:phase==="working"?T.trainAc:phase==="resting"?T.amber:T.text}}>
                     {fmt(secs)}
                   </div>
-                  {phase==="resting"&&<div style={{fontSize:11,color:T.text3,marginTop:6}}>Auto-starts in {secs}s</div>}
+                  {phase==="resting"&&<div style={{fontSize:11,color:T.text3,marginTop:6}}>Auto-advances in {secs}s</div>}
                 </div>
 
                 {/* Action */}
@@ -5206,9 +5297,49 @@ BEHAVIOUR:
                   <div style={{display:"flex",gap:9}}>
                     <div style={{flex:1,padding:"14px",background:`${T.amber}12`,border:`1px solid ${T.amber}30`,borderRadius:T.r12,textAlign:"center"}}>
                       <div style={{fontSize:13,fontWeight:600,color:T.amber}}>Resting…</div>
-                      <div style={{fontSize:10,color:T.text3,marginTop:2}}>Next set starts in {secs}s</div>
+                      <div style={{fontSize:10,color:T.text3,marginTop:2}}>Next set in {secs}s</div>
                     </div>
                     <button onClick={skipRest} style={{padding:"14px 16px",background:T.card2,border:`0.5px solid ${T.border2}`,borderRadius:T.r12,color:T.text2,fontSize:12,fontWeight:600,cursor:"pointer",flexShrink:0}}>Skip</button>
+                  </div>
+                )}
+
+                {/* Weight + notes log */}
+                {phase!=="resting"&&(
+                  <div style={{marginTop:14,borderTop:`0.5px solid ${T.border}`,paddingTop:12}}>
+                    <div onClick={()=>setShowLog(s=>!s)}
+                      style={{display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",marginBottom:showLog?10:0}}>
+                      <div style={{fontSize:10,fontWeight:500,color:T.text3,letterSpacing:"0.04em"}}>
+                        {currLog.weight||currLog.rpe||exNotes[exIdx] ? "✓ Logged" : "Log weight & notes"}
+                        {currLog.weight&&<span style={{color:T.trainAc,marginLeft:6}}>{currLog.weight}</span>}
+                        {currLog.rpe&&<span style={{color:T.text2,marginLeft:4}}>RPE {currLog.rpe}</span>}
+                      </div>
+                      <span style={{fontSize:12,color:T.text3}}>{showLog?"▾":"▸"}</span>
+                    </div>
+                    {showLog&&(
+                      <>
+                        <div style={{display:"flex",gap:8,marginBottom:8}}>
+                          <input
+                            placeholder="Weight (e.g. 80kg or BW)"
+                            value={currLog.weight||""}
+                            onChange={e=>updateLog("weight",e.target.value)}
+                            style={{...inputStyle,flex:1}}
+                          />
+                          <input
+                            placeholder="RPE 1–10"
+                            value={currLog.rpe||""}
+                            onChange={e=>updateLog("rpe",e.target.value)}
+                            style={{...inputStyle,width:76}}
+                          />
+                        </div>
+                        <textarea
+                          placeholder={`Notes for ${ex?.name||"this exercise"}…`}
+                          value={exNotes[exIdx]||""}
+                          onChange={e=>updateNote(e.target.value)}
+                          rows={2}
+                          style={{...inputStyle,width:"100%",resize:"none",boxSizing:"border-box",lineHeight:1.5}}
+                        />
+                      </>
+                    )}
                   </div>
                 )}
 
