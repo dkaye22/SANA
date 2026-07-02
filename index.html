@@ -1259,13 +1259,13 @@
       <hr class="engine-section-divider reveal">
 
       <div class="engine-sub-label reveal">Nutrition Engine</div>
-      <h2 class="engine-sub-title reveal reveal-delay-1">75 recipes. Matched to your diet.</h2>
+      <h2 class="engine-sub-title reveal reveal-delay-1">95 recipes. Matched to your diet.</h2>
       <p class="engine-sub-p reveal reveal-delay-2">Every day Sana selects meals from a rotating library built around your exact diet style — breakfast to dinner, with full step-by-step recipes. Vegan, pescatarian, low-carb — everyone gets a plan that actually fits.</p>
 
       <div class="workout-lib-grid reveal reveal-delay-2">
 
         <div class="workout-lib-card nutr-lib-card">
-          <div class="workout-lib-num">75</div>
+          <div class="workout-lib-num">95</div>
           <div class="workout-lib-label">Total recipes</div>
           <div class="workout-lib-desc">Full step-by-step recipes across breakfast, lunch, snack, and dinner — each with prep time and macros built in.</div>
         </div>
@@ -1879,6 +1879,72 @@
       },
     };
 
+    /* ─── SUPPLEMENT METADATA ───────────────────────────────────── */
+    const SUPP_META = {
+      creatine:    { label:"Creatine monohydrate", dose:"5g", slot:"Post-workout or midday",
+                     base:"Consistency matters more than timing — take it daily regardless of training.",
+                     hiS:"Don't skip today — creatine actively protects muscle tissue under elevated cortisol.",
+                     great:"Green day — creatine primes your ATP system for peak output." },
+      whey:        { label:"Whey protein", dose:"25–50g", slot:"Post-workout",
+                     base:"Take within 90 min of training to maximise muscle protein synthesis.",
+                     hiS:"High cortisol accelerates muscle breakdown — protein intake is your direct counter today.",
+                     great:"Post-workout MPS window is widest on green days — don't skip this." },
+      vitd3:       { label:"Vitamin D3", dose:"2,000–4,000 IU", slot:"With breakfast",
+                     base:"Fat-soluble — always take with food. Morning is ideal to mirror the sun cycle." },
+      omega3:      { label:"Omega-3 (EPA+DHA)", dose:"2–3g", slot:"With breakfast",
+                     base:"Take with your largest meal to minimise any fishy aftertaste.",
+                     hiS:"Omega-3 directly blunts the cortisol and inflammation spike from today's stress load.",
+                     lowR:"Anti-inflammatory effect is highest-value on recovery days — don't miss this." },
+      magnesium:   { label:"Magnesium glycinate", dose:"300–400mg", slot:"Before bed",
+                     base:"60–90 min before lights-out is the optimal window for sleep onset support.",
+                     hiS:"Stress rapidly depletes magnesium — tonight's dose is especially critical.",
+                     sleepLow:"Take at 9:00 PM tonight — earlier than usual given last night's deficit." },
+      caffeine:    { label:"Caffeine", dose:"3–6mg/kg", slot:"Pre-workout (30–45 min before)",
+                     base:"Cut off by 1 PM — caffeine's 5–6 hr half-life directly fragments deep sleep.",
+                     hiS:"Consider reducing caffeine today — it raises already-elevated cortisol further." },
+      ashwagandha: { label:"Ashwagandha KSM-66", dose:"600mg", slot:"With breakfast",
+                     base:"Morning dosing sustains cortisol suppression throughout the day.",
+                     hiS:"Highest-priority supplement today. Cortisol is elevated — this is exactly what it's for." },
+      zinc:        { label:"Zinc", dose:"15–25mg", slot:"With breakfast",
+                     base:"Take with food to prevent nausea. Space away from calcium supplements by 2+ hrs." },
+      betaalanine: { label:"Beta-Alanine", dose:"3.2–6.4g split", slot:"Pre-workout",
+                     base:"Split the dose across 2 servings to reduce tingling. Takes 2–4 weeks of loading to peak.",
+                     lowR:"Hold beta-alanine on true rest days — reserve it for active training sessions." },
+      citrulline:  { label:"L-Citrulline", dose:"6–8g", slot:"Pre-workout (45 min before)",
+                     base:"Peaks blood flow 60–90 min after ingestion — timing matters here.",
+                     lowR:"Skip citrulline today — it's a performance aid, not a recovery supplement." },
+      collagen:    { label:"Collagen peptides + Vit C", dose:"10–15g", slot:"Pre-workout (30 min before)",
+                     base:"Requires Vitamin C to drive collagen synthesis — always combine them." },
+      theanine:    { label:"L-Theanine", dose:"100–200mg", slot:"Pre-workout (30–45 min before)",
+                     base:"Best stacked with caffeine at 2:1 ratio (theanine:caffeine) for clean, jitter-free focus.",
+                     hiS:"Especially useful today — theanine reduces anxiety without sedating you." },
+      melatonin:   { label:"Melatonin", dose:"0.5–1mg", slot:"Before bed (30 min)",
+                     base:"Start with 0.5mg — lower doses are often more effective. Take 30 min before lights-out.",
+                     hiS:"Elevated stress delays melatonin onset — this is worth taking tonight." },
+      probiotics:  { label:"Probiotics", dose:"10–50B CFU", slot:"With breakfast",
+                     base:"Consistency matters most. Same time daily with food." },
+      b12:         { label:"Vitamin B12", dose:"500–1,000mcg", slot:"With breakfast",
+                     base:"Sublingual (under-tongue) form absorbs best. Critical if you eat little to no animal products." },
+      electrolytes:{ label:"Electrolytes", dose:"1 serving", slot:"During or after workout",
+                     base:"Add to water during any session over 60 minutes. Essential after heavy sweat.",
+                     great:"Green day training = heavy sweat. Electrolytes today are non-negotiable." },
+      turmeric:    { label:"Turmeric / Curcumin", dose:"500–1,000mg + piperine", slot:"With main meal",
+                     base:"Must be paired with piperine (black pepper extract) — increases absorption 20×.",
+                     lowR:"Anti-inflammatory effect is the highest value use case on recovery days.",
+                     hiS:"Curcumin directly blunts the inflammation-cortisol cycle active today." },
+      multi:       { label:"Multivitamin", dose:"1 serving", slot:"With breakfast",
+                     base:"Take with food to prevent nausea from B-vitamins. Covers micronutrient gaps." },
+      lionsmane:   { label:"Lion's Mane", dose:"500–1,000mg", slot:"With breakfast",
+                     base:"Effects build gradually — consistency over 4–8 weeks is where the benefit shows." },
+      rhodiola:    { label:"Rhodiola Rosea", dose:"200–400mg", slot:"Morning (fasted or with food)",
+                     base:"Take early — mildly stimulating and can disrupt sleep if taken after midday.",
+                     hiS:"Rhodiola is directly relevant today — it blunts cortisol-driven mental and physical fatigue." },
+      berberine:   { label:"Berberine", dose:"500mg", slot:"With main meal",
+                     base:"Take with a carb-containing meal for best effect. Can be split 2–3× daily." },
+      coq10:       { label:"CoQ10", dose:"100–300mg", slot:"With breakfast (or largest meal)",
+                     base:"Fat-soluble — absorption is maximised alongside a high-fat meal." },
+    };
+
     /* ─── PLAN BUILDER ───────────────────────────────────────────── */
     function buildDailyPlans(ans, profile, wearable, swaps={}) {
       const { energy, stress, soreness, sleep_hrs } = ans;
@@ -2183,23 +2249,146 @@
         :great?`Training day nutrition — carbs are your friend today. Eat the larger meals. Don't undereat on green days. ${dietNotes[dietKey]}`
         :`Follow the plan as normal. Protein spread across 4 meals hits your target. ${dietNotes[dietKey]}`;
 
-      const suppSchedule = [
-        {time:"With breakfast",       items:hiS?["Ashwagandha KSM-66 · 600mg — cortisol is elevated, this is what it's for","Vitamin D3 · 2,000 IU — fat-soluble, absorbed best with food"]:["Vitamin D3 · 2,000 IU — fat-soluble, take with food"]},
-        {time:"Post-workout or midday",items:(goal==="lean_bulk"||goal==="bulk"||goal==="lean_cut"||goal==="maintain")?["Creatine monohydrate · 5g — any time, consistency matters more than timing"]:[]},
-        {time:"Before bed · 9:30 PM", items:sleep_hrs<7?["Magnesium glycinate · 300mg — tonight especially important, take earlier than usual (9:00 PM)"]:["Magnesium glycinate · 300mg — 60–90 min before bed"]},
-      ].filter(s=>s.items.length>0);
-      const suppNote = hiS?"Ashwagandha is your most important supplement today — elevated cortisol is the primary threat to your goal right now.":sleep_hrs<6.5?"Move magnesium to 9:00 PM tonight — you need an earlier start on the wind-down given last night's sleep.":"Supplements as scheduled. Consistency this week is already showing in your recovery markers.";
+      // ── PERSONALISED SUPPLEMENT SCHEDULE ──
+      const userSupps = Array.isArray(profile.supplements) ? profile.supplements : [];
+      const lifeCtx   = profile.lifeContext || "balanced";
 
-      const sleepTarget = hiS||sleep_hrs<6?8.5:7.5;
-      const bedtime     = sleep_hrs<6?"9:45 PM":"10:30 PM";
-      const winddown = [
-        {time:"9:00 PM",  action:"Dim all lights and put phone face-down",     note:"Blue light suppresses melatonin — start 90 min before bed tonight"},
-        {time:"9:30 PM",  action:"Magnesium glycinate 300mg",                  note:sleep_hrs<6?"Earlier than usual — you need the extra sleep onset support":"60–90 min before bed is the optimal window"},
-        {time:"9:45 PM",  action:"10 min light stretching or 4-7-8 breathing", note:"Activates parasympathetic system — your 'rest and digest' state"},
-        {time:"10:15 PM", action:"Cool room to 65–68°F / 18–20°C",            note:"Core temperature must drop to initiate sleep — a cool room accelerates this"},
-        {time:bedtime,    action:"Lights out",                                  note:`Target ${sleepTarget} hrs · wake ${bedtime==="9:45 PM"?"6:15 AM":"6:00 AM"}`},
+      // Slot ordering for display
+      const SLOT_ORDER = [
+        "Morning (fasted or with food)",
+        "With breakfast",
+        "Pre-workout (45 min before)",
+        "Pre-workout (30–45 min before)",
+        "Pre-workout (30 min before)",
+        "Pre-workout",
+        "During or after workout",
+        "Post-workout",
+        "Post-workout or midday",
+        "With main meal",
+        "Before bed (30 min)",
+        "Before bed",
       ];
-      const sleepNote = sleep_hrs<6?"Last night left a significant deficit. Tonight is the single highest-leverage thing you can do for tomorrow. The wind-down starts earlier — follow it closely.":hiS?"High stress keeps the nervous system in sympathetic overdrive at bedtime. The wind-down protocol is especially important tonight.":sleep_hrs>=7.5?"Good sleep last night. Keep the same bedtime tonight — consistency matters more than any single good night.":"Close to target. One more consistent night moves you into the range where recovery compounds.";
+
+      // Build schedule from user's actual selected supplements
+      const scheduleMap = {};
+      userSupps.forEach(key => {
+        const m = SUPP_META[key];
+        if (!m) return;
+        const note = (hiS && m.hiS) ? m.hiS
+          : (lowR && m.lowR) ? m.lowR
+          : (great && m.great) ? m.great
+          : (sleep_hrs < 6.5 && m.sleepLow) ? m.sleepLow
+          : m.base;
+        const entry = `${m.label} · ${m.dose} — ${note}`;
+        (scheduleMap[m.slot] = scheduleMap[m.slot] || []).push(entry);
+      });
+
+      const suppSchedule = SLOT_ORDER
+        .filter(s => scheduleMap[s]?.length)
+        .map(s => ({time: s, items: scheduleMap[s]}));
+
+      // Fall back if user selected nothing
+      if (suppSchedule.length === 0) {
+        suppSchedule.push(
+          {time:"With breakfast", items:[hiS?"Ashwagandha KSM-66 · 600mg — cortisol is elevated, this is the most impactful thing you can take today":"Vitamin D3 · 2,000 IU — fat-soluble, take with food"]},
+          {time:"Before bed",     items:[sleep_hrs<6.5?"Magnesium glycinate · 300mg — take at 9 PM tonight, earlier than usual given last night's deficit":"Magnesium glycinate · 300mg — 60–90 min before bed"]}
+        );
+      }
+
+      // Smart recommendations: up to 3 supplements the user hasn't selected but should consider
+      const suppRecommendations = [];
+      const addRec = (key, reason) => { if (!userSupps.includes(key) && suppRecommendations.length < 3) suppRecommendations.push({key, label:SUPP_META[key]?.label||key, dose:SUPP_META[key]?.dose||"", reason}); };
+
+      if (["lean_bulk","bulk","lean_cut","recomp","sport","maintain"].includes(goal))
+        addRec("creatine", "The most evidence-backed supplement for your goal — 5–10% strength increase, proven lean mass gains over 4–8 weeks.");
+      if (!userSupps.includes("vitd3"))
+        addRec("vitd3", "Most people are deficient year-round. Regulates testosterone, immunity, and bone density — impact is broad.");
+      if (["vegan","vegetarian"].includes(dietKey))
+        addRec("b12", "Your diet provides little to no B12 — deficiency causes fatigue and nerve damage. A daily sublingual dose is essential.");
+      if (dietKey === "vegan" && !userSupps.includes("omega3"))
+        addRec("omega3", "Choose algae-based DHA/EPA (not fish oil). The anti-inflammatory and muscle recovery benefits are identical.");
+      if (hiS || lifeCtx === "demanding" || lifeCtx === "transition")
+        addRec("ashwagandha", "Your stress signals today make this the highest-priority addition. KSM-66 reduces cortisol 20–30% within 8 weeks.");
+      if ((sleep_hrs < 7 || hiS) && !userSupps.includes("magnesium"))
+        addRec("magnesium", `Your ${sleep_hrs<7?"sleep data":"stress signals"} suggest magnesium glycinate before bed would meaningfully improve tonight's recovery.`);
+      if (soreness >= 4)
+        addRec("omega3", "High soreness today — omega-3's anti-inflammatory effect is the most direct intervention for DOMS reduction.");
+      if (["cardio","sport"].includes(goal))
+        addRec("electrolytes", "For your training volume, electrolyte losses are significant. Adding them to sessions over 60 min prevents cramps and maintains output.");
+      if (["advanced","elite"].includes(level))
+        addRec("coq10", "At your training intensity, mitochondrial efficiency becomes a real limiter. CoQ10 directly supports ATP production.");
+
+      // suppNote
+      const suppNote = userSupps.length === 0
+        ? "You haven't selected any supplements yet — visit Settings → Profile to build your stack. Even 2–3 evidence-backed choices meaningfully improve results."
+        : hiS
+          ? `Cortisol is elevated today. ${userSupps.includes("ashwagandha") ? "Ashwagandha is your highest-priority supplement — take it with breakfast." : "Ashwagandha would be the most impactful addition on a day like today."} Every timed dose matters more than usual.`
+          : sleep_hrs < 6.5
+            ? `Sleep deficit from last night means recovery is compromised. ${userSupps.includes("magnesium") ? "Move magnesium to 9 PM tonight — earlier than usual." : "Magnesium glycinate before bed would directly help — consider adding it."} Prioritise the before-bed stack.`
+            : great
+              ? `Green day — all systems aligned. Your full stack is working in your favour today. Pre-workout timing especially matters — nail it.`
+              : `${userSupps.length} supplement${userSupps.length>1?"s":""} scheduled around today's signals. Consistency week over week is what builds the compounding effect.`;
+
+      // ── PERSONALISED SLEEP ──
+      const sleepTargetNum = (hiS || sleep_hrs < 6) ? 8.5 : (["lean_bulk","bulk","recomp"].includes(goal) ? 8 : 7.5);
+      const sleepTarget = sleepTargetNum;
+      const bedtime = sleep_hrs < 6 ? "9:45 PM" : (hiS && lifeCtx==="demanding") ? "10:00 PM" : "10:30 PM";
+      const wakeTime = bedtime === "9:45 PM" ? "6:15 AM" : "6:00 AM";
+
+      const hasMag      = userSupps.includes("magnesium");
+      const hasMelatonin = userSupps.includes("melatonin");
+      const hasAshBed   = userSupps.includes("ashwagandha") && hiS;
+
+      const winddown = [
+        {time:"9:00 PM",
+         action:"Dim all lights and put phone face-down",
+         note:"Blue light blocks melatonin release even through closed eyelids — start 90 min before bed"},
+        ...(hasAshBed ? [{time:"9:10 PM",
+          action:"Ashwagandha KSM-66 · 600mg (evening dose)",
+          note:"Elevated stress today — an evening dose reduces overnight cortisol and directly improves sleep architecture"}] : []),
+        {time:"9:30 PM",
+         action: hasMag ? "Magnesium glycinate · 300–400mg" : "Consider magnesium glycinate · 300mg (not in your stack)",
+         note: hasMag
+           ? (sleep_hrs < 6.5 ? "Take now — earlier than usual tonight given last night's deficit" : "60–90 min before bed is the optimal absorption window")
+           : "The single highest-impact sleep supplement. Glycinate form is the best-absorbed and least disruptive to the gut"},
+        {time:"9:45 PM",
+         action: hiS ? "4-7-8 breathing or progressive muscle relaxation — 10 min" : "10 min light stretching or 4-7-8 breathing",
+         note: hiS
+           ? "Your nervous system is in sympathetic overdrive — structured breathing is the fastest way to switch it off"
+           : "Activates the parasympathetic nervous system — your 'rest and digest' state"},
+        ...(hasMelatonin ? [{time:"10:00 PM",
+          action:"Melatonin · 0.5–1mg",
+          note:"Take 30 min before your lights-out target. Start with 0.5mg — less is more with melatonin"}] : []),
+        {time:"10:15 PM",
+         action:"Cool room to 65–68°F / 18–20°C",
+         note:"Core temperature must drop to initiate sleep — a cool room accelerates this by 15–20 min"},
+        {time:bedtime,
+         action:"Lights out",
+         note:`Target ${sleepTargetNum} hrs · wake ${wakeTime}`},
+      ];
+
+      const goalSleepContext = {
+        lean_bulk:"70% of daily growth hormone is released during slow-wave sleep — muscle growth literally depends on it.",
+        bulk:"In a caloric surplus, sleep determines whether extra calories build muscle or fat. Under 7 hrs, the anabolic signal collapses.",
+        lean_cut:"In a calorie deficit, sleep protects lean mass. Poor sleep shifts weight loss from fat to muscle — up to 60% of losses become muscle.",
+        maintain:"Sleep enforces the maintenance signal. Under 7 hrs, cortisol rises and protein breakdown accelerates regardless of diet.",
+        cardio:"Aerobic adaptation — VO₂max gains, cardiac efficiency — happens during recovery, not during the session.",
+        wellness:"Sleep is the master recovery signal. It regulates mood, immunity, hormones, and metabolic function simultaneously.",
+        recomp:"Recomposition requires maximum anabolic signal while in a deficit. Sleep is the primary driver of GH and testosterone maintenance.",
+        sport:"Sport performance is physical and cognitive equally. Sleep deprivation cuts both — reaction time and power output decline in parallel.",
+      };
+      const sleepGoalNote = goalSleepContext[goal] || goalSleepContext.maintain;
+      const sleepSexNote  = f
+        ? "For women, sleep quality directly regulates oestrogen, progesterone, and cortisol — the three hormones that determine how your body responds to training."
+        : "Under 7 hrs, testosterone drops 10–15% within a week — directly opposing any strength or muscle goal.";
+
+      const sleepNote = sleep_hrs < 6
+        ? `Last night left a real deficit — tonight is the single highest-leverage thing you can do for tomorrow. ${sleepGoalNote} ${sleepSexNote} The wind-down starts earlier — follow it closely.`
+        : hiS
+          ? `Elevated stress keeps the nervous system in sympathetic overdrive at bedtime. ${sleepGoalNote} The breathing protocol tonight is not optional.`
+          : sleep_hrs >= 7.5
+            ? `Good sleep last night. Keep the same bedtime — consistency compounds. ${sleepGoalNote}`
+            : `Close to target. One more consistent night moves you into the range where recovery compounds. ${sleepGoalNote}`;
 
       // ── SOCIAL ──
       const socialLevel = ans.social || "none";
@@ -2243,7 +2432,7 @@
       }[socialLevel];
       const socialPlan = {socialLevel,socialBadge,socialHydration,socialFood,socialSupps,socialTrain,socialSleep,socialNote};
 
-      return {trainSession,trainNote,trainExercises,calToday,protToday,carbNote,meals,nutritionNote,suppSchedule,suppNote,sleepTarget,bedtime,winddown,sleepNote,lowR,hiS,great,socialPlan};
+      return {trainSession,trainNote,trainExercises,calToday,protToday,carbNote,meals,nutritionNote,suppSchedule,suppNote,suppRecommendations,sleepTarget,bedtime,winddown,sleepNote,sleepGoalNote,sleepSexNote,lowR,hiS,great,socialPlan};
     }
 
     /* ─── MICRO COMPONENTS ──────────────────────────────────────── */
@@ -2472,7 +2661,7 @@
 
     function PostCheckinPlan({checkinAns, userProfile, wearable, plans, checkedItems, onCheck, swaps, onSwap, onDone, onStartWorkout}) {
       const T = React.useContext(ThemeCtx);
-      const {trainSession,trainNote,trainExercises,calToday,protToday,carbNote,meals,nutritionNote,suppSchedule,suppNote,sleepTarget,bedtime,winddown,sleepNote,lowR,hiS,great,socialPlan} = plans;
+      const {trainSession,trainNote,trainExercises,calToday,protToday,carbNote,meals,nutritionNote,suppSchedule,suppNote,suppRecommendations,sleepTarget,bedtime,winddown,sleepNote,sleepGoalNote,sleepSexNote,lowR,hiS,great,socialPlan} = plans;
       const f    = userProfile.sex === "Female";
       const name = userProfile.name || "there";
 
@@ -2597,6 +2786,17 @@
                   ))}
                 </div>
               ))}
+              {suppRecommendations && suppRecommendations.length > 0 && (
+                <div style={{marginTop:6,marginBottom:10,borderRadius:T.r8,border:`0.5px solid ${T.stackAc}35`,overflow:"hidden"}}>
+                  <div style={{padding:"8px 11px",background:`${T.stackAc}15`,borderBottom:`0.5px solid ${T.stackAc}25`,fontSize:10,fontWeight:600,color:T.stackAc,letterSpacing:"0.05em",textTransform:"uppercase"}}>Recommended additions for your profile</div>
+                  {suppRecommendations.map((r,ri)=>(
+                    <div key={ri} style={{padding:"9px 11px",borderTop:ri>0?`0.5px solid ${T.border}`:"none",background:T.card}}>
+                      <div style={{fontSize:12,fontWeight:500,color:T.text1,marginBottom:2}}>{r.label} <span style={{fontWeight:400,color:T.text3}}>· {r.dose}</span></div>
+                      <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{r.reason}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div style={{padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8,fontSize:10,color:T.text3,lineHeight:1.55}}>Wellness suggestions based on your data — not medical advice. Consult a doctor if you take medication.</div>
             </ExpandSection>
 
@@ -2618,7 +2818,7 @@
               ))}
               <div style={{marginTop:8,padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8}}>
                 <div style={{fontSize:10,fontWeight:500,color:T.sleepAc,marginBottom:3}}>Why tonight matters</div>
-                <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>70% of daily growth hormone is released during slow-wave sleep. {f?"For women, sleep quality directly regulates oestrogen and progesterone.":"Under 7 hrs, testosterone drops 10–15% — directly opposing your muscle goal."}</div>
+                <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{sleepGoalNote} {sleepSexNote}</div>
                 <div style={{fontSize:10,color:T.text3,marginTop:3}}>Van Cauter et al., 2000 · {f?"Mong et al., 2011":"Leproult & Van Cauter, JAMA 2011"}</div>
               </div>
             </ExpandSection>
