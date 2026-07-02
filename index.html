@@ -2943,7 +2943,7 @@
                     <div style={{padding:"8px 11px",background:`${T.stackAc}15`,borderBottom:`0.5px solid ${T.stackAc}25`,fontSize:10,fontWeight:600,color:T.stackAc,letterSpacing:"0.05em",textTransform:"uppercase"}}>Recommended additions for your profile</div>
                     {suppRecommendations.map((r,ri)=>(
                       <div key={ri} style={{padding:"9px 11px",borderTop:ri>0?`0.5px solid ${T.border}`:"none",background:T.card}}>
-                        <div style={{fontSize:12,fontWeight:500,color:T.text1,marginBottom:2}}>{r.label} <span style={{fontWeight:400,color:T.text3}}>· {r.dose}</span></div>
+                        <div style={{fontSize:12,fontWeight:500,color:T.text,marginBottom:2}}>{r.label} <span style={{fontWeight:400,color:T.text3}}>· {r.dose}</span></div>
                         <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{r.reason}</div>
                       </div>
                     ))}
@@ -3012,7 +3012,7 @@
                   <div style={{fontSize:10,color:T.text3,marginTop:3}}>Lieber, 2005 · Yules et al., 1967 · Penning et al., 2012</div>
                 </div>
               </PillarModal>
-            )}            )}
+            )}
 
             <div style={{padding:"12px 14px",background:T.blueSoft,border:`0.5px solid ${T.border2}`,borderRadius:T.r12,marginBottom:14,borderLeft:`2px solid ${T.accent}`}}>
               <div style={{fontSize:9,fontWeight:500,color:T.accent,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>Your why</div>
