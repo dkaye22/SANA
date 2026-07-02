@@ -315,6 +315,26 @@
     .workout-lib-divider {
       width: 1px; background: #1a2640; margin: 0 32px;
     }
+    .engine-section-divider {
+      border: none; border-top: 1px solid #1a2640; margin: 80px 0 72px;
+    }
+    .engine-sub-label {
+      font-size: 10px; font-weight: 700; color: #6366f1;
+      text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 14px;
+    }
+    .engine-sub-title {
+      font-size: clamp(26px, 4vw, 38px); font-weight: 700; color: #f0f6ff;
+      letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px;
+    }
+    .engine-sub-p {
+      font-size: 15px; color: #5a7799; line-height: 1.7; max-width: 580px;
+    }
+    .nutr-lib-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #0d9488, #2563eb);
+    }
+    .workout-lib-detail-head.nutr-lib-detail-head { color: #0d9488; }
+    .workout-lib-detail-items.nutr-lib-detail-items span::before { background: #0d9488; }
     @media (max-width: 900px) {
       .workout-lib-grid { grid-template-columns: 1fr 1fr; }
       .workout-lib-detail { grid-template-columns: 1fr; gap: 24px; }
@@ -1232,6 +1252,75 @@
             <span>Flow — vinyasa, sun salutations</span>
             <span>Strength — warrior, balances</span>
             <span>Yin — deep holds, breathwork</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="engine-section-divider reveal">
+
+      <div class="engine-sub-label reveal">Nutrition Engine</div>
+      <h2 class="engine-sub-title reveal reveal-delay-1">75 recipes. Matched to your diet.</h2>
+      <p class="engine-sub-p reveal reveal-delay-2">Every day Sana selects meals from a rotating library built around your exact diet style — breakfast to dinner, with full step-by-step recipes. Vegan, pescatarian, low-carb — everyone gets a plan that actually fits.</p>
+
+      <div class="workout-lib-grid reveal reveal-delay-2">
+
+        <div class="workout-lib-card nutr-lib-card">
+          <div class="workout-lib-num">75</div>
+          <div class="workout-lib-label">Total recipes</div>
+          <div class="workout-lib-desc">Full step-by-step recipes across breakfast, lunch, snack, and dinner — each with prep time and macros built in.</div>
+        </div>
+
+        <div class="workout-lib-card nutr-lib-card">
+          <div class="workout-lib-num">5</div>
+          <div class="workout-lib-label">Diet tracks</div>
+          <div class="workout-lib-desc">Omnivore, vegetarian, vegan, pescatarian, and low-carb — every track has its own complete recipe pool. No substitutions, no compromises.</div>
+        </div>
+
+        <div class="workout-lib-card nutr-lib-card">
+          <div class="workout-lib-num">4</div>
+          <div class="workout-lib-label">Meal slots daily</div>
+          <div class="workout-lib-desc">Breakfast, lunch, snack, and dinner — each slot has 4 rotating options per diet track so the plan never feels repetitive.</div>
+        </div>
+
+        <div class="workout-lib-card nutr-lib-card">
+          <div class="workout-lib-num">Daily</div>
+          <div class="workout-lib-label">Rotation</div>
+          <div class="workout-lib-desc">Meals rotate automatically each day. Green training days, high-stress days, and recovery days each pull from different combinations.</div>
+        </div>
+
+      </div>
+
+      <div class="workout-lib-detail reveal reveal-delay-3">
+        <div class="workout-lib-detail-col">
+          <div class="workout-lib-detail-head nutr-lib-detail-head">Omnivore &amp; Flexible</div>
+          <div class="workout-lib-detail-items nutr-lib-detail-items">
+            <span>Chicken — rice bowls, bakes, stir-fry</span>
+            <span>Beef — steak, mince, stir-fry</span>
+            <span>Salmon — seared, teriyaki, poke</span>
+            <span>Turkey — wraps, meatballs, bakes</span>
+            <span>Eggs — scrambled, omelette, boiled</span>
+          </div>
+        </div>
+        <div class="workout-lib-divider"></div>
+        <div class="workout-lib-detail-col">
+          <div class="workout-lib-detail-head nutr-lib-detail-head">Plant-Based</div>
+          <div class="workout-lib-detail-items nutr-lib-detail-items">
+            <span>Tofu — scramble, stir-fry, crispy</span>
+            <span>Tempeh — miso glaze, soba, sauté</span>
+            <span>Lentils — curry, bolognese, soup</span>
+            <span>Chickpeas — curry, buddha bowl, salad</span>
+            <span>Black beans — tacos, burrito bowl, quinoa</span>
+          </div>
+        </div>
+        <div class="workout-lib-divider"></div>
+        <div class="workout-lib-detail-col">
+          <div class="workout-lib-detail-head nutr-lib-detail-head">Pescatarian</div>
+          <div class="workout-lib-detail-items nutr-lib-detail-items">
+            <span>Salmon — pan-seared, teriyaki, poke</span>
+            <span>Tuna — steak, poke bowl, salad</span>
+            <span>Prawns — Thai curry, stir-fry, salad</span>
+            <span>Sardines — avocado toast, salad</span>
+            <span>All vegetarian meals included</span>
           </div>
         </div>
       </div>
