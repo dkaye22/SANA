@@ -1965,6 +1965,11 @@
       const isCardio    = actArr.includes("cardio") && !hasLifting && !isYoga;
       const lvlAdj = {beginner:-1,intermediate:0,advanced:1,elite:2}[level]||0;
       const adj = n => Math.max(1, n+lvlAdj);
+      const isAdvanced = level === "advanced" || level === "elite";
+      const isElite    = level === "elite";
+      const wantMass   = ["lean_bulk","bulk","recomp"].includes(goal);
+      const wantCut    = goal === "lean_cut";
+      const wantSport  = ["cardio","sport"].includes(goal);
 
       const lowR = energy <= 2 || soreness >= 4 || sleep_hrs < 6;
       const hiS  = stress >= 4;
@@ -1992,13 +1997,16 @@
             {name:"Child's pose",             sets:"3", reps:"60s",      rest:"30s", note:"Slow exhales. Signals safety to your nervous system."},
             {name:"Supine twist",             sets:"2", reps:"60s each", rest:"30s", note:"Decompresses the spine and reduces cortisol."},
             {name:"Legs up the wall",         sets:"1", reps:"5 min",    rest:"—",   note:"Best parasympathetic reset under high stress."},
-            {name:"4-7-8 breathing",          sets:"5", reps:"1 round",  rest:"—",   note:"Inhale 4 · hold 7 · exhale 8."},
+            {name:"Diaphragmatic breathing",  sets:"1", reps:"5 min",    rest:"—",   note:"Hand on belly — slow exhale longer than inhale."},
+            {name:"4-7-8 breathing",          sets:"5", reps:"1 round",  rest:"—",   note:"Inhale 4 · hold 7 · exhale 8. Measurably drops cortisol."},
           ] : [
-            {name:"20-min easy walk",    sets:"1", reps:"20 min",   rest:"—",   note:"Outdoors preferred — sunlight + movement lower cortisol."},
-            {name:"Hip flexor stretch",  sets:`${adj(3)}`, reps:"45s each", rest:"30s", note:"Kneel, drive hips forward. Priority under current stress."},
-            {name:"Thoracic rotation",   sets:"2", reps:"10 each",  rest:"30s", note:"Seated or lying. Breathe into each rotation."},
-            {name:"Glute bridge",        sets:`${adj(3)}`, reps:"15", rest:"30s", note:"Posterior chain without spinal loading."},
-            {name:"4-7-8 breathing",     sets:"4", reps:"1 round",  rest:"—",   note:"Inhale 4 · hold 7 · exhale 8. Measurably drops cortisol."},
+            {name:"20-min easy walk",         sets:"1", reps:"20 min",   rest:"—",   note:"Outdoors preferred — sunlight + movement lower cortisol faster than any supplement."},
+            {name:"Hip flexor stretch",        sets:"2", reps:"60s each", rest:"30s", note:"Kneel, drive hips forward. Cortisol tightens hip flexors — release them first."},
+            {name:"Thoracic rotation",         sets:"2", reps:"10 each",  rest:"30s", note:"Seated or lying. Breathe into each rotation."},
+            {name:"Glute bridge",              sets:`${adj(3)}`, reps:"15", rest:"30s", note:"Posterior chain activation without spinal loading."},
+            {name:"Cat-cow · slow",            sets:"2", reps:"10 rounds", rest:"30s", note:"Spinal mobility + nervous system downregulation. 4s per rep."},
+            {name:"4-7-8 breathing",           sets:"4", reps:"1 round",  rest:"—",   note:"Inhale 4 · hold 7 · exhale 8. Measurably drops cortisol."},
+            {name:"Body-scan relaxation",      sets:"1", reps:"5 min",    rest:"—",   note:"Lie down, work from feet to head. Priority protocol on high-stress rest days."},
           ];
           return base.map(applySwap);
         }
@@ -2007,50 +2015,65 @@
         if (lowR) {
           const yOpts = [
             [ /* Light Flow */
-              {name:"Sun salutation A",    sets:`${adj(3)}`, reps:"5 rounds", rest:"60s", note:"Gentle warmth — no CNS stress."},
-              {name:"Low lunge + twist",   sets:"2", reps:"45s each", rest:"30s", note:"Hip flexors and thoracic mobility."},
-              {name:"Pigeon pose",         sets:"2", reps:"90s each", rest:"30s", note:"Deep hip release — hold and breathe."},
-              {name:"Cat-cow flow",        sets:"3", reps:"10 rounds", rest:"30s", note:"Spinal mobility and nervous system downregulation."},
+              {name:"Sun salutation A",        sets:`${adj(3)}`, reps:"5 rounds", rest:"60s", note:"Gentle warmth — no CNS stress."},
+              {name:"Low lunge + twist",        sets:"2", reps:"45s each", rest:"30s", note:"Hip flexors and thoracic mobility."},
+              {name:"Pigeon pose",              sets:"2", reps:"90s each", rest:"30s", note:"Deep hip release — hold and breathe."},
+              {name:"Cat-cow flow",             sets:"3", reps:"10 rounds", rest:"30s", note:"Spinal mobility and nervous system downregulation."},
+              {name:"Seated forward fold",      sets:"2", reps:"90s", rest:"—", note:"Hamstring + lower back decompression."},
             ],[ /* Light Strength Yoga */
-              {name:"Warrior I + II",      sets:"3", reps:"45s each", rest:"30s", note:"Build gentle heat — no forcing today."},
-              {name:"Reverse warrior",     sets:"3", reps:"40s each", rest:"30s", note:"Side body opens. Breath stays slow."},
-              {name:"Chair pose hold",     sets:`${adj(3)}`, reps:"30s", rest:"30s", note:"Quads — stop if soreness says no."},
-              {name:"Seated forward fold", sets:"3", reps:"90s", rest:"—", note:"Hamstring and lower back decompression."},
+              {name:"Warrior I + II",           sets:"3", reps:"45s each", rest:"30s", note:"Build gentle heat — no forcing today."},
+              {name:"Reverse warrior",          sets:"3", reps:"40s each", rest:"30s", note:"Side body opens. Breath stays slow."},
+              {name:"Chair pose hold",          sets:`${adj(3)}`, reps:"30s", rest:"30s", note:"Quads — stop if soreness says no."},
+              {name:"Seated forward fold",      sets:"3", reps:"90s", rest:"—", note:"Hamstring and lower back decompression."},
+              {name:"Supine spinal twist",      sets:"2", reps:"60s each", rest:"—", note:"Decompress and breathe into the stretch."},
             ],[ /* Light Yin */
-              {name:"Yin hip opener",      sets:"2", reps:"3 min each", rest:"—", note:"Passive hold — let the body sink."},
-              {name:"Supine twist",        sets:"2", reps:"90s each", rest:"30s", note:"Light spinal decompression."},
-              {name:"Legs up the wall",    sets:"1", reps:"5 min", rest:"—", note:"Lowers cortisol and reduces leg fatigue."},
-              {name:"Savasana breathwork", sets:"5", reps:"1 round", rest:"—", note:"Box breathing: 4 in · 4 hold · 4 out · 4 hold."},
+              {name:"Yin hip opener",           sets:"2", reps:"3 min each", rest:"—", note:"Passive hold — let the body sink."},
+              {name:"Supine twist",             sets:"2", reps:"90s each", rest:"30s", note:"Light spinal decompression."},
+              {name:"Butterfly pose",           sets:"1", reps:"3 min", rest:"—", note:"Inner groin release — gravity does the work."},
+              {name:"Legs up the wall",         sets:"1", reps:"5 min", rest:"—", note:"Lowers cortisol and reduces leg fatigue."},
+              {name:"Savasana breathwork",      sets:"5", reps:"1 round", rest:"—", note:"Box breathing: 4 in · 4 hold · 4 out · 4 hold."},
             ]
           ][dayV];
           const cOpts = [
             [ /* Light Run */
-              {name:"Easy jog or walk", sets:"1", reps:"25 min", rest:"—", note:"Zone 1 only. Recovery is the goal today."},
-              {name:"Hip flexor + quad stretch", sets:`${adj(3)}`, reps:"45s each", rest:"—", note:"Reduce soreness overnight."},
-            ],[ /* Light Intervals (no max effort) */
-              {name:"Easy walk with strides", sets:"1", reps:"20 min", rest:"—", note:"Short 10s accelerations every 3–4 min. Stay comfortable."},
-              {name:"Hip flexor + calf stretch", sets:`${adj(3)}`, reps:"45s each", rest:"—", note:"Gentle mobility — no deep fatigue today."},
+              {name:"Easy jog or brisk walk",   sets:"1", reps:"25 min", rest:"—", note:"Zone 1 only. Recovery is the goal — can hold a full conversation."},
+              {name:"Hip flexor + quad stretch", sets:"3", reps:"45s each", rest:"—", note:"Reduce DOMS overnight."},
+              {name:"Calf + hamstring stretch",  sets:"2", reps:"45s each", rest:"—", note:"Hold each side, no bouncing."},
+              {name:"Hip circle mobility",       sets:"2", reps:"10 each", rest:"—", note:"Joint lubrication — both directions."},
+            ],[ /* Light Intervals */
+              {name:"Easy walk with strides",    sets:"1", reps:"20 min", rest:"—", note:"Short 10s accelerations every 3–4 min. Stay comfortable."},
+              {name:"Jumping jack · easy pace",  sets:"3", reps:"30s", rest:"30s", note:"Keep it controlled. No max effort today."},
+              {name:"Hip flexor + calf stretch",  sets:"3", reps:"45s each", rest:"—", note:"Gentle mobility — no deep fatigue today."},
+              {name:"Dead hang",                 sets:"2", reps:"20s", rest:"30s", note:"Decompress the spine and shoulders."},
             ],[ /* Light Cross-train */
-              {name:"Stationary bike — easy", sets:"1", reps:"20 min", rest:"—", note:"Zone 1 only. Flush the legs and move blood."},
-              {name:"Hip circle mobility", sets:"2", reps:"10 each", rest:"30s", note:"Joint lubrication without loading."},
+              {name:"Stationary bike · easy",    sets:"1", reps:"20 min", rest:"—", note:"Zone 1 only. Flush the legs and move blood."},
+              {name:"Hip circle mobility",       sets:"2", reps:"10 each", rest:"30s", note:"Joint lubrication without loading."},
+              {name:"Thoracic opener",           sets:"2", reps:"30s", rest:"30s", note:"Arms wide, open chest. Reverse desk posture."},
+              {name:"Foam roll — quads + lats",  sets:"2", reps:"60s each", rest:"—", note:"Slow rolling, pause on tight spots."},
             ]
           ][dayV];
           const lOpts = [
             [ /* Light Push */
-              {name:"DB Bench Press",       sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Reduced load — feel the chest, not the weight."},
-              {name:"DB Shoulder Press",    sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Light and controlled. No ego today."},
-              {name:"Lateral Raise",        sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Volume over intensity."},
+              {name:"DB Bench Press",            sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Reduced load — feel the chest, not the weight."},
+              {name:"DB Shoulder Press",         sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Light and controlled. No ego today."},
+              {name:"Lateral Raise",             sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Volume over intensity — muscle memory not load."},
               {name:hasCables?"Cable Fly":"DB Fly", sets:`${adj(2)}`, reps:"15", rest:"60s", note:"Stretch focus — lightweight, feel the chest."},
+              {name:hasCables?"Cable Tricep Pushdown":"Close-Grip Push-Up", sets:`${adj(2)}`, reps:"15", rest:"45s", note:"Light pump finisher — blood flow matters on recovery days."},
+              ...(isAdvanced?[{name:"Chest Dip · controlled",sets:`${adj(2)}`,reps:"10",rest:"60s",note:"Slow eccentric — 3 seconds down. Advanced volume add-on."}]:[]),
             ],[ /* Light Pull */
               {name:hasCables?"Cable Seated Row":"DB Row", sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Moderate weight. Stop if soreness flares."},
               {name:hasMachines?"Lat Pulldown":"Pull-Up",  sets:`${adj(3)}`, reps:hasMachines?"12":"6–8", rest:"90s", note:"Full stretch at top. No ego."},
-              {name:hasCables?"Face Pull":"Rear Delt Fly", sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Recovery-friendly shoulder health."},
-              {name:"DB Curl",              sets:`${adj(3)}`, reps:"15", rest:"45s", note:"Light pump — blood flow aids recovery."},
+              {name:hasCables?"Face Pull":"Rear Delt Fly", sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Recovery-friendly shoulder health work."},
+              {name:"DB Curl",                   sets:`${adj(3)}`, reps:"15", rest:"45s", note:"Light pump — blood flow aids recovery."},
+              {name:"Hammer Curl",               sets:`${adj(2)}`, reps:"12", rest:"45s", note:"Neutral grip — adds brachialis thickness."},
+              ...(isAdvanced?[{name:"Shrug · controlled",sets:`${adj(2)}`,reps:"15",rest:"45s",note:"Full range of motion — up, hold, slowly down."}]:[]),
             ],[ /* Light Legs */
-              {name:"Goblet Squat",         sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Reduced intensity. Focus on depth, not weight."},
-              {name:"DB Romanian Deadlift", sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Feel the hamstring stretch — not the weight."},
-              {name:"Glute Bridge",         sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Squeeze hard at top. No lower back strain."},
-              {name:"Calf Raise",           sets:`${adj(3)}`, reps:"15", rest:"45s", note:"Easy finisher."},
+              {name:"Goblet Squat",              sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Reduced intensity. Focus on depth, not weight."},
+              {name:"DB Romanian Deadlift",      sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Feel the hamstring stretch — not the weight."},
+              {name:"Glute Bridge",              sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Squeeze hard at top. No lower back strain."},
+              {name:"DB Walking Lunge",          sets:`${adj(2)}`, reps:"10 each", rest:"60s", note:"Torso upright — knee tracks over toe."},
+              {name:"Calf Raise",                sets:`${adj(3)}`, reps:"15", rest:"45s", note:"Full stretch at bottom, pause at top."},
+              ...(isAdvanced?[{name:"Single-Leg RDL",sets:`${adj(2)}`,reps:"10 each",rest:"60s",note:"Balance + hamstring stability. Advanced add-on."}]:[]),
             ]
           ][dayV];
           const base = useYogaBranch ? yOpts : useCardioBranch ? cOpts : lOpts;
@@ -2061,61 +2084,92 @@
         if (great) {
           const yOpts = [
             [ /* Green Flow */
-              {name:"Power yoga flow",      sets:`${adj(3)}`, reps:"8 min", rest:"60s", note:"Green day — warrior sequences and inversions."},
-              {name:"Handstand practice",   sets:"5", reps:"30s hold", rest:"60s", note:"Balance, shoulder strength, focus."},
-              {name:"Chaturanga push-ups",  sets:`${adj(4)}`, reps:"10", rest:"60s", note:"Full body integration. Slow the descent."},
-              {name:"Crow pose",            sets:"4", reps:"20s hold", rest:"45s", note:"Core + wrist strength. Green day is the day for this."},
-              {name:"Bridge + wheel",       sets:`${adj(3)}`, reps:"45s", rest:"60s", note:"Full backbend — open chest and hip flexors."},
+              {name:"Sun salutation B · 5 rounds", sets:"1", reps:"5 rounds", rest:"60s", note:"Full-body warm-up — build heat gradually."},
+              {name:"Power yoga flow",          sets:`${adj(3)}`, reps:"8 min", rest:"60s", note:"Green day — warrior sequences and inversions."},
+              {name:"Handstand practice",       sets:"5", reps:"30s hold", rest:"60s", note:"Balance, shoulder strength, focus."},
+              {name:"Chaturanga push-ups",      sets:`${adj(4)}`, reps:"10", rest:"60s", note:"Full body integration. Slow the descent."},
+              {name:"Crow pose",                sets:"4", reps:"20s hold", rest:"45s", note:"Core + wrist strength. Green day is the day for this."},
+              {name:"Bridge + wheel",           sets:`${adj(3)}`, reps:"45s", rest:"60s", note:"Full backbend — open chest and hip flexors."},
+              {name:"Supported headstand",      sets:"3", reps:"30s", rest:"60s", note:"Inversion — shifts perspective and blood flow."},
             ],[ /* Green Strength Yoga */
-              {name:"Warrior III",          sets:"4", reps:"30s each", rest:"45s", note:"Balance + posterior chain on fire."},
-              {name:"Side plank + star",    sets:`${adj(3)}`, reps:"30s each", rest:"30s", note:"Lateral chain strength."},
-              {name:"Chair to eagle",       sets:"4", reps:"45s", rest:"30s", note:"Quad burn + hip rotation."},
-              {name:"Pistol squat practice",sets:"5", reps:"3 each", rest:"60s", note:"Single-leg strength — the most honest test."},
-              {name:"Jump back to chaturanga", sets:`${adj(4)}`, reps:"10", rest:"60s", note:"Power output. Use the green day energy."},
+              {name:"Sun salutation A · warm-up", sets:"1", reps:"3 rounds", rest:"—", note:"Wake up the whole chain before loading."},
+              {name:"Warrior III",              sets:"4", reps:"30s each", rest:"45s", note:"Balance + posterior chain on fire."},
+              {name:"Side plank + star",        sets:`${adj(3)}`, reps:"30s each", rest:"30s", note:"Lateral chain strength."},
+              {name:"Chair to eagle",           sets:"4", reps:"45s", rest:"30s", note:"Quad burn + hip rotation."},
+              {name:"Pistol squat practice",    sets:"5", reps:"3 each", rest:"60s", note:"Single-leg strength — the most honest test."},
+              {name:"Jump back to chaturanga",  sets:`${adj(4)}`, reps:"10", rest:"60s", note:"Power output. Use the green day energy."},
+              ...(isAdvanced?[{name:"Dragon pose hold",sets:"2",reps:"4 min each",rest:"—",note:"Advanced hip opening — deep tissue work post-workout."}]:[]),
             ],[ /* Green Yin */
-              {name:"Dragon pose",          sets:"2", reps:"4 min each", rest:"—", note:"Deep hip flexor — hold through the discomfort."},
-              {name:"Sleeping swan",        sets:"2", reps:"4 min each", rest:"—", note:"Glutes and piriformis. Breathe into the edge."},
-              {name:"Straddle fold",        sets:"2", reps:"3 min", rest:"—", note:"Inner groin + hamstrings — long hold."},
-              {name:"Caterpillar",          sets:"2", reps:"3 min", rest:"—", note:"Full posterior chain. Green day = go deep."},
+              {name:"Dragon pose",              sets:"2", reps:"4 min each", rest:"—", note:"Deep hip flexor — hold through the discomfort."},
+              {name:"Sleeping swan",            sets:"2", reps:"4 min each", rest:"—", note:"Glutes and piriformis. Breathe into the edge."},
+              {name:"Straddle fold",            sets:"2", reps:"3 min", rest:"—", note:"Inner groin + hamstrings — long hold."},
+              {name:"Caterpillar",              sets:"2", reps:"3 min", rest:"—", note:"Full posterior chain. Green day = go deep."},
+              {name:"Reclined butterfly",       sets:"1", reps:"4 min", rest:"—", note:"Inner groin and hip flexors — gravity does all the work."},
+              {name:"Savasana",                 sets:"1", reps:"5 min", rest:"—", note:"Non-negotiable. Nervous system integration — the final adaptation signal."},
             ]
           ][dayV];
           const cOpts = [
             [ /* Green Run */
-              {name:"Tempo run",            sets:`${adj(4)}`, reps:"1 km", rest:"90s", note:"Green day — push threshold pace."},
-              {name:"Hill sprints",         sets:`${adj(5)}`, reps:"30s on", rest:"90s", note:"Max power. CNS is ready."},
-              {name:"Cool-down jog",        sets:"1", reps:"5 min", rest:"—", note:"Flush the legs — keep moving."},
+              {name:"Dynamic warm-up jog",      sets:"1", reps:"5 min easy", rest:"—", note:"Leg swings, high knees — prime the CNS before pushing."},
+              {name:"Tempo run",                sets:`${adj(4)}`, reps:"1 km", rest:"90s", note:"Green day — push threshold pace. Controlled discomfort."},
+              {name:"Hill sprints",             sets:`${adj(5)}`, reps:"30s on", rest:"90s", note:"Max power. CNS is fully primed."},
+              {name:"400m pace intervals",      sets:`${adj(3)}`, reps:"400m", rest:"2 min", note:"Between tempo and sprint — develop race pace."},
+              {name:"Cool-down jog",            sets:"1", reps:"5 min easy", rest:"—", note:"Flush the legs — keep moving to clear lactate."},
+              ...(isAdvanced?[{name:"Strides · 80% effort",sets:`${adj(4)}`,reps:"100m",rest:"60s",note:"Neuromuscular sharpening after the main work."}]:[]),
+              ...(wantSport?[{name:"Plyometric bounds",sets:"3",reps:"10 each",rest:"60s",note:"Explosive hip extension — sports power finisher."}]:[]),
             ],[ /* Green Intervals */
-              {name:"HIIT 20/10 intervals", sets:"8", reps:"rounds", rest:"2 min", note:"Tabata protocol — all-out every rep."},
-              {name:"Box jumps",            sets:`${adj(4)}`, reps:"8", rest:"60s", note:"Explosive power — land softly."},
-              {name:"Sprint + walk",        sets:`${adj(5)}`, reps:"200m", rest:"90s", note:"Max effort sprint. Walk back to recover."},
+              {name:"Jump rope / skipping · warm-up", sets:"1", reps:"3 min", rest:"—", note:"Full-body activation — CNS primer."},
+              {name:"HIIT 20/10 intervals",     sets:"8", reps:"rounds", rest:"2 min", note:"Tabata protocol — all-out every rep."},
+              {name:"Box jumps",                sets:`${adj(4)}`, reps:"8", rest:"60s", note:"Explosive power — land softly, absorb with the hips."},
+              {name:"Sprint + walk",            sets:`${adj(5)}`, reps:"200m", rest:"90s", note:"Max effort sprint. Walk back to recover."},
+              {name:"Burpee · controlled",      sets:`${adj(3)}`, reps:"10", rest:"60s", note:"Full range — chest to floor, explosive jump."},
+              {name:"Core circuit",             sets:"3", reps:"45s on/15s off", rest:"60s between", note:"Plank → mountain climbers → hollow hold. Green day = stay tight."},
+              ...(isAdvanced?[{name:"Battle ropes · max effort",sets:`${adj(3)}`,reps:"30s",rest:"60s",note:"Upper body conditioning — no rest on the rope."}]:[]),
             ],[ /* Green Cross-train */
-              {name:"Rowing ergometer",     sets:`${adj(4)}`, reps:"500m", rest:"90s", note:"Full body — drive with legs first."},
-              {name:"Assault bike",         sets:`${adj(5)}`, reps:"30s all-out", rest:"90s", note:"Max effort each bout."},
-              {name:"Kettlebell swing",     sets:`${adj(4)}`, reps:"20", rest:"60s", note:"Hip drive, not arms. Posterior chain power."},
+              {name:"Rowing ergometer · warm-up", sets:"1", reps:"5 min easy", rest:"—", note:"Drive legs first. Find your stroke before building pace."},
+              {name:"Rowing ergometer",         sets:`${adj(4)}`, reps:"500m hard", rest:"90s", note:"Full body — drive with legs, pull with back."},
+              {name:"Assault bike",             sets:`${adj(5)}`, reps:"30s all-out", rest:"90s", note:"Max effort each bout — push/pull simultaneously."},
+              {name:"Kettlebell swing",         sets:`${adj(4)}`, reps:"20", rest:"60s", note:"Hip drive, not arms. Posterior chain power."},
+              {name:"Wall ball",                sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Full squat + explosive throw. Full chain integration."},
+              {name:"Sled push / farmers carry",sets:`${adj(3)}`, reps:"20m", rest:"60s", note:"Functional strength finisher. Loaded carry builds the entire posterior chain."},
             ]
           ][dayV];
           const lOpts = [
             [ /* Green Push */
-              {name:hasBarbell?"Flat Bench Press":"DB Bench Press", sets:`${adj(5)}`, reps:level==="beginner"?"8":"4–6 · heavy", rest:"3 min", note:"Green day — chest priority, go heavy."},
+              {name:"Band pull-apart · warm-up", sets:"2", reps:"20", rest:"30s", note:"Shoulder health prime — do this before every pressing session."},
+              {name:hasBarbell?"Flat Bench Press":"DB Bench Press", sets:`${adj(5)}`, reps:level==="beginner"?"8":"4–6 · heavy", rest:"3 min", note:"Green day — primary compound, go heavy. This is when strength gains happen."},
               {name:hasBarbell?"Overhead Press":"DB Shoulder Press", sets:`${adj(4)}`, reps:"6–8", rest:"2 min", note:"Strict — no leg drive. Shoulders own this."},
-              {name:"Incline DB Press",     sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Upper chest. Control the descent."},
-              {name:hasCables?"Cable Fly":"DB Fly", sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Stretch at bottom, squeeze at top."},
-              {name:hasCables?"Cable Tricep Pushdown":"DB Overhead Extension", sets:`${adj(4)}`, reps:"12", rest:"60s", note:"Lock the elbow. Triceps only."},
-              {name:"Lateral Raise",        sets:`${adj(4)}`, reps:"15", rest:"45s", note:"Pinky leads. Green day = extra lateral volume."},
+              {name:"Incline DB Press",          sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Upper chest emphasis. Control the descent 3 seconds."},
+              {name:hasCables?"Cable Fly":"DB Fly", sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Stretch at bottom, squeeze at top. Peak contraction."},
+              {name:hasCables?"Cable Tricep Pushdown":"DB Overhead Extension", sets:`${adj(4)}`, reps:"12", rest:"60s", note:"Lock the elbow. Triceps only — no shoulder involvement."},
+              {name:"Lateral Raise",             sets:`${adj(4)}`, reps:"15", rest:"45s", note:"Pinky leads. Green day = extra lateral volume."},
+              ...(isAdvanced?[{name:hasCables?"Cable Crossover":"Push-Up to failure",sets:`${adj(3)}`,reps:hasCables?"15":"max",rest:"60s",note:"Chest flush finisher — full stretch and contraction."}]:[]),
+              ...(isElite?[{name:"Paused Bench · 2s pause",sets:`${adj(3)}`,reps:"4–5",rest:"3 min",note:"Eliminates the stretch reflex — pure strength stimulus."}]:[]),
+              ...(wantMass?[{name:"Drop-Set Lateral Raise",sets:"2",reps:"12,15,20",rest:"90s",note:"Start heavy, strip weight each set. No rest between strips."}]:[]),
+              ...(wantCut?[{name:"Push Circuit Finisher",sets:"3",reps:"AMRAP 40s",rest:"20s",note:"Push-up → shoulder tap → downdog push-up. Metabolic output."}]:[]),
             ],[ /* Green Pull */
-              {name:hasBarbell?"Barbell Row":"DB Row", sets:`${adj(5)}`, reps:"5–6 · heavy", rest:"3 min", note:"Green day — go heavy. Drive the elbow back."},
+              {name:"Dead hang · warm-up",       sets:"2", reps:"20s", rest:"30s", note:"Decompress the spine and prime grip before loading."},
+              {name:hasBarbell?"Barbell Row":"DB Row", sets:`${adj(5)}`, reps:"5–6 · heavy", rest:"3 min", note:"Green day — go heavy. Drive the elbow back, not the wrist."},
               {name:hasMachines?"Lat Pulldown":"Pull-Up", sets:`${adj(4)}`, reps:hasMachines?"8–10":"max", rest:"2 min", note:"Full stretch at top. Shoulder blades down first."},
               {name:hasCables?"Cable Seated Row":"Chest-Supported Row", sets:`${adj(3)}`, reps:"10", rest:"90s", note:"No body swing. Mid-back owns this."},
               {name:hasCables?"Face Pull":"Rear Delt Fly", sets:`${adj(4)}`, reps:"15", rest:"60s", note:"External rotation at end. Non-negotiable for shoulder health."},
-              {name:hasBarbell?"Barbell Curl":"DB Curl", sets:`${adj(3)}`, reps:"10", rest:"60s", note:"No swing. Supinate at the top."},
-              {name:"Hammer Curl",          sets:`${adj(3)}`, reps:"12", rest:"45s", note:"Neutral grip — adds arm thickness (brachialis)."},
+              {name:hasBarbell?"Barbell Curl":"DB Curl", sets:`${adj(3)}`, reps:"10", rest:"60s", note:"No swing. Supinate at the top — that's where the bicep peaks."},
+              {name:"Hammer Curl",               sets:`${adj(3)}`, reps:"12", rest:"45s", note:"Neutral grip — adds arm thickness via brachialis."},
+              ...(isAdvanced?[{name:"Incline DB Curl",sets:`${adj(3)}`,reps:"12",rest:"60s",note:"Full stretch on the bicep — maximum stimulus."}]:[]),
+              ...(isElite?[{name:hasBarbell?"Meadows Row":"Single-Arm Cable Row",sets:`${adj(3)}`,reps:"10",rest:"90s",note:"Unilateral — maximum lat stretch and contraction."}]:[]),
+              ...(wantMass?[{name:"Shrug · heavy",sets:`${adj(3)}`,reps:"12",rest:"60s",note:"Trap development — full range, hold at top."}]:[]),
             ],[ /* Green Legs */
-              {name:hasBarbell?"Back Squat":"Goblet Squat", sets:`${adj(5)}`, reps:level==="beginner"?"10":"4–6 · heavy", rest:"3 min", note:"Green day — go heavy. This is when progress happens."},
-              {name:hasBarbell?"Romanian Deadlift":"DB Romanian Deadlift", sets:`${adj(4)}`, reps:"8", rest:"2 min", note:"Full depth, controlled descent. Push the weight."},
-              {name:hasMachines?"Leg Press":"Bulgarian Split Squat", sets:`${adj(3)}`, reps:"10", rest:"2 min", note:"Unilateral reveals and fixes imbalances."},
-              {name:hasMachines?"Leg Curl":"Nordic Curl", sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Full range — slow descent. Hamstring insurance."},
-              {name:"DB Walking Lunge",     sets:`${adj(3)}`, reps:"12 each", rest:"90s", note:"Torso upright. Great day for extra volume."},
-              {name:"Calf Raise",           sets:`${adj(4)}`, reps:"20", rest:"45s", note:"Heel below step. Full stretch at bottom."},
+              {name:"Hip circle + glute activation · warm-up", sets:"2", reps:"10 each", rest:"30s", note:"Prime the glutes and hips before loading — critical for squat depth."},
+              {name:hasBarbell?"Back Squat":"Goblet Squat", sets:`${adj(5)}`, reps:level==="beginner"?"10":"4–6 · heavy", rest:"3 min", note:"Green day — go heavy. This is when strength gains happen."},
+              {name:hasBarbell?"Romanian Deadlift":"DB Romanian Deadlift", sets:`${adj(4)}`, reps:"8", rest:"2 min", note:"Full depth, controlled 3s descent. Push the weight through the hips."},
+              {name:hasMachines?"Leg Press":"Bulgarian Split Squat", sets:`${adj(3)}`, reps:"10", rest:"2 min", note:"Unilateral work — reveals and corrects left/right imbalances."},
+              {name:hasMachines?"Leg Curl":"Nordic Curl", sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Full range — slow controlled descent. Hamstring injury insurance."},
+              {name:"DB Walking Lunge",          sets:`${adj(3)}`, reps:"12 each", rest:"90s", note:"Torso upright throughout. Green day = extra lunge volume."},
+              {name:"Hip Thrust",                sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Glute peak contraction — drive through the heel, not the toe."},
+              {name:"Calf Raise",                sets:`${adj(4)}`, reps:"20", rest:"45s", note:"Heel below step. Full stretch at bottom."},
+              ...(isAdvanced?[{name:hasBarbell?"Pause Squat · 2s pause":"Tempo Goblet Squat · 4s down",sets:`${adj(3)}`,reps:"5",rest:"3 min",note:"Eliminates bounce — pure quad and glute stimulus."}]:[]),
+              ...(isElite?[{name:hasBarbell?"Front Squat":"Pistol Squat practice",sets:`${adj(3)}`,reps:"5",rest:"3 min",note:"Elite compound — quads, core, and thoracic mobility all in one."}]:[]),
+              ...(wantCut?[{name:"Jump Squat · bodyweight",sets:"3",reps:"15",rest:"45s",note:"Metabolic finisher — posterior chain power with calorie cost."}]:[]),
             ]
           ][dayV];
           const base = useYogaBranch ? yOpts : useCardioBranch ? cOpts : lOpts;
@@ -2125,58 +2179,79 @@
         /* ── STANDARD SESSION: normal volume + day variant ── */
         const yOpts = [
           [ /* Standard Flow */
-            {name:"Vinyasa flow",            sets:`${adj(3)}`, reps:"10 min", rest:"60s", note:"Steady pace — breath leads movement."},
-            {name:"Warrior I + II sequence", sets:"3", reps:"45s each", rest:"30s", note:"Strength and stability. Hold it."},
-            {name:"Chair pose",              sets:`${adj(4)}`, reps:"40s", rest:"30s", note:"Quad endurance — this one burns."},
-            {name:"Boat pose",               sets:`${adj(3)}`, reps:"30s", rest:"30s", note:"Core stability. Tall spine."},
-            {name:"Plank to downdog",        sets:`${adj(3)}`, reps:"10", rest:"45s", note:"Full chain — breathe through it."},
+            {name:"Sun salutation A · 3 rounds", sets:"1", reps:"3 rounds", rest:"—", note:"Full-body warm-up — breath leads every transition."},
+            {name:"Vinyasa flow",                sets:`${adj(3)}`, reps:"10 min", rest:"60s", note:"Steady pace — breath leads movement."},
+            {name:"Warrior I + II sequence",     sets:"3", reps:"45s each", rest:"30s", note:"Strength and stability. Hold it."},
+            {name:"Chair pose",                  sets:`${adj(4)}`, reps:"40s", rest:"30s", note:"Quad endurance — this one burns."},
+            {name:"Boat pose",                   sets:`${adj(3)}`, reps:"30s", rest:"30s", note:"Core stability. Tall spine."},
+            {name:"Plank to downdog",            sets:`${adj(3)}`, reps:"10", rest:"45s", note:"Full chain — breathe through it."},
           ],[ /* Standard Strength Yoga */
-            {name:"Chair + pulses",          sets:`${adj(4)}`, reps:"45s", rest:"30s", note:"Sustained quad fire."},
-            {name:"Warrior III balance",     sets:"3", reps:"30s each", rest:"30s", note:"Posterior chain + balance."},
-            {name:"Plank variations",        sets:`${adj(3)}`, reps:"45s", rest:"30s", note:"Side plank each side, then centre."},
-            {name:"Crow pose",               sets:"4", reps:"15s hold", rest:"45s", note:"Core + wrist strength."},
-            {name:"Chaturanga push-ups",     sets:`${adj(3)}`, reps:"10", rest:"60s", note:"Slow eccentric — control the descent."},
+            {name:"Cat-cow warm-up",             sets:"1", reps:"2 min", rest:"—", note:"Spinal mobility primer — slow and intentional."},
+            {name:"Chair + pulses",              sets:`${adj(4)}`, reps:"45s", rest:"30s", note:"Sustained quad fire."},
+            {name:"Warrior III balance",         sets:"3", reps:"30s each", rest:"30s", note:"Posterior chain + balance."},
+            {name:"Plank variations",            sets:`${adj(3)}`, reps:"45s", rest:"30s", note:"Side plank each side, then centre."},
+            {name:"Crow pose",                   sets:"4", reps:"15s hold", rest:"45s", note:"Core + wrist strength."},
+            {name:"Chaturanga push-ups",         sets:`${adj(3)}`, reps:"10", rest:"60s", note:"Slow eccentric — control the descent."},
           ],[ /* Standard Yin */
-            {name:"Dragon pose",             sets:"2", reps:"3 min each", rest:"—", note:"Hip flexor — sink slowly."},
-            {name:"Sleeping swan",           sets:"2", reps:"3 min each", rest:"—", note:"Glutes and piriformis."},
-            {name:"Spinal twist",            sets:"2", reps:"2 min each", rest:"—", note:"Thoracic decompression."},
-            {name:"Caterpillar",             sets:"2", reps:"2 min", rest:"—", note:"Posterior chain — full fold."},
+            {name:"Dragon pose",                 sets:"2", reps:"3 min each", rest:"—", note:"Hip flexor — sink slowly, breathe into it."},
+            {name:"Sleeping swan",               sets:"2", reps:"3 min each", rest:"—", note:"Glutes and piriformis."},
+            {name:"Spinal twist",                sets:"2", reps:"2 min each", rest:"—", note:"Thoracic decompression."},
+            {name:"Caterpillar",                 sets:"2", reps:"2 min", rest:"—", note:"Posterior chain — full fold."},
+            {name:"Savasana",                    sets:"1", reps:"5 min", rest:"—", note:"Integration. Do not skip this. The adaptation happens here."},
           ]
         ][dayV];
         const cOpts = [
           [ /* Standard Run */
-            {name:"Steady-state run / row",  sets:"1", reps:"30 min", rest:"—", note:"Zone 2 — maintain a pace where you can just speak."},
-            {name:"Stride repeats",          sets:`${adj(4)}`, reps:"100m", rest:"60s", note:"80% effort — neuromuscular priming."},
-            {name:"Mobility cool-down",      sets:"1", reps:"5 min", rest:"—", note:"Hip circles, hamstring stretch, calf stretch."},
+            {name:"Dynamic warm-up · leg swings", sets:"1", reps:"2 min", rest:"—", note:"Hip flexors and hamstrings — prime before pace work."},
+            {name:"Steady-state run / row",        sets:"1", reps:"30 min", rest:"—", note:"Zone 2 — maintain a pace where you can just speak."},
+            {name:"Stride repeats",                sets:`${adj(4)}`, reps:"100m", rest:"60s", note:"80% effort — neuromuscular priming at end of run."},
+            {name:"Single-leg balance + reach",    sets:"2", reps:"30s each", rest:"30s", note:"Proprioception and ankle stability post-run."},
+            {name:"Mobility cool-down",            sets:"1", reps:"5 min", rest:"—", note:"Hip circles, hamstring stretch, calf stretch — non-negotiable."},
           ],[ /* Standard Intervals */
-            {name:"400m intervals",          sets:`${adj(4)}`, reps:"400m", rest:"90s", note:"Controlled threshold effort."},
-            {name:"HIIT bike sprints",       sets:`${adj(5)}`, reps:"20s on/40s off", rest:"—", note:"Max effort each sprint."},
-            {name:"Core circuit",            sets:"3", reps:"1 min", rest:"30s", note:"Plank → mountain climbers → hollow hold."},
+            {name:"Jump rope · warm-up",           sets:"1", reps:"3 min", rest:"—", note:"Full-body CNS activation before interval work."},
+            {name:"400m intervals",                sets:`${adj(4)}`, reps:"400m", rest:"90s", note:"Controlled threshold effort — slightly uncomfortable."},
+            {name:"HIIT bike sprints",             sets:`${adj(5)}`, reps:"20s on/40s off", rest:"—", note:"Max effort each sprint."},
+            {name:"Core circuit",                  sets:"3", reps:"1 min", rest:"30s", note:"Plank → mountain climbers → hollow hold."},
+            {name:"Standing cool-down stretch",    sets:"1", reps:"5 min", rest:"—", note:"Hip flexor + calf + quad — 45s each side, no rushing."},
           ],[ /* Standard Cross-train */
-            {name:"Rowing machine",          sets:`${adj(3)}`, reps:"500m", rest:"90s", note:"Drive legs first — arms follow."},
-            {name:"Bike or ski erg",         sets:`${adj(4)}`, reps:"3 min", rest:"90s", note:"Steady effort. Watch your breathing."},
-            {name:"Kettlebell swing",        sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Hip drive, not arms. Posterior chain power."},
+            {name:"Rowing machine · steady warm-up", sets:"1", reps:"5 min easy", rest:"—", note:"Drive legs first. Find your stroke rate before building pace."},
+            {name:"Rowing machine",                sets:`${adj(3)}`, reps:"500m", rest:"90s", note:"Drive legs first — arms follow. Powerful leg drive."},
+            {name:"Bike or ski erg",               sets:`${adj(4)}`, reps:"3 min", rest:"90s", note:"Steady effort. Watch your breathing."},
+            {name:"Kettlebell swing",              sets:`${adj(3)}`, reps:"15", rest:"60s", note:"Hip drive, not arms. Posterior chain power."},
+            {name:"Wall ball",                     sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Full squat → explosive press overhead. Full chain."},
           ]
         ][dayV];
         const lOpts = [
           [ /* Standard Push */
-            {name:hasBarbell?"Flat Bench Press":"DB Bench Press", sets:`${adj(4)}`, reps:"8", rest:"2 min", note:"Working sets — controlled throughout."},
+            {name:"Band pull-apart · warm-up",     sets:"2", reps:"20", rest:"30s", note:"Shoulder health — do this before every pressing day."},
+            {name:hasBarbell?"Flat Bench Press":"DB Bench Press", sets:`${adj(4)}`, reps:"8", rest:"2 min", note:"Primary compound — working sets, controlled throughout."},
             {name:hasBarbell?"Overhead Press":"DB Shoulder Press", sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Full range — lock at top."},
-            {name:"Incline DB Press",        sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Upper chest. Squeeze at the top."},
+            {name:"Incline DB Press",              sets:`${adj(3)}`, reps:"10", rest:"90s", note:"Upper chest. Squeeze at the top."},
+            {name:hasCables?"Cable Fly":"DB Fly",  sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Isolation — stretch at bottom, contraction at top."},
             {name:hasCables?"Cable Tricep Pushdown":"DB Overhead Extension", sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Elbows stay in. Extend fully."},
-            {name:"Lateral Raise",           sets:`${adj(3)}`, reps:"15", rest:"45s", note:"Controlled tempo — no swinging."},
+            {name:"Lateral Raise",                 sets:`${adj(3)}`, reps:"15", rest:"45s", note:"Controlled tempo — no swinging."},
+            ...(isAdvanced?[{name:"Close-Grip Bench / Dip",sets:`${adj(3)}`,reps:"10",rest:"90s",note:"Tricep overload finisher. Control the descent."}]:[]),
+            ...(wantCut?[{name:"Push-Up to failure",sets:"2",reps:"max",rest:"45s",note:"Metabolic finisher — squeeze every rep out."}]:[]),
           ],[ /* Standard Pull */
+            {name:"Scapular push-up · warm-up",    sets:"2", reps:"10", rest:"30s", note:"Shoulder blade mobility — prime the scapula before loading."},
             {name:hasBarbell?"Barbell Row":"DB Row", sets:`${adj(4)}`, reps:"8", rest:"2 min", note:"Drive the elbow back — not the wrist."},
             {name:hasMachines?"Lat Pulldown":"Pull-Up", sets:`${adj(3)}`, reps:hasMachines?"10":"max", rest:"90s", note:"Full stretch at top."},
-            {name:hasCables?"Cable Seated Row":"DB Row", sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Chest up, slight lean back at top."},
-            {name:hasCables?"Face Pull":"Rear Delt Fly", sets:`${adj(3)}`, reps:"15", rest:"60s", note:"High priority for shoulder health."},
-            {name:"DB Curl",                 sets:`${adj(3)}`, reps:"12", rest:"60s", note:"No momentum — strict form."},
+            {name:hasCables?"Cable Seated Row":"Chest-Supported Row", sets:`${adj(3)}`, reps:"12", rest:"90s", note:"Chest up, slight lean back at top."},
+            {name:hasCables?"Face Pull":"Rear Delt Fly", sets:`${adj(3)}`, reps:"15", rest:"60s", note:"High priority for long-term shoulder health."},
+            {name:"DB Curl",                       sets:`${adj(3)}`, reps:"12", rest:"60s", note:"No momentum — strict form."},
+            {name:"Hammer Curl",                   sets:`${adj(2)}`, reps:"12", rest:"45s", note:"Neutral grip — adds brachialis and forearm thickness."},
+            ...(isAdvanced?[{name:"Incline DB Curl",sets:`${adj(2)}`,reps:"12",rest:"60s",note:"Full stretch on the bicep — advanced isolation."}]:[]),
+            ...(wantMass?[{name:"Shrug",sets:`${adj(3)}`,reps:"15",rest:"45s",note:"Trap mass — hold at top, full range down."}]:[]),
           ],[ /* Standard Legs */
-            {name:hasBarbell?"Back Squat":"Goblet Squat", sets:`${adj(4)}`, reps:"8–10", rest:"2 min", note:"Primary lower body. Full depth."},
+            {name:"Hip circle + bodyweight squat · warm-up", sets:"2", reps:"10 each", rest:"30s", note:"Activate glutes and prime the hip joint before loading."},
+            {name:hasBarbell?"Back Squat":"Goblet Squat", sets:`${adj(4)}`, reps:"8–10", rest:"2 min", note:"Primary lower body. Full depth every rep."},
             {name:hasBarbell?"Romanian Deadlift":"DB Romanian Deadlift", sets:`${adj(3)}`, reps:"10", rest:"2 min", note:"Hip hinge — not a back exercise."},
-            {name:"DB Walking Lunge",        sets:`${adj(3)}`, reps:"10 each", rest:"90s", note:"Torso upright throughout."},
-            {name:hasMachines?"Leg Curl":"Glute Bridge", sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Full range of motion."},
-            {name:"Plank",                   sets:`${adj(3)}`, reps:"40s", rest:"45s", note:"Brace like you're about to get hit."},
+            {name:"DB Walking Lunge",              sets:`${adj(3)}`, reps:"10 each", rest:"90s", note:"Torso upright throughout."},
+            {name:hasMachines?"Leg Curl":"Glute Bridge", sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Full range of motion — isolate the posterior chain."},
+            {name:"Hip Thrust",                    sets:`${adj(3)}`, reps:"12", rest:"60s", note:"Glutes only — drive through the heel."},
+            {name:"Calf Raise",                    sets:`${adj(3)}`, reps:"15", rest:"45s", note:"Full stretch at bottom. Often undertrained."},
+            ...(isAdvanced?[{name:hasMachines?"Leg Press · narrow stance":"Bulgarian Split Squat",sets:`${adj(3)}`,reps:"10",rest:"90s",note:"Unilateral load — reveals and corrects imbalances."}]:[]),
+            ...(wantCut?[{name:"Step-Up · bodyweight",sets:"3",reps:"15 each",rest:"45s",note:"Metabolic conditioning finisher — cardio benefit from strength movement."}]:[]),
           ]
         ][dayV];
         const base = useYogaBranch ? yOpts : useCardioBranch ? cOpts : lOpts;
@@ -2634,6 +2709,52 @@
     }
 
     /* ─── POST CHECK-IN PLAN ────────────────────────────────────── */
+    function PillarModal({icon, label, accent, badge, onClose, children}) {
+      const T = React.useContext(ThemeCtx);
+      React.useEffect(() => {
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        return () => { document.body.style.overflow = prev; };
+      }, []);
+      return (
+        <div style={{position:"absolute",inset:0,zIndex:80,display:"flex",flexDirection:"column"}}>
+          <div onClick={onClose} style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.55)",backdropFilter:"blur(3px)"}}/>
+          <div style={{
+            position:"relative",zIndex:1,display:"flex",flexDirection:"column",
+            flex:1,background:T.bg,borderRadius:"20px 20px 0 0",marginTop:52,overflow:"hidden",
+          }}>
+            {/* Handle */}
+            <div style={{width:36,height:4,background:T.border2,borderRadius:2,margin:"10px auto 0",flexShrink:0}}/>
+            {/* Header */}
+            <div style={{
+              padding:"10px 16px 10px",borderBottom:`0.5px solid ${T.border}`,
+              display:"flex",alignItems:"center",gap:10,flexShrink:0,
+            }}>
+              <button onClick={onClose} style={{
+                background:T.card2,border:`0.5px solid ${T.border}`,borderRadius:"50%",
+                width:30,height:30,cursor:"pointer",color:T.text2,fontSize:16,
+                display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+              }}>←</button>
+              <div style={{
+                width:32,height:32,borderRadius:T.r8,
+                background:`${accent}18`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+              }}>
+                <SvgIcon name={icon} size={16} color={accent}/>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:600,color:T.text}}>{label}</div>
+                {badge&&<div style={{fontSize:10,color:accent,marginTop:1}}>{badge}</div>}
+              </div>
+            </div>
+            {/* Scrollable content */}
+            <div style={{flex:1,overflowY:"auto",padding:"14px 16px 36px"}}>
+              {children}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     function ExerciseRow({ex, idx, isChecked, onToggle, onSwap}) {
       const T = React.useContext(ThemeCtx);
       const [showSwap, setShowSwap] = useState(false);
@@ -2661,6 +2782,7 @@
 
     function PostCheckinPlan({checkinAns, userProfile, wearable, plans, checkedItems, onCheck, swaps, onSwap, onDone, onStartWorkout}) {
       const T = React.useContext(ThemeCtx);
+      const [activePillar, setActivePillar] = useState(null);
       const {trainSession,trainNote,trainExercises,calToday,protToday,carbNote,meals,nutritionNote,suppSchedule,suppNote,suppRecommendations,sleepTarget,bedtime,winddown,sleepNote,sleepGoalNote,sleepSexNote,lowR,hiS,great,socialPlan} = plans;
       const f    = userProfile.sex === "Female";
       const name = userProfile.name || "there";
@@ -2730,104 +2852,134 @@
               ))}
             </div>
 
-            {/* TRAIN */}
-            <ExpandSection icon="dumbbell" label="Train" accent={T.trainAc} badge={`${trainSession} · tap to see full workout`}>
-              <div style={{padding:"8px 10px",background:`${T.trainAc}12`,border:`0.5px solid ${T.trainAc}30`,borderRadius:T.r8,marginBottom:12}}>
-                <div style={{fontSize:12,fontWeight:500,color:T.trainAc,marginBottom:3}}>{trainSession}</div>
-                <div style={{fontSize:11,color:T.text2,lineHeight:1.6}}>{trainNote}</div>
-              </div>
-              <SLabel c="Exercises — tap to complete · swap to substitute" mb={8}/>
-              {trainExercises.map((ex,i)=>(
-                <ExerciseRow key={i} ex={ex} idx={i} isChecked={!!checkedItems[`train_${i}`]} onToggle={onCheck} onSwap={onSwap}/>
-              ))}
-              <button onClick={onStartWorkout}
-                style={{width:"100%",marginTop:4,marginBottom:12,padding:"13px",
-                  background:`linear-gradient(135deg,${T.trainAc},${T.blueMid})`,
-                  border:"none",borderRadius:T.r12,color:"#fff",fontSize:13,fontWeight:700,
-                  cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,
-                  boxShadow:`0 4px 18px ${T.trainAc}40`}}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-                Start Workout — sets, reps &amp; rest timer
-              </button>
-              <div style={{marginTop:0,padding:"9px 11px",background:T.blueSoft,border:`0.5px solid ${T.border2}`,borderRadius:T.r8}}>
-                <div style={{fontSize:10,fontWeight:500,color:T.accent,marginBottom:3}}>The science</div>
-                <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{lowR&&hiS?"Cortisol rises sharply when you train hard under accumulated stress — lighter work protects the adaptation from your last session.":great?"High energy + low soreness + good sleep = maximum anabolic environment. Don't waste it.":"Consistent work at moderate intensity compounds over weeks. Today's session matters."}</div>
-                <div style={{fontSize:10,color:T.text3,marginTop:3}}>Cadegiani & Kater, 2017 · Schoenfeld, 2010</div>
-              </div>
-            </ExpandSection>
-
-            {/* EAT */}
-            <ExpandSection icon="utensils" label="Eat" accent={T.eatAc} badge={`${calToday} kcal · ${protToday}g protein · tap to see meals`}>
-              <div style={{marginBottom:12}}>
-                {[{l:"Calories",v:`${calToday} kcal`,c:T.eatAc},{l:"Protein",v:`${protToday}g`,c:T.trainAc},{l:"Note",v:carbNote,c:T.text2,full:true}].map(m=>(
-                  <div key={m.l} style={{display:"flex",justifyContent:"space-between",alignItems:m.full?"flex-start":"center",padding:"7px 0",borderBottom:`0.5px solid ${T.border}`}}>
-                    <div style={{fontSize:11,color:T.text3,flexShrink:0,marginRight:12}}>{m.l}</div>
-                    <div style={{fontSize:m.full?11:13,fontWeight:m.full?400:500,color:m.c,textAlign:"right",lineHeight:1.5}}>{m.v}</div>
+            {/* ── PILLAR CARDS ── */}
+            {[
+              {id:"train",  icon:"dumbbell", label:"Train",           accent:T.trainAc,  badge:`${trainSession} · ${trainExercises.length} exercises`},
+              {id:"eat",    icon:"utensils", label:"Eat",             accent:T.eatAc,    badge:`${calToday} kcal · ${protToday}g protein`},
+              {id:"stack",  icon:"pill",     label:"Stack",           accent:T.stackAc,  badge:`${stackTotal} supplement${stackTotal!==1?"s":""} · timing adjusted`},
+              {id:"sleep",  icon:"moon",     label:"Sleep",           accent:T.sleepAc,  badge:`Lights out ${bedtime} · ${sleepTarget} hrs target`},
+              ...(socialPlan.socialLevel==="moderate"||socialPlan.socialLevel==="heavy"
+                ?[{id:"social",icon:"users",label:"Social Recovery",accent:T.socialAc,badge:`${socialPlan.socialBadge} detected · recovery plan active`}]:[]),
+            ].map(p=>(
+              <div key={p.id} onClick={()=>setActivePillar(p.id)}
+                style={{background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r14,marginBottom:9,cursor:"pointer"}}>
+                <div style={{display:"flex",alignItems:"center",gap:12,padding:"13px 15px"}}>
+                  <div style={{width:34,height:34,borderRadius:T.r8,background:`${p.accent}15`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    <SvgIcon name={p.icon} size={17} color={p.accent}/>
                   </div>
-                ))}
-              </div>
-              <SLabel c="Today's meals — tap when eaten" mb={8}/>
-              {meals.map((meal,i)=>(
-                <MealCard key={i} meal={meal} mealKey={`eat_${i}`} isChecked={!!checkedItems[`eat_${i}`]} onToggle={onCheck}/>
-              ))}
-              <div style={{padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8,fontSize:11,color:T.text2,lineHeight:1.6}}>{nutritionNote}</div>
-            </ExpandSection>
-
-            {/* STACK */}
-            <ExpandSection icon="pill" label="Stack" accent={T.stackAc} badge="Timing adjusted to today's signals — tap to see">
-              <div style={{marginBottom:10,padding:"9px 11px",background:`${T.stackAc}10`,border:`0.5px solid ${T.stackAc}30`,borderRadius:T.r8,fontSize:11,color:T.text2,lineHeight:1.6}}>{suppNote}</div>
-              {suppRows.map((slot,si)=>(
-                <div key={si} style={{marginBottom:10}}>
-                  <SLabel c={slot.time} mb={6}/>
-                  {slot.items.map(({item,key})=>(
-                    <ChkItem key={key} label={item} accent={T.stackAc} itemKey={key} isChecked={!!checkedItems[key]} onToggle={onCheck}/>
-                  ))}
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:13,fontWeight:500,color:T.text}}>{p.label}</div>
+                    <div style={{fontSize:10,color:p.accent,marginTop:2}}>{p.badge}</div>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                    <div style={{width:6,height:6,borderRadius:"50%",background:p.accent}}/>
+                    <span style={{fontSize:18,color:T.text3,lineHeight:1}}>›</span>
+                  </div>
                 </div>
-              ))}
-              {suppRecommendations && suppRecommendations.length > 0 && (
-                <div style={{marginTop:6,marginBottom:10,borderRadius:T.r8,border:`0.5px solid ${T.stackAc}35`,overflow:"hidden"}}>
-                  <div style={{padding:"8px 11px",background:`${T.stackAc}15`,borderBottom:`0.5px solid ${T.stackAc}25`,fontSize:10,fontWeight:600,color:T.stackAc,letterSpacing:"0.05em",textTransform:"uppercase"}}>Recommended additions for your profile</div>
-                  {suppRecommendations.map((r,ri)=>(
-                    <div key={ri} style={{padding:"9px 11px",borderTop:ri>0?`0.5px solid ${T.border}`:"none",background:T.card}}>
-                      <div style={{fontSize:12,fontWeight:500,color:T.text1,marginBottom:2}}>{r.label} <span style={{fontWeight:400,color:T.text3}}>· {r.dose}</span></div>
-                      <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{r.reason}</div>
+              </div>
+            ))}
+
+            {/* ── PILLAR MODALS ── */}
+            {activePillar==="train"&&(
+              <PillarModal icon="dumbbell" label="Train" accent={T.trainAc} badge={`${trainSession} · ${trainExercises.length} exercises`} onClose={()=>setActivePillar(null)}>
+                <div style={{padding:"8px 10px",background:`${T.trainAc}12`,border:`0.5px solid ${T.trainAc}30`,borderRadius:T.r8,marginBottom:12}}>
+                  <div style={{fontSize:12,fontWeight:500,color:T.trainAc,marginBottom:3}}>{trainSession}</div>
+                  <div style={{fontSize:11,color:T.text2,lineHeight:1.6}}>{trainNote}</div>
+                </div>
+                <SLabel c="Exercises — tap to complete · swap to substitute" mb={8}/>
+                {trainExercises.map((ex,i)=>(
+                  <ExerciseRow key={i} ex={ex} idx={i} isChecked={!!checkedItems[`train_${i}`]} onToggle={onCheck} onSwap={onSwap}/>
+                ))}
+                <button onClick={onStartWorkout}
+                  style={{width:"100%",marginTop:4,marginBottom:12,padding:"13px",
+                    background:`linear-gradient(135deg,${T.trainAc},${T.blueMid})`,
+                    border:"none",borderRadius:T.r12,color:"#fff",fontSize:13,fontWeight:700,
+                    cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,
+                    boxShadow:`0 4px 18px ${T.trainAc}40`}}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                  Start Workout — sets, reps &amp; rest timer
+                </button>
+                <div style={{padding:"9px 11px",background:T.blueSoft,border:`0.5px solid ${T.border2}`,borderRadius:T.r8}}>
+                  <div style={{fontSize:10,fontWeight:500,color:T.accent,marginBottom:3}}>The science</div>
+                  <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{lowR&&hiS?"Cortisol rises sharply when you train hard under accumulated stress — lighter work protects the adaptation from your last session.":great?"High energy + low soreness + good sleep = maximum anabolic environment. Don't waste it.":"Consistent work at moderate intensity compounds over weeks. Today's session matters."}</div>
+                  <div style={{fontSize:10,color:T.text3,marginTop:3}}>Cadegiani &amp; Kater, 2017 · Schoenfeld, 2010</div>
+                </div>
+              </PillarModal>
+            )}
+
+            {activePillar==="eat"&&(
+              <PillarModal icon="utensils" label="Eat" accent={T.eatAc} badge={`${calToday} kcal · ${protToday}g protein`} onClose={()=>setActivePillar(null)}>
+                <div style={{marginBottom:12}}>
+                  {[{l:"Calories",v:`${calToday} kcal`,c:T.eatAc},{l:"Protein",v:`${protToday}g`,c:T.trainAc},{l:"Note",v:carbNote,c:T.text2,full:true}].map(m=>(
+                    <div key={m.l} style={{display:"flex",justifyContent:"space-between",alignItems:m.full?"flex-start":"center",padding:"7px 0",borderBottom:`0.5px solid ${T.border}`}}>
+                      <div style={{fontSize:11,color:T.text3,flexShrink:0,marginRight:12}}>{m.l}</div>
+                      <div style={{fontSize:m.full?11:13,fontWeight:m.full?400:500,color:m.c,textAlign:"right",lineHeight:1.5}}>{m.v}</div>
                     </div>
                   ))}
                 </div>
-              )}
-              <div style={{padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8,fontSize:10,color:T.text3,lineHeight:1.55}}>Wellness suggestions based on your data — not medical advice. Consult a doctor if you take medication.</div>
-            </ExpandSection>
+                <SLabel c="Today's meals — tap when eaten" mb={8}/>
+                {meals.map((meal,i)=>(
+                  <MealCard key={i} meal={meal} mealKey={`eat_${i}`} isChecked={!!checkedItems[`eat_${i}`]} onToggle={onCheck}/>
+                ))}
+                <div style={{padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8,fontSize:11,color:T.text2,lineHeight:1.6}}>{nutritionNote}</div>
+              </PillarModal>
+            )}
 
-            {/* SLEEP */}
-            <ExpandSection icon="moon" label="Sleep" accent={T.sleepAc} badge={`Target ${sleepTarget} hrs · lights out ${bedtime} · tap to see`}>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
-                {[["Bedtime",bedtime],["Wake","6:00 AM"],["Target",`${sleepTarget} hrs`]].map(([l,v])=>(
-                  <div key={l} style={{background:T.card2,border:`0.5px solid ${T.border2}`,borderRadius:T.r8,padding:"10px",textAlign:"center"}}>
-                    <div style={{fontSize:16,fontWeight:500,color:T.sleepAc}}>{v}</div>
-                    <div style={{fontSize:9,color:T.text3,marginTop:2}}>{l}</div>
+            {activePillar==="stack"&&(
+              <PillarModal icon="pill" label="Stack" accent={T.stackAc} badge={`${stackTotal} supplement${stackTotal!==1?"s":""} · timing adjusted to today`} onClose={()=>setActivePillar(null)}>
+                <div style={{marginBottom:10,padding:"9px 11px",background:`${T.stackAc}10`,border:`0.5px solid ${T.stackAc}30`,borderRadius:T.r8,fontSize:11,color:T.text2,lineHeight:1.6}}>{suppNote}</div>
+                {suppRows.map((slot,si)=>(
+                  <div key={si} style={{marginBottom:10}}>
+                    <SLabel c={slot.time} mb={6}/>
+                    {slot.items.map(({item,key})=>(
+                      <ChkItem key={key} label={item} accent={T.stackAc} itemKey={key} isChecked={!!checkedItems[key]} onToggle={onCheck}/>
+                    ))}
                   </div>
                 ))}
-              </div>
-              <div style={{marginBottom:12,padding:"9px 11px",background:`${T.sleepAc}10`,border:`0.5px solid ${T.sleepAc}30`,borderRadius:T.r8,fontSize:11,color:T.text2,lineHeight:1.6}}>{sleepNote}</div>
-              <SLabel c="Wind-down protocol — tap when done" mb={8}/>
-              {winddown.map((step,i)=>(
-                <ChkItem key={i} label={`${step.time} · ${step.action}`} sub={step.note}
-                  accent={T.sleepAc} itemKey={`sleep_${i}`} isChecked={!!checkedItems[`sleep_${i}`]} onToggle={onCheck}/>
-              ))}
-              <div style={{marginTop:8,padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8}}>
-                <div style={{fontSize:10,fontWeight:500,color:T.sleepAc,marginBottom:3}}>Why tonight matters</div>
-                <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{sleepGoalNote} {sleepSexNote}</div>
-                <div style={{fontSize:10,color:T.text3,marginTop:3}}>Van Cauter et al., 2000 · {f?"Mong et al., 2011":"Leproult & Van Cauter, JAMA 2011"}</div>
-              </div>
-            </ExpandSection>
+                {suppRecommendations&&suppRecommendations.length>0&&(
+                  <div style={{marginTop:6,marginBottom:10,borderRadius:T.r8,border:`0.5px solid ${T.stackAc}35`,overflow:"hidden"}}>
+                    <div style={{padding:"8px 11px",background:`${T.stackAc}15`,borderBottom:`0.5px solid ${T.stackAc}25`,fontSize:10,fontWeight:600,color:T.stackAc,letterSpacing:"0.05em",textTransform:"uppercase"}}>Recommended additions for your profile</div>
+                    {suppRecommendations.map((r,ri)=>(
+                      <div key={ri} style={{padding:"9px 11px",borderTop:ri>0?`0.5px solid ${T.border}`:"none",background:T.card}}>
+                        <div style={{fontSize:12,fontWeight:500,color:T.text1,marginBottom:2}}>{r.label} <span style={{fontWeight:400,color:T.text3}}>· {r.dose}</span></div>
+                        <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{r.reason}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div style={{padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8,fontSize:10,color:T.text3,lineHeight:1.55}}>Wellness suggestions based on your data — not medical advice. Consult a doctor if you take medication.</div>
+              </PillarModal>
+            )}
 
-            {/* SOCIAL — only shown in plan if moderate/heavy */}
-            {(socialPlan.socialLevel==="moderate"||socialPlan.socialLevel==="heavy")&&(
-              <ExpandSection icon="users" label="Social Recovery" accent={T.socialAc} badge={`${socialPlan.socialBadge} detected · tap to see recovery plan`}>
+            {activePillar==="sleep"&&(
+              <PillarModal icon="moon" label="Sleep" accent={T.sleepAc} badge={`Lights out ${bedtime} · ${sleepTarget} hrs target`} onClose={()=>setActivePillar(null)}>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
+                  {[["Bedtime",bedtime],["Wake","6:00 AM"],["Target",`${sleepTarget} hrs`]].map(([l,v])=>(
+                    <div key={l} style={{background:T.card2,border:`0.5px solid ${T.border2}`,borderRadius:T.r8,padding:"10px",textAlign:"center"}}>
+                      <div style={{fontSize:16,fontWeight:500,color:T.sleepAc}}>{v}</div>
+                      <div style={{fontSize:9,color:T.text3,marginTop:2}}>{l}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{marginBottom:12,padding:"9px 11px",background:`${T.sleepAc}10`,border:`0.5px solid ${T.sleepAc}30`,borderRadius:T.r8,fontSize:11,color:T.text2,lineHeight:1.6}}>{sleepNote}</div>
+                <SLabel c="Wind-down protocol — tap when done" mb={8}/>
+                {winddown.map((step,i)=>(
+                  <ChkItem key={i} label={`${step.time} · ${step.action}`} sub={step.note}
+                    accent={T.sleepAc} itemKey={`sleep_${i}`} isChecked={!!checkedItems[`sleep_${i}`]} onToggle={onCheck}/>
+                ))}
+                <div style={{marginTop:8,padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8}}>
+                  <div style={{fontSize:10,fontWeight:500,color:T.sleepAc,marginBottom:3}}>Why tonight matters</div>
+                  <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{sleepGoalNote} {sleepSexNote}</div>
+                  <div style={{fontSize:10,color:T.text3,marginTop:3}}>Van Cauter et al., 2000 · {f?"Mong et al., 2011":"Leproult &amp; Van Cauter, JAMA 2011"}</div>
+                </div>
+              </PillarModal>
+            )}
+
+            {activePillar==="social"&&(
+              <PillarModal icon="users" label="Social Recovery" accent={T.socialAc} badge={`${socialPlan.socialBadge} detected`} onClose={()=>setActivePillar(null)}>
                 <div style={{marginBottom:12,padding:"9px 11px",background:`${T.socialAc}10`,border:`0.5px solid ${T.socialAc}30`,borderRadius:T.r8,fontSize:11,color:T.text2,lineHeight:1.6}}>{socialPlan.socialNote}</div>
-
                 {socialItems.filter(s=>s.type==="h").length>0&&(
                   <><SLabel c="Hydration" mb={6}/>
                   {socialItems.filter(s=>s.type==="h").map(({item,key})=>(
@@ -2846,7 +2998,6 @@
                     <ChkItem key={key} label={item} accent={T.socialAc} itemKey={key} isChecked={!!checkedItems[key]} onToggle={onCheck}/>
                   ))}</>
                 )}
-
                 <div style={{marginTop:10,padding:"9px 11px",background:T.card,border:`0.5px solid ${T.border}`,borderRadius:T.r8}}>
                   <div style={{fontSize:10,fontWeight:500,color:T.socialAc,marginBottom:3}}>Training today</div>
                   <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{socialPlan.socialTrain}</div>
@@ -2860,8 +3011,8 @@
                   <div style={{fontSize:11,color:T.text2,lineHeight:1.55}}>{socialPlan.socialLevel==="heavy"?"Alcohol metabolises into acetaldehyde — more toxic than alcohol itself. NAC and cysteine (eggs) accelerate its clearance via glutathione. B vitamins are cofactors in this pathway.":"Moderate alcohol suppresses REM sleep by up to 25% and elevates cortisol the next morning. Hydration and B-complex are the highest-leverage recovery steps."}</div>
                   <div style={{fontSize:10,color:T.text3,marginTop:3}}>Lieber, 2005 · Yules et al., 1967 · Penning et al., 2012</div>
                 </div>
-              </ExpandSection>
-            )}
+              </PillarModal>
+            )}            )}
 
             <div style={{padding:"12px 14px",background:T.blueSoft,border:`0.5px solid ${T.border2}`,borderRadius:T.r12,marginBottom:14,borderLeft:`2px solid ${T.accent}`}}>
               <div style={{fontSize:9,fontWeight:500,color:T.accent,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>Your why</div>
