@@ -2849,7 +2849,7 @@
       );
     }
 
-    function PostCheckinPlan({checkinAns, userProfile, wearable, plans, checkedItems, onCheck, swaps, onSwap, onDone, onStartWorkout, todayWorkout}) {
+    function PostCheckinPlan({checkinAns, userProfile, wearable, plans, checkedItems, onCheck, swaps, onSwap, onDone, onStartWorkout, workoutStarted, todayWorkout}) {
       const T = React.useContext(ThemeCtx);
       const [activePillar, setActivePillar] = useState(null);
       const [reviewOpen,   setReviewOpen]   = useState(false);
@@ -2960,17 +2960,21 @@
                 {trainExercises.map((ex,i)=>(
                   <ExerciseRow key={i} ex={ex} idx={i} isChecked={!!checkedItems[`train_${i}`]} onToggle={onCheck} onSwap={onSwap}/>
                 ))}
-                <button onClick={()=>{setActivePillar(null);onStartWorkout();}}
-                  style={{width:"100%",marginTop:4,marginBottom:12,padding:"13px",
-                    background:`linear-gradient(135deg,${T.trainAc},${T.blueMid})`,
-                    border:"none",borderRadius:T.r12,color:"#fff",fontSize:13,fontWeight:700,
-                    cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,
-                    boxShadow:`0 4px 18px ${T.trainAc}40`}}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"/>
-                  </svg>
-                  Start Workout — sets, reps &amp; rest timer
-                </button>
+                {!todayWorkout&&(
+                  <button onClick={()=>{setActivePillar(null);onStartWorkout();}}
+                    style={{width:"100%",marginTop:4,marginBottom:12,padding:"13px",
+                      background:workoutStarted
+                        ?`linear-gradient(135deg,${T.trainAc}cc,${T.trainAc})`
+                        :`linear-gradient(135deg,${T.trainAc},${T.blueMid})`,
+                      border:"none",borderRadius:T.r12,color:"#fff",fontSize:13,fontWeight:700,
+                      cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,
+                      boxShadow:`0 4px 18px ${T.trainAc}40`}}>
+                    {workoutStarted
+                      ? (<><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/><line x1="19" y1="6" x2="19" y2="18"/></svg>Resume Workout</>)
+                      : (<><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>Start Workout — sets, reps &amp; rest timer</>)
+                    }
+                  </button>
+                )}
                 {/* Review today's workout */}
                 {todayWorkout&&(
                   <div style={{marginBottom:10,borderRadius:T.r8,border:`0.5px solid ${T.trainAc}40`,overflow:"hidden"}}>
@@ -2982,26 +2986,87 @@
                       </div>
                       <span style={{color:T.trainAc,fontSize:14,transform:reviewOpen?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
                     </div>
-                    {reviewOpen&&todayWorkout.exercises?.map((exData,ei)=>(
-                      <div key={ei} style={{borderTop:`0.5px solid ${T.border}`,padding:"10px 12px",background:T.card}}>
-                        <div style={{fontSize:11,fontWeight:600,color:T.text,marginBottom:exData.sets?.some(s=>s.weight||s.reps)?6:0}}>{exData.name}</div>
-                        {exData.sets?.some(s=>s.weight||s.reps)&&(
-                          <div style={{display:"grid",gridTemplateColumns:"28px 1fr 1fr",gap:"3px 8px",marginBottom:exData.notes?6:0}}>
-                            <div style={{fontSize:9,color:T.text3}}>Set</div>
-                            <div style={{fontSize:9,color:T.text3}}>Weight</div>
-                            <div style={{fontSize:9,color:T.text3}}>Reps</div>
-                            {exData.sets.map((s,si)=>(
-                              <React.Fragment key={si}>
-                                <div style={{fontSize:11,color:T.text2,lineHeight:"18px"}}>{si+1}</div>
-                                <div style={{fontSize:11,color:s.weight?T.trainAc:T.text3,fontWeight:s.weight?500:400,lineHeight:"18px"}}>{s.weight||"—"}</div>
-                                <div style={{fontSize:11,color:s.reps?T.text:T.text3,lineHeight:"18px"}}>{s.reps||"—"}</div>
-                              </React.Fragment>
+                    {reviewOpen&&(()=>{
+                      // ── Compute stats ──────────────────────────────
+                      let totalVol = 0, volUnit = "", volCount = 0;
+                      let totalReps = 0, setsCompleted = 0;
+                      let heaviestW = 0, heaviestName = "";
+                      todayWorkout.exercises?.forEach(ex => {
+                        ex.sets?.forEach(s => {
+                          if (!s.done) return;
+                          setsCompleted++;
+                          const reps = parseInt(s.reps) || 0;
+                          totalReps += reps;
+                          if (s.weight) {
+                            const w = parseFloat(s.weight.replace(/[^0-9.]/g, ""));
+                            if (!isNaN(w) && w > 0) {
+                              const u = /lb/i.test(s.weight) ? "lbs" : /kg/i.test(s.weight) ? "kg" : "";
+                              if (!volUnit && u) volUnit = u;
+                              totalVol += w * reps;
+                              volCount++;
+                              if (w > heaviestW) { heaviestW = w; heaviestName = ex.name; }
+                            }
+                          }
+                        });
+                      });
+                      const exDone = todayWorkout.exercises?.filter(ex => ex.sets?.some(s => s.done)).length || 0;
+                      const exTotal = todayWorkout.exercises?.length || 0;
+                      const durationMin = todayWorkout.durationMs ? Math.round(todayWorkout.durationMs / 60000) : null;
+                      const avgRestSec  = (todayWorkout.restCount && todayWorkout.totalRestMs)
+                        ? Math.round(todayWorkout.totalRestMs / todayWorkout.restCount / 1000) : null;
+                      const fmtDur = durationMin != null
+                        ? (durationMin >= 60 ? `${Math.floor(durationMin/60)}h ${durationMin%60}m` : `${durationMin} min`) : "—";
+                      const fmtRest = avgRestSec != null
+                        ? (avgRestSec >= 60 ? `${Math.floor(avgRestSec/60)}m ${avgRestSec%60}s` : `${avgRestSec}s`) : "—";
+                      const fmtVol  = totalVol > 0 ? `${Math.round(totalVol).toLocaleString()}${volUnit ? " "+volUnit : ""}` : "—";
+                      const statsItems = [
+                        { label:"Duration",      value:fmtDur },
+                        { label:"Total volume",  value:fmtVol },
+                        { label:"Avg rest",      value:fmtRest },
+                        { label:"Sets done",     value:setsCompleted > 0 ? String(setsCompleted) : "—" },
+                        { label:"Total reps",    value:totalReps > 0 ? String(totalReps) : "—" },
+                        { label:"Exercises",     value:exTotal > 0 ? `${exDone}/${exTotal}` : "—" },
+                      ];
+                      return (<>
+                        {/* Stats grid */}
+                        <div style={{borderTop:`0.5px solid ${T.border}`,padding:"10px 12px",background:T.card}}>
+                          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom: heaviestW > 0 ? 8 : 0}}>
+                            {statsItems.map(({label,value})=>(
+                              <div key={label} style={{background:T.bg,border:`0.5px solid ${T.border2}`,borderRadius:T.r8,padding:"7px 8px",textAlign:"center"}}>
+                                <div style={{fontSize:9,color:T.text3,letterSpacing:"0.05em",textTransform:"uppercase",marginBottom:3}}>{label}</div>
+                                <div style={{fontSize:13,fontWeight:700,color:T.trainAc,lineHeight:1}}>{value}</div>
+                              </div>
                             ))}
                           </div>
-                        )}
-                        {exData.notes&&<div style={{fontSize:11,color:T.text2,fontStyle:"italic",lineHeight:1.5,borderTop:exData.sets?.some(s=>s.weight||s.reps)?`0.5px solid ${T.border}`:"none",paddingTop:exData.sets?.some(s=>s.weight||s.reps)?5:0,marginTop:exData.sets?.some(s=>s.weight||s.reps)?4:0}}>{exData.notes}</div>}
-                      </div>
-                    ))}
+                          {heaviestW > 0&&(
+                            <div style={{fontSize:10,color:T.text3,textAlign:"center"}}>
+                              Heaviest lift: <span style={{color:T.text,fontWeight:600}}>{heaviestW}{volUnit?` ${volUnit}`:""} — {heaviestName}</span>
+                            </div>
+                          )}
+                        </div>
+                        {/* Per-exercise breakdown */}
+                        {todayWorkout.exercises?.map((exData,ei)=>(
+                          <div key={ei} style={{borderTop:`0.5px solid ${T.border}`,padding:"10px 12px",background:T.card}}>
+                            <div style={{fontSize:11,fontWeight:600,color:T.text,marginBottom:exData.sets?.some(s=>s.weight||s.reps)?6:0}}>{exData.name}</div>
+                            {exData.sets?.some(s=>s.weight||s.reps)&&(
+                              <div style={{display:"grid",gridTemplateColumns:"28px 1fr 1fr",gap:"3px 8px",marginBottom:exData.notes?6:0}}>
+                                <div style={{fontSize:9,color:T.text3}}>Set</div>
+                                <div style={{fontSize:9,color:T.text3}}>Weight</div>
+                                <div style={{fontSize:9,color:T.text3}}>Reps</div>
+                                {exData.sets.map((s,si)=>(
+                                  <React.Fragment key={si}>
+                                    <div style={{fontSize:11,color:T.text2,lineHeight:"18px"}}>{si+1}</div>
+                                    <div style={{fontSize:11,color:s.weight?T.trainAc:T.text3,fontWeight:s.weight?500:400,lineHeight:"18px"}}>{s.weight||"—"}</div>
+                                    <div style={{fontSize:11,color:s.reps?T.text:T.text3,lineHeight:"18px"}}>{s.reps||"—"}</div>
+                                  </React.Fragment>
+                                ))}
+                              </div>
+                            )}
+                            {exData.notes&&<div style={{fontSize:11,color:T.text2,fontStyle:"italic",lineHeight:1.5,borderTop:exData.sets?.some(s=>s.weight||s.reps)?`0.5px solid ${T.border}`:"none",paddingTop:exData.sets?.some(s=>s.weight||s.reps)?5:0,marginTop:exData.sets?.some(s=>s.weight||s.reps)?4:0}}>{exData.notes}</div>}
+                          </div>
+                        ))}
+                      </>);
+                    })()}
                   </div>
                 )}
                 <div style={{padding:"9px 11px",background:T.blueSoft,border:`0.5px solid ${T.border2}`,borderRadius:T.r8}}>
@@ -5273,8 +5338,12 @@ BEHAVIOUR:
         try { return JSON.parse(localStorage.getItem("sana_workout_history") || "[]"); }
         catch { return []; }
       });
-      const timerRef = useRef(null);
-      const stateRef = useRef({ exIdx:0, activeSet:1 });
+      const timerRef       = useRef(null);
+      const stateRef       = useRef({ exIdx:0, activeSet:1 });
+      const workoutStartMs = useRef(0);
+      const totalRestMsRef = useRef(0);
+      const restStartMsRef = useRef(0);
+      const restCountRef   = useRef(0);
 
       useEffect(() => { stateRef.current.exIdx     = exIdx;     }, [exIdx]);
       useEffect(() => { stateRef.current.activeSet = activeSet; }, [activeSet]);
@@ -5283,9 +5352,13 @@ BEHAVIOUR:
       // Auto-save session to localStorage when workout finishes
       useEffect(() => {
         if (phase !== "done") return;
+        const now = Date.now();
         const session = {
           date: new Date().toLocaleDateString("en-US", {weekday:"short", month:"short", day:"numeric"}),
-          timestamp: Date.now(),
+          timestamp: now,
+          durationMs:   workoutStartMs.current ? now - workoutStartMs.current : 0,
+          totalRestMs:  totalRestMsRef.current,
+          restCount:    restCountRef.current,
           exercises: exercises.map((ex, i) => ({
             name: ex.name,
             sets: Array.from({length: Math.max(1, parseInt(ex.sets)||3)}, (_, si) => {
@@ -5322,6 +5395,7 @@ BEHAVIOUR:
       };
 
       const startSet = (setNum) => {
+        if (!workoutStartMs.current) workoutStartMs.current = Date.now();
         stop(); setSecs(0); setActiveSet(setNum); setPhase("working");
         stateRef.current.activeSet = setNum;
         let s=0; timerRef.current = setInterval(()=>{ s++; setSecs(s); }, 1000);
@@ -5337,11 +5411,14 @@ BEHAVIOUR:
         if (isLastSet && isLastEx) { setPhase("done"); return; }
         const rest = parseRestSecs(exercises?.[ei]?.rest);
         setSecs(rest); setPhase("resting");
+        restStartMsRef.current = Date.now();
         let r = rest;
         timerRef.current = setInterval(() => {
           r--; setSecs(r);
           if (r <= 0) {
             stop();
+            totalRestMsRef.current += Date.now() - restStartMsRef.current;
+            restCountRef.current++;
             if (isLastSet) {
               const nextEi = stateRef.current.exIdx + 1;
               setExIdx(nextEi); setActiveSet(1);
@@ -5357,6 +5434,11 @@ BEHAVIOUR:
 
       const skipRest = () => {
         stop();
+        if (restStartMsRef.current) {
+          totalRestMsRef.current += Date.now() - restStartMsRef.current;
+          restCountRef.current++;
+          restStartMsRef.current = 0;
+        }
         const ei        = stateRef.current.exIdx;
         const completed = stateRef.current.activeSet;
         const exSets    = Math.max(1, parseInt(exercises?.[ei]?.sets)||3);
@@ -5701,8 +5783,9 @@ BEHAVIOUR:
       const [pendingProfile, setPendingProfile] = useState(null);
       const [lightMode,    setLightMode]    = useState(()=>localStorage.getItem("sana_theme")==="light");
       const [floatChat,    setFloatChat]    = useState(false);
-      const [workoutOpen,  setWorkoutOpen]  = useState(false);
-      const [todayWorkout, setTodayWorkout] = useState(null);
+      const [workoutOpen,    setWorkoutOpen]    = useState(false);
+      const [workoutStarted, setWorkoutStarted] = useState(false);
+      const [todayWorkout,   setTodayWorkout]   = useState(null);
       const T = lightMode ? D_LIGHT : D;
       const toggleTheme = () => {
         const n = !lightMode;
@@ -6048,7 +6131,8 @@ BEHAVIOUR:
                   swaps={swaps}
                   onSwap={handleSwap}
                   onDone={()=>navigate("home")}
-                  onStartWorkout={()=>setWorkoutOpen(true)}
+                  onStartWorkout={()=>{ setWorkoutStarted(true); setWorkoutOpen(true); }}
+                  workoutStarted={workoutStarted}
                   todayWorkout={todayWorkout}
                 />
               ) : (
