@@ -2548,22 +2548,7 @@
         .filter(k => SOCIAL_SUPP_NOTES[k] && socialLevel !== "none")
         .map(k => `${SUPP_META[k]?.label || k} · ${SOCIAL_SUPP_NOTES[k][socialLevel]}`);
 
-      const socialSupps = socialLevel === "none" ? []
-        : socialLevel === "light" ? [
-            ...userSuppNotes,
-            ...(!hasMgSupp ? ["Magnesium glycinate · 200mg before bed tonight — even light alcohol suppresses magnesium absorption"] : []),
-          ]
-        : socialLevel === "moderate" ? [
-            ...userSuppNotes,
-            ...(!hasB12Supp ? ["B-complex · 1 tablet — alcohol depletes B1, B6, and B12 directly"] : []),
-            ...(!hasMgSupp  ? ["Magnesium glycinate · 200mg at 8 PM — alcohol suppresses absorption"] : []),
-          ]
-        : [ // heavy
-            ...(!hasB12Supp ? ["B-complex · 1 tablet — take immediately, B vitamins are the first thing alcohol depletes"] : []),
-            "NAC (N-Acetylcysteine) · 600mg — boosts glutathione, your liver's primary detox molecule. Most impactful supplement today.",
-            ...(!hasElectrolytes ? ["Electrolyte tablet or powder — sodium, potassium, and magnesium all need replenishing"] : []),
-            ...userSuppNotes,
-          ];
+      const socialSupps = socialLevel === "none" ? [] : userSuppNotes;
 
       const socialTrain = socialLevel==="none"
         ? `Proceed as planned — you're in great shape for today${wantMass?" strength session":goal==="cardio"?" cardio session":" session"}.`
@@ -3522,7 +3507,7 @@
     /* ─── SETUP SCREEN ──────────────────────────────────────────── */
     function SetupScreen({onDone}) {
       const T = React.useContext(ThemeCtx);
-      const [step, setStep] = useState(0);
+      const [step, setStep] = useState(-1);
       const [form, setForm] = useState({
         name:"", sex:"Male", age:"", bodyType:"mesomorph",
         weight:"", weightUnit:"lbs",
@@ -3697,6 +3682,61 @@
       });
 
       const stepContent = () => {
+        if (step === -1) return (
+          <div style={{minHeight:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"48px 28px 36px",textAlign:"center"}}>
+            {/* Logo mark */}
+            <div style={{marginBottom:36}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:10}}>
+                <div style={{display:"flex",gap:4}}>
+                  {[0,1,2].map(i=>(
+                    <div key={i} style={{width:8,height:8,borderRadius:"50%",
+                      background:i===0?"#2563eb":i===1?"#6366f1":"#38bdf8",
+                      boxShadow:`0 0 ${8+i*4}px ${i===0?"rgba(37,99,235,0.9)":i===1?"rgba(99,102,241,0.9)":"rgba(56,189,248,0.9)"}`,
+                      transform:`translateY(${i===1?-3:0}px)`,transition:"all .3s"}}/>
+                  ))}
+                </div>
+                <span style={{fontSize:30,fontWeight:700,letterSpacing:"-0.5px",color:"#fff",lineHeight:1}}>SANA</span>
+              </div>
+              <div style={{fontSize:11,fontWeight:500,color:"rgba(56,189,248,0.65)",letterSpacing:"0.14em",textTransform:"uppercase"}}>Daily Wellness Intelligence</div>
+            </div>
+
+            {/* Headline */}
+            <div style={{marginBottom:24}}>
+              <div style={{fontSize:28,fontWeight:600,color:"#fff",lineHeight:1.2,letterSpacing:"-0.5px",marginBottom:12}}>
+                Your plan,<br/>built around you.
+              </div>
+              <div style={{fontSize:14,color:"rgba(139,163,192,0.8)",lineHeight:1.65,maxWidth:270,margin:"0 auto"}}>
+                Six questions. A personalized daily plan — training, food, supplements, sleep, and recovery — adapted to how you actually feel each morning.
+              </div>
+            </div>
+
+            {/* Pillars */}
+            <div style={{display:"flex",gap:7,flexWrap:"wrap",justifyContent:"center",marginBottom:40}}>
+              {[["dumbbell","Train"],["utensils","Eat"],["pill","Stack"],["moon","Sleep"],["users","Recover"]].map(([icon,label])=>(
+                <div key={label} style={{display:"flex",alignItems:"center",gap:5,padding:"5px 12px",
+                  borderRadius:99,background:"rgba(37,99,235,0.1)",border:"1px solid rgba(99,102,241,0.22)",
+                  fontSize:11,fontWeight:500,color:"#a5b4fc"}}>
+                  <SvgIcon name={icon} size={10} color="#a5b4fc"/>
+                  {label}
+                </div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <div style={{width:"100%",maxWidth:320}}>
+              <button onClick={()=>setStep(0)} style={{
+                width:"100%",padding:"15px",
+                background:"linear-gradient(135deg,#2563eb,#6366f1)",
+                border:"none",borderRadius:14,fontSize:15,fontWeight:700,letterSpacing:"-0.2px",
+                color:"#fff",cursor:"pointer",marginBottom:10,
+                boxShadow:"0 0 32px rgba(99,102,241,0.35)",
+              }}>
+                Get Started →
+              </button>
+              <div style={{fontSize:11,color:"rgba(139,163,192,0.4)"}}>Takes about 3 minutes</div>
+            </div>
+          </div>
+        );
         if (step === 0) return (
           <div>
             <div style={{fontSize:22,fontWeight:500,color:T.text,marginBottom:6,letterSpacing:"-0.4px"}}>What's your name?</div>
@@ -4430,45 +4470,49 @@
 
       return (
         <div style={{height:"100%",display:"flex",flexDirection:"column",background:"linear-gradient(180deg,#080d1a 0%,#0a1020 100%)"}}>
-          {/* Premium progress bar */}
-          <div style={{position:"relative",height:2,background:"rgba(26,38,64,0.6)",flexShrink:0}}>
-            <div style={{position:"absolute",inset:0,width:`${progress}%`,
-              background:"linear-gradient(90deg,#2563eb,#6366f1,#38bdf8)",
-              transition:"width 0.4s cubic-bezier(0.16,1,0.3,1)",
-              boxShadow:"0 0 12px rgba(99,102,241,0.6)"}}>
-              <div style={{position:"absolute",right:0,top:-2,width:6,height:6,borderRadius:"50%",
-                background:"#38bdf8",boxShadow:"0 0 8px #38bdf8"}}/>
+          {/* Progress bar — hidden on welcome screen */}
+          {step >= 0 && (
+            <div style={{position:"relative",height:2,background:"rgba(26,38,64,0.6)",flexShrink:0}}>
+              <div style={{position:"absolute",inset:0,width:`${progress}%`,
+                background:"linear-gradient(90deg,#2563eb,#6366f1,#38bdf8)",
+                transition:"width 0.4s cubic-bezier(0.16,1,0.3,1)",
+                boxShadow:"0 0 12px rgba(99,102,241,0.6)"}}>
+                <div style={{position:"absolute",right:0,top:-2,width:6,height:6,borderRadius:"50%",
+                  background:"#38bdf8",boxShadow:"0 0 8px #38bdf8"}}/>
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Header */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",
-            padding:"14px 20px 0",flexShrink:0}}>
-            <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <div style={{width:5,height:5,borderRadius:"50%",
-                background:"linear-gradient(135deg,#2563eb,#6366f1)",
-                boxShadow:"0 0 8px rgba(99,102,241,0.8)"}}/>
-              <span style={{fontSize:10,fontWeight:700,color:"rgba(56,189,248,0.7)",
-                letterSpacing:"0.14em",textTransform:"uppercase"}}>Step {step+1} of {TOTAL}</span>
+          {/* Header — hidden on welcome screen */}
+          {step >= 0 && (
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",
+              padding:"14px 20px 0",flexShrink:0}}>
+              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                <div style={{width:5,height:5,borderRadius:"50%",
+                  background:"linear-gradient(135deg,#2563eb,#6366f1)",
+                  boxShadow:"0 0 8px rgba(99,102,241,0.8)"}}/>
+                <span style={{fontSize:10,fontWeight:700,color:"rgba(56,189,248,0.7)",
+                  letterSpacing:"0.14em",textTransform:"uppercase"}}>Step {step+1} of {TOTAL}</span>
+              </div>
+              {step > 0 && (
+                <button onClick={()=>setStep(n=>n-1)}
+                  style={{fontSize:11,color:"#8ba3c0",background:"rgba(15,22,41,0.5)",
+                    border:"1px solid rgba(36,51,82,0.5)",borderRadius:99,
+                    cursor:"pointer",padding:"5px 12px",backdropFilter:"blur(8px)",
+                    display:"flex",alignItems:"center",gap:4}}>
+                  <span style={{fontSize:13}}>←</span> Back
+                </button>
+              )}
             </div>
-            {step>0&&(
-              <button onClick={()=>setStep(n=>n-1)}
-                style={{fontSize:11,color:"#8ba3c0",background:"rgba(15,22,41,0.5)",
-                  border:"1px solid rgba(36,51,82,0.5)",borderRadius:99,
-                  cursor:"pointer",padding:"5px 12px",backdropFilter:"blur(8px)",
-                  display:"flex",alignItems:"center",gap:4}}>
-                <span style={{fontSize:13}}>←</span> Back
-              </button>
-            )}
-          </div>
+          )}
 
           {/* Content */}
-          <div style={{flex:1,overflowY:"auto",padding:"18px 20px 20px"}}>
+          <div style={{flex:1,overflowY:"auto",padding:step>=0?"18px 20px 20px":"0"}}>
             {stepContent()}
           </div>
 
-          {/* Continue button */}
-          {[0,2,4,5,10,11,14].includes(step)&&(
+          {/* Continue button — hidden on welcome screen */}
+          {step >= 0 && [0,2,4,5,10,11,14].includes(step) && (
             <div style={{padding:"0 20px 20px",flexShrink:0}}>
               <button onClick={()=>setStep(n=>n+1)} disabled={!canNext}
                 style={{width:"100%",padding:"14px",
